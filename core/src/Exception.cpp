@@ -1,17 +1,14 @@
 #include "Exception.h"
 #include <iostream>
-namespace BHI
+namespace Core
 {
-    namespace Core
+
+    Exception::Exception()
     {
+    }
 
-        Exception::Exception()
-        {
-        }
-
-        Exception::~Exception()
-        {
-            //dtor
-        }
+    Exception::~Exception()
+    {
+        //dtor
     }
 }

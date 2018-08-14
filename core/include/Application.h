@@ -6,41 +6,38 @@
 #include <Option.h>
 #include <NotifyManager.h>
 #include <Exception.h>
-namespace BHI
+namespace Core
 {
-    namespace Core
+
+    class Application : public ISubsystem
     {
+    private:
+        typedef void(*fn)(int);
+        StlMap<int,fn> m_signalRegistry;
+        StlMap<string,Util::Option> m_OptionsInfo;
+        StlMap<string,shared_ptr<ISubsystem>> m_SubsystemInfo;
+        StlVector<string> m_CommandOptions;
 
-        class Application : public ISubsystem
-        {
-            private:
-                typedef void(*fn)(int);
-                StlMap<int,fn> m_signalRegistry;
-                StlMap<string,Util::Option> m_OptionsInfo;
-                StlMap<string,shared_ptr<ISubsystem>> m_SubsystemInfo;
-                StlVector<string> m_CommandOptions;
+        int version(string,string);
+        void versionS();
+        bool processOptions();
 
-                int version(string,string);
-                void versionS();
-                bool processOptions();
+        void addOptions();
 
-                void addOptions();
-
-                int getval();
+        int getval();
             public:
 
-                Application(string name);
-                virtual ~Application();
-                void init();
-                void run();
-                void shutdown();
+        Application(string name);
+        virtual ~Application();
+        void init();
+        void run();
+        void shutdown();
 
-                void addOption(Util::Option&);
-                void registerSignal(int,fn);
-                void onApplicationStart(int argc,char *argv[]);
-                bool registerSubsystem(ISubsystem*);
-                ISubsystem* getSubsystem(string);
-        };
-    }
+        void addOption(Util::Option&);
+        void registerSignal(int,fn);
+        void onApplicationStart(int argc,char *argv[]);
+        bool registerSubsystem(ISubsystem*);
+        ISubsystem* getSubsystem(string);
+    };
 }
 #endif // APPLICATION_H

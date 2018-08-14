@@ -1,24 +1,21 @@
 #include "Runnable.h"
-namespace BHI
+namespace Util
 {
-    namespace Util
+    Runnable::Runnable()
     {
-        Runnable::Runnable()
-        {
-            //ctor
-        }
+        //ctor
+    }
 
-        Runnable::~Runnable()
-        {
-            //dtor
-            this->m_thread.detach();
-            //terminate(this->m_thread);
-        }
+    Runnable::~Runnable()
+    {
+        //dtor
+        this->m_thread.detach();
+        //terminate(this->m_thread);
+    }
 
-        void Runnable::start()
-        {
-            this->m_thread = thread(&Runnable::run,this);
-        }
+    void Runnable::start()
+    {
+        this->m_thread = thread(&Runnable::run,this);
     }
 }
 

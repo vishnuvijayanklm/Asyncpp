@@ -3,60 +3,57 @@
 #include <exception>
 #include <string>
 using namespace std;
-namespace BHI
+namespace Core
 {
-    namespace Core
+    class Exception:public exception
     {
-        class Exception:public exception
-        {
-            private:
-            protected:
-            public:
+    private:
+    protected:
+    public:
 
-                Exception();
-                virtual ~Exception();
-                virtual const char* what() const throw() = 0;
-                virtual const char* getString() const = 0;
-                virtual int getCode() const = 0;
-                virtual const char* getAdditionalInfo() const = 0;
-        };
-    }
+        Exception();
+        virtual ~Exception();
+        virtual const char* what() const throw() = 0;
+        virtual const char* getString() const = 0;
+        virtual int getCode() const = 0;
+        virtual const char* getAdditionalInfo() const = 0;
+    };
 }
 
 #define REGISTER_EXCEPTION(EXCEPTION,BASE,errorCode,errorMsg)\
-class EXCEPTION : public /*BASE*/ BHI::Core::Exception  \
+class EXCEPTION : public /*BASE*/ Core::Exception  \
 {                                                       \
-    private :                                           \
-            string m_additionalInfo;                    \
-    protected:                                          \
-    public:                                             \
-            EXCEPTION()                                 \
-            {                                           \
-                this->m_additionalInfo.clear();         \
-            }                                           \
-            EXCEPTION(string additionalInfo)            \
-            {                                           \
-                this->m_additionalInfo = additionalInfo;\
-            }                                           \
-            ~EXCEPTION()                                \
-            {                                           \
-            }                                           \
-            const char* what() const throw()            \
-            {                                           \
-                return errorMsg;                        \
-            }                                           \
-            const char* getString() const               \
-            {                                           \
-                return errorMsg;                        \
-            }                                           \
-            int getCode() const                         \
-            {                                           \
-                return errorCode;                       \
-            }                                           \
-            const char* getAdditionalInfo() const       \
-            {                                           \
-                return this->m_additionalInfo.c_str();  \
-            }                                           \
+private :                                           \
+string m_additionalInfo;                    \
+protected:                                          \
+public:                                             \
+    EXCEPTION()                                 \
+                                                        {                                           \
+                                                                                                    this->m_additionalInfo.clear();         \
+                                                                                                }                                           \
+EXCEPTION(string additionalInfo)            \
+{                                           \
+                                            this->m_additionalInfo = additionalInfo;\
+                                                                 }                                           \
+~EXCEPTION()                                \
+{                                           \
+                                        }                                           \
+const char* what() const throw()            \
+{                                           \
+                                            return errorMsg;                        \
+                                        }                                           \
+const char* getString() const               \
+{                                           \
+                                            return errorMsg;                        \
+                                        }                                           \
+int getCode() const                         \
+{                                           \
+                                            return errorCode;                       \
+                                        }                                           \
+const char* getAdditionalInfo() const       \
+{                                           \
+                                            return this->m_additionalInfo.c_str();  \
+                                        }                                           \
 };
 
 /*-------------Option Exception 10X------------------------*/

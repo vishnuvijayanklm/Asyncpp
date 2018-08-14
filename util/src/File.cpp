@@ -1,19 +1,16 @@
 #include <File.h>
 #include <Application.h>
 #include <NotifyManager.h>
-extern unique_ptr<BHI::Core::Application> pApplication;
-namespace BHI
+extern unique_ptr<Core::Application> pApplication;
+namespace Util
 {
-    namespace Util
+    File::File()
     {
-        File::File()
-        {
-            //ctor
-        }
+        //ctor
+    }
 
-        File::~File()
-        {
-            this->close();
-        }
+    File::~File()
+    {
+        this->close();
     }
 }

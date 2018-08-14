@@ -3,19 +3,15 @@
 #include <fstream>
 #include <iostream>
 using namespace std;
-namespace BHI
+namespace Util
 {
-    namespace Util
+    class File:public fstream
     {
-        class File:public fstream
-        {
-        private:
-        protected:
-        public:
-            File();
-            virtual ~File();
-        };
-    }
+    private:
+    protected:
+    public:
+        File();
+        virtual ~File();
+    };
 }
-
 #endif // FILE_H

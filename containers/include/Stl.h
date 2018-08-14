@@ -1,5 +1,5 @@
-#ifndef BHI_STL_H
-#define BHI_STL_H
+#ifndef STL_H
+#define STL_H
 
 #include <queue>
 #include <map>

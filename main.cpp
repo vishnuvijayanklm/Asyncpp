@@ -19,7 +19,7 @@ void threadTest(int i)
     }
 }
 using namespace std;
-unique_ptr<BHI::Core::Application> pApplication(new BHI::Core::Application(("Application")));
+unique_ptr<Core::Application> pApplication(new Core::Application(("Application")));
 void signalCatch(int s)
 {
     cerr<<"Signal caught "<<s<<endl;
@@ -29,7 +29,7 @@ void signalCatch(int s)
 }
 void fileTest()
 {
-    BHI::Util::File f;
+    Util::File f;
     f.open("1.txt");
     if(f.is_open())
     {
@@ -42,7 +42,7 @@ void fileTest()
 }
 int main(int argc,char *argv[])
 {
-    //BHI::Core::NotifyManager *pManager = nullptr;
+    //Core::NotifyManager *pManager = nullptr;
     try
     {
         LOGGER.setLogFile("Logs","framework.log");
@@ -61,18 +61,18 @@ int main(int argc,char *argv[])
         {
             try
             {
-                pApplication->registerSubsystem(new BHI::Core::SharedLibraryManager("SharedLibraryManager"));
+                pApplication->registerSubsystem(new Core::SharedLibraryManager("SharedLibraryManager"));
             }
             catch(exception &e)
             {
                 LOG_ERRORNP((LOGGER),("Exception caught %s",e.what()));
             }
 
-            BHI::Core::SharedLibraryManager* pSharedLibraryManager = (BHI::Core::SharedLibraryManager*)pApplication->getSubsystem("SharedLibraryManager");
+            Core::SharedLibraryManager* pSharedLibraryManager = (Core::SharedLibraryManager*)pApplication->getSubsystem("SharedLibraryManager");
 
             if(pSharedLibraryManager)
             {
-                BHI::Core::SharedLibraryLoader *pLibraryLoader = pSharedLibraryManager->loadLibrary("./shared.so");
+                Core::SharedLibraryLoader *pLibraryLoader = pSharedLibraryManager->loadLibrary("./shared.so");
                 //cout<<"SharedLibraryLoader  "<<pLibraryLoader<<endl;
                 auto x = (void(*)())pLibraryLoader->loadSymbol("create_object");
                 x();
@@ -92,7 +92,7 @@ int main(int argc,char *argv[])
         pApplication->run();
         pApplication->shutdown();
     }
-    catch(BHI::Core::Exception &e)
+    catch(Core::Exception &e)
     {
         LOG_CRITICALNP((LOGGER),("Exception : %d : %s %s",e.getCode(),e.what(),e.getAdditionalInfo()));
     }

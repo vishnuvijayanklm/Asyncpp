@@ -1,49 +1,45 @@
 #include "Notifier.h"
-
-namespace BHI
+namespace Core
 {
-    namespace Core
+    Notifier::Notifier()
     {
-        Notifier::Notifier()
-        {
-            this->start();
-        }
+        this->start();
+    }
 
-        Notifier::~Notifier()
-        {
-            //dtor
-        }
+    Notifier::~Notifier()
+    {
+        //dtor
+    }
 
-        void Notifier::run()
+    void Notifier::run()
+    {
+        while(1)
         {
-            while(1)
+            try
             {
-                try
+                LOG_INFO((LOGGER),("Notifier::run>>>"));
+                unique_ptr<IEventInfo> pEvent;
+                while(this->m_Queue.pop(pEvent,true))
                 {
-                    LOG_INFO((LOGGER),("Notifier::run>>>"));
-                    unique_ptr<IEventInfo> pEvent;
-                    while(this->m_Queue.pop(pEvent,true))
+                    if(pEvent.get())
                     {
-                        if(pEvent.get())
-                        {
-                            pEvent->processEvent();
-                        }
+                        pEvent->processEvent();
                     }
                 }
-                catch(Exception &e)
-                {
-
-                }
-                catch(exception &e)
-                {
-
-                }
-                catch(...)
-                {
-
-                }
             }
+            catch(Exception &e)
+            {
 
+            }
+            catch(exception &e)
+            {
+
+            }
+            catch(...)
+            {
+
+            }
         }
+
     }
 }
