@@ -1,0 +1,16 @@
+Application.cpp|31|2018-08-10T05:16:29.2250248|[IN][0x25ba3b0][22925]|Argv ./framework
+Option.cpp|63|2018-08-10T05:16:29.2253036|[IN][0x7fff063220a0][22925]|Option::process  [-v,--version]
+Option.cpp|63|2018-08-10T05:16:29.2253525|[IN][0x7fff063220a0][22925]|Option::process  [-v,--version]
+NotifyManager.cpp|18|2018-08-10T05:16:29.2253941|[VB][0x25ba560][22925]|Notifier::init>>>
+NotifyManager.cpp|24|2018-08-10T05:16:29.2257433|[VB][0x25ba560][22925]|Notifier::init<<<
+Notifier.cpp|23|2018-08-10T05:16:29.2261394|[IN][0x25bcd08][22930]|Dispatching>>>
+Application.cpp|108|2018-08-10T05:16:29.2264068|[IN][0x25ba3b0][22925]|Dispatching>>>
+Application.cpp|148|2018-08-10T05:16:29.2268040|[IN][0x25ba3b0][22930]|VersionS 1.2.5
+Application.cpp|142|2018-08-10T05:16:29.2271016|[IN][0x25ba3b0][22930]|Version 1.2.5 383
+main.cpp|101|2018-08-10T05:16:29.2271798|[CR][0][22925]|Exception : No associated state
+Application.cpp|16|2018-08-10T05:16:29.2274374|[VB][0x25ba3b0][22925]|Application::~Application>>>
+Application.cpp|64|2018-08-10T05:16:29.2274823|[VB][0x25ba3b0][22925]|Application::Shutdown>>>
+NotifyManager.cpp|28|2018-08-10T05:16:29.2275268|[VB][0x25ba560][22925]|Notifier::Shutdown>>>
+NotifyManager.cpp|35|2018-08-10T05:16:29.2275756|[VB][0x25ba560][22925]|Notifier::Shutdown<<<
+Application.cpp|76|2018-08-10T05:16:29.2276067|[VB][0x25ba3b0][22925]|Application::Shutdown<<<
+Application.cpp|18|2018-08-10T05:16:29.2276374|[VB][0x25ba3b0][22925]|Application::~Application<<<

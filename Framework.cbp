@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Framework" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Framework" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="core/include" />
+					<Add directory="containers/include" />
+					<Add directory="util/include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Framework" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+					<Add directory="util/include" />
+					<Add directory="core/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="containers/include/Stl.h" />
+		<Unit filename="core/include/Application.h" />
+		<Unit filename="core/include/EventInfo.h" />
+		<Unit filename="core/include/Exception.h" />
+		<Unit filename="core/include/Notifier.h" />
+		<Unit filename="core/include/NotifyManager.h" />
+		<Unit filename="core/include/Subsystem.h" />
+		<Unit filename="core/src/Application.cpp" />
+		<Unit filename="core/src/Exception.cpp" />
+		<Unit filename="core/src/Notifier.cpp" />
+		<Unit filename="core/src/NotifyManager.cpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="util/include/File.h" />
+		<Unit filename="util/include/Option.h" />
+		<Unit filename="util/include/Runnable.h" />
+		<Unit filename="util/include/TimerManager.h" />
+		<Unit filename="util/src/File.cpp" />
+		<Unit filename="util/src/Option.cpp" />
+		<Unit filename="util/src/Runnable.cpp" />
+		<Unit filename="util/src/TimerManager.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
