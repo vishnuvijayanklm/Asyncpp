@@ -3,7 +3,7 @@
 #include <Subsystem.h>
 #include <defines.h>
 #include <SharedLibraryLoader.h>
-#include <containers/include/Stl.h>
+#include <Stl.h>
 namespace Core
 {
     class SharedLibraryManager: public ISubsystem

@@ -63,7 +63,7 @@ using namespace std;
 
 #define MAX_LOG_SIZE 1024*1024
 
-class Logger final
+class Logger
 {
     public:
         Logger(string Path,string fileName);
