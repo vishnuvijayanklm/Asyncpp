@@ -59,7 +59,8 @@ namespace Core
     }
     void Application::shutdown()
     {
-        LOG_VERBOSE((LOGGER),("Application::Shutdown>>>"));
+	cout<<"Before Shutdown print"<<endl;
+        /*LOG_VERBOSE((LOGGER),("Application::Shutdown>>>"));
         this->m_signalRegistry.clear();
         this->m_OptionsInfo.clear();
         this->m_CommandOptions.clear();
@@ -68,10 +69,10 @@ namespace Core
         {
             if(pSubsystem.get())
             {
-                pSubsystem->shutdown();
+            	pSubsystem->shutdown();
             }
         }
-        LOG_VERBOSE((LOGGER),("Application::Shutdown<<<"));
+        LOG_VERBOSE((LOGGER),("Application::Shutdown<<<"));*/
     }
 
     bool Application::registerSubsystem(ISubsystem *pSubsystem)
@@ -109,7 +110,7 @@ namespace Core
                     pNotifyManager->dispatch(bind(&Application::version,this,"",""));
                     //LOG_INFO(LOGGER,("Response %d",ret.get()));
                 }
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
         }
     }
@@ -143,6 +144,6 @@ namespace Core
 
     void Application::versionS()
     {
-        LOG_INFO(LOGGER,("VersionS 1.2.5"));
+        LOG_INFO(LOGGER,("VersionS 1.2.5 %d %d",version("",""),version("","")));
     }
 }

@@ -13,7 +13,7 @@ namespace Core
 
     void Notifier::run()
     {
-        while(1)
+        while(this->isAlive())
         {
             try
             {

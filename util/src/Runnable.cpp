@@ -4,11 +4,12 @@ namespace Util
     Runnable::Runnable()
     {
         //ctor
+        this->misAlive = false;
     }
 
     Runnable::~Runnable()
     {
-        //dtor
+	this->stop();
         this->m_thread.detach();
         //terminate(this->m_thread);
     }
@@ -16,6 +17,7 @@ namespace Util
     void Runnable::start()
     {
         this->m_thread = thread(&Runnable::run,this);
+        this->misAlive = true;
     }
 }
 

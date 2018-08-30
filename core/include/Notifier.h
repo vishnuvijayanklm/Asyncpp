@@ -23,6 +23,7 @@ namespace Core
         template<typename T>
         inline bool addEvent(T event);
     };
+
     template<typename T>
     bool Notifier::addEvent(T event)
     {

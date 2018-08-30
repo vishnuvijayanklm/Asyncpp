@@ -19,7 +19,6 @@ namespace Core
         virtual ~NotifyManager();
         virtual void init();
         virtual void shutdown();
-
         template<typename T>
         inline bool dispatch(T notifyFn,unsigned int SynchronizationKey = SYNC_DISABLED);
     };
