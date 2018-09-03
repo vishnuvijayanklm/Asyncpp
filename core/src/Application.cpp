@@ -59,8 +59,7 @@ namespace Core
     }
     void Application::shutdown()
     {
-	cout<<"Before Shutdown print"<<endl;
-        /*LOG_VERBOSE((LOGGER),("Application::Shutdown>>>"));
+	LOG_VERBOSE((LOGGER),("Application::Shutdown>>>"));
         this->m_signalRegistry.clear();
         this->m_OptionsInfo.clear();
         this->m_CommandOptions.clear();
@@ -72,7 +71,7 @@ namespace Core
             	pSubsystem->shutdown();
             }
         }
-        LOG_VERBOSE((LOGGER),("Application::Shutdown<<<"));*/
+        LOG_VERBOSE((LOGGER),("Application::Shutdown<<<"));
     }
 
     bool Application::registerSubsystem(ISubsystem *pSubsystem)
@@ -93,7 +92,8 @@ namespace Core
 
     void Application::run()
     {
-        while(1)
+	int i = 1000;
+        while(i-->0)
         {
             NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem("Notifier"));
             //while(1)
@@ -113,6 +113,7 @@ namespace Core
                 //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
         }
+	sleep(5);
     }
 
     void Application::registerSignal(int sig,fn fnptr)

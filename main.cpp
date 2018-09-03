@@ -90,10 +90,7 @@ int main(int argc,char *argv[])
         pApplication->init();
         pApplication->onApplicationStart(argc,argv);
         pApplication->registerSignal(SIGINT,signalCatch);
-        //fileTest();
-        //return 0;
         pApplication->run();
-        pApplication->shutdown();
     }
     catch(Core::Exception &e)
     {

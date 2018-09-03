@@ -10,26 +10,30 @@
 using namespace std;
 namespace Core
 {
-    class Notifier:public Util::Runnable
-    {
-    private:
-        StlQueue<unique_ptr<IEventInfo>> m_Queue;
-    protected:
+	class Notifier:public Util::Runnable
+	{
+		private:
+			StlQueue<unique_ptr<IEventInfo>> m_Queue;
+		protected:
 
-    public:
-        Notifier();
-        virtual ~Notifier();
-        void run();
-        template<typename T>
-        inline bool addEvent(T event);
-    };
+		public:
+			Notifier();
+			virtual ~Notifier();
+			void run() override;
+			inline void onStop() override;
+			template<typename T>
+			inline bool addEvent(T event);
+	};
 
-    template<typename T>
-    bool Notifier::addEvent(T event)
-    {
-        this->m_Queue.push(unique_ptr<IEventInfo>(new Event<T>(event)));
-        return true;
-    }
-
+	template<typename T>
+	bool Notifier::addEvent(T event)
+	{
+		this->m_Queue.push(unique_ptr<IEventInfo>(new Event<T>(event)));
+		return true;
+	}
+	void Notifier::onStop()
+	{
+		this->m_Queue.push(unique_ptr<IEventInfo>(nullptr));
+	}	
 }
 #endif // NOTIFIER_H

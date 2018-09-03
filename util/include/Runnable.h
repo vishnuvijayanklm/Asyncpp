@@ -33,10 +33,15 @@ namespace Util
 			}
 
 			virtual void run() = 0;
+			virtual void onStop()
+			{
+			}
 			void start();
 			void stop()
 			{
 				this->misAlive = false;
+				this->onStop();
+				this->join();
 			}
 	};
 }

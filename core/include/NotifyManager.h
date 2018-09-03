@@ -4,7 +4,9 @@
 #include <Subsystem.h>
 #include <Notifier.h>
 #define SYNC_DISABLED (unsigned int)-1
-#define NOTIFIER_COUNT 1
+#ifndef NOTIFIER_COUNT
+#define NOTIFIER_COUNT 5
+#endif
 namespace Core
 {
     class NotifyManager : public ISubsystem

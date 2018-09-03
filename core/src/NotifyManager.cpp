@@ -26,6 +26,10 @@ namespace Core
 		LOG_VERBOSE((LOGGER),("NotifyManager::Shutdown>>>"));
 		if(this->pNotifier)
 		{
+			for(int i=0;i<NOTIFIER_COUNT;i++)
+			{
+				this->pNotifier[i].stop();
+			}	
 			delete[] this->pNotifier;
 		}
 		this->pNotifier = nullptr;

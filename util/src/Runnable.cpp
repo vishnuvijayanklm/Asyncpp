@@ -9,8 +9,8 @@ namespace Util
 
     Runnable::~Runnable()
     {
-	this->stop();
-        this->m_thread.detach();
+	//this->stop();
+        //this->m_thread.detach();
         //terminate(this->m_thread);
     }
 

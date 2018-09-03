@@ -33,9 +33,7 @@ Logger::Logger(string Path,string fileName,unsigned int logLevel,unsigned int lo
 
 void Logger::writeLogHeader(string fileName,unsigned int lineNo,string logType,void *p_Addr,uint64_t tid,char* msg)
 {
-	cout<<"==========="<<fileName.c_str()<<"================="<<lineNo<<"==============================="<<tid<<"==============================="<<msg<<endl;
 	lock_guard<mutex> lock(this->m_logmutex);
-	cout<<"After writeLogHeader log "<<tid<<endl;
 	if(!this->m_log.is_open())
 	{
 		this->backUpAndLoadNewFile();
@@ -61,9 +59,7 @@ void Logger::writeLogHeader(string fileName,unsigned int lineNo,string logType,v
 	{
 		cout<<msg<<endl;
 	}
-	cout<<"Spilt log>>>>"<<tid<<endl;
 	this->spiltLogFile();
-	cout<<"Spilt log<<<<"<<tid<<endl;
 }
 
 bool Logger::createDirectory(const string directoryName)
@@ -87,9 +83,7 @@ bool Logger::createDirectory(const string directoryName)
 
 char* Logger::writeLogData(const char *p_log, ...)
 {
-	cout<<"Before writeLogData lock "<<gettid()<<endl;
 	lock_guard<mutex> lock(this->m_logmutex);
-	cout<<"After writeLogData lock "<<gettid()<<endl;
 	va_list args;
 	va_start(args,p_log);
 	int size = vsnprintf(this->mbuffer,MAX_LOG_SIZE-1,p_log,args);
@@ -100,7 +94,6 @@ char* Logger::writeLogData(const char *p_log, ...)
 	}
 
 	va_end(args);
-	cout<<"Returning "<<endl;
 	return this->mbuffer;
 }
 
