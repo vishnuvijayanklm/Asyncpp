@@ -30,12 +30,13 @@ namespace Core
         }
 
         // throw UNKNOWN_OPTION();
-        Getter<StlMap<string,Util::Option>>(this->m_OptionsInfo);
+	this->m_OptionsInfo.startGet();
         Util::Option  option;
         while(this->m_OptionsInfo.getNextElement(option))
         {
             option.process(this->m_CommandOptions);
         }
+	this->m_OptionsInfo.stopGet();
         this->registerSubsystem(new NotifyManager("Notifier"));
     }
     void Application::init()

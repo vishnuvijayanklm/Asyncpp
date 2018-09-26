@@ -49,8 +49,21 @@ int main(int argc,char *argv[])
     try
     {
         LOGGER.setLogFile("Logs","framework.log");
-
-        /*
+	int val = 0;
+	StlList<int> list;
+	while(val < 100)
+        {
+        	//list.insert(val++);
+        	list.push_front(val++);
+	}
+	list.startGet();
+	while(list.getNextElement(val))
+	{
+		LOG_INFONP((LOGGER),("Value from list %d",val));
+	}
+	list.stopGet();
+	return 0;
+	/*
         StlTimedMap<int,int> timedMap;
         int i =0;
         while(1)
