@@ -49,21 +49,34 @@ int main(int argc,char *argv[])
     try
     {
         LOGGER.setLogFile("Logs","framework.log");
+	StlMap<int,int,std::recursive_mutex> myMap;	
 	int val = 0;
-	StlList<int> list;
+	//StlList<int> list;
 	while(val < 100)
         {
+		cout<<"Inserting "<<val<<endl;
+		myMap.insert(val,val);
+		cout<<"Inserted "<<val<<endl;
         	//list.insert(val++);
-        	list.push_front(val++);
+        	//list.push_front(val++);
+        	val++;
 	}
-	list.startGet();
-	while(list.getNextElement(val))
+	StlMap<int,int,std::recursive_mutex> temp;	
+	temp = myMap;
+	LOG_INFONP((LOGGER),("myMap Size %d temp Size %d",myMap.size(),temp.size()));
+	return 0;
+	myMap.startGet();
+	myMap.erase(99);
+	myMap.insert(101,101);
+	myMap.stopGet();
+	myMap.startGet();
+	while(myMap.getNextElement(val))
 	{
 		LOG_INFONP((LOGGER),("Value from list %d",val));
 	}
-	list.stopGet();
+	myMap.stopGet();
 	return 0;
-	/*
+/*	
         StlTimedMap<int,int> timedMap;
         int i =0;
         while(1)

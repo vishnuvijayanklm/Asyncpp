@@ -124,25 +124,32 @@ class StlQueue:private queue<T>
 	condition_variable m_conditionVariable;
 };
 
-template<typename Key,typename Value>
+template<typename Key,typename Value,typename mtx=std::mutex>
 class StlMap:private map<Key,Value>
 {
 	public:
 		StlMap()
 		{
 		}
+		StlMap(StlMap<Key,Value,mtx> &rhs)
+		{
+			lock_guard<mtx> lock(this->m_mtx);
+			lock_guard<mtx> lockrhs(rhs.m_mtx);
+			map<Key,Value>::operator=(rhs);				
+		}
 		~StlMap()
 		{
+
 		}
 		void insert(Key mapKey,Value val)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			map<Key,Value>::insert(pair<Key,Value>(mapKey,val));
 		}
 
 		bool erase(Key key,Value &val)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			it = map<Key,Value>::find(key);
 			if(it != map<Key,Value>::end())
 			{
@@ -154,7 +161,7 @@ class StlMap:private map<Key,Value>
 		}
 		bool erase(Key key)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			it = map<Key,Value>::find(key);
 			if(it != map<Key,Value>::end())
 			{
@@ -166,7 +173,7 @@ class StlMap:private map<Key,Value>
 
 		bool find(Key key,Value &val)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			it = map<Key,Value>::find(key);
 			if(it != map<Key,Value>::end())
 			{
@@ -178,7 +185,7 @@ class StlMap:private map<Key,Value>
 
 		bool find(Key key)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			it = map<Key,Value>::find(key);
 			if(it != map<Key,Value>::end())
 			{
@@ -188,7 +195,7 @@ class StlMap:private map<Key,Value>
 		}
 		void clear()
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			map<Key,Value>::clear();
 		}
 
@@ -231,7 +238,7 @@ class StlMap:private map<Key,Value>
 		}
 		bool removeFirstElement(Value &val)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			it = map<Key,Value>::begin();
 			if(it != map<Key,Value>::end())
 			{
@@ -244,7 +251,7 @@ class StlMap:private map<Key,Value>
 
 		bool removeFirstElement(Key &key,Value &val)
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			it = map<Key,Value>::begin();
 			if(it != map<Key,Value>::end())
 			{
@@ -257,14 +264,20 @@ class StlMap:private map<Key,Value>
 		}
 		size_t size()
 		{
-			lock_guard<mutex> lock(this->m_mtx);
+			lock_guard<mtx> lock(this->m_mtx);
 			return map<Key,Value>::size();
 		}
 
+		StlMap<Key,Value,mtx>* operator=(StlMap<Key,Value,mtx> &rhs)
+		{
+                 	lock_guard<mtx> lock(this->m_mtx);
+                        lock_guard<mtx> lockrhs(rhs.m_mtx);
+                        map<Key,Value>::operator=(rhs);
+			return this;
+		}
 	private:
-		//iterator it;
 		typename map<Key,Value>::iterator it;
-		std::mutex m_mtx;
+		mtx m_mtx;
 };
 
 
