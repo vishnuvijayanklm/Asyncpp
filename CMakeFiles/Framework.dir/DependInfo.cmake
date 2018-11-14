@@ -10,6 +10,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/root/Desktop/framework/core/src/NotifyManager.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/NotifyManager.cpp.o"
   "/root/Desktop/framework/core/src/SharedLibraryLoader.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/SharedLibraryLoader.cpp.o"
   "/root/Desktop/framework/core/src/SharedLibraryManager.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/SharedLibraryManager.cpp.o"
+  "/root/Desktop/framework/core/src/Thread.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/Thread.cpp.o"
+  "/root/Desktop/framework/core/src/ThreadPool.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o"
   "/root/Desktop/framework/main.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/main.cpp.o"
   "/root/Desktop/framework/util/src/File.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/util/src/File.cpp.o"
   "/root/Desktop/framework/util/src/Logger.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/util/src/Logger.cpp.o"

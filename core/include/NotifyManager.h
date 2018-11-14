@@ -2,6 +2,7 @@
 #define NOTIFYMANAGER_H
 
 #include <Subsystem.h>
+#include <defines.h>
 #include <Notifier.h>
 #define SYNC_DISABLED (unsigned int)-1
 #ifndef NOTIFIER_COUNT
@@ -17,7 +18,7 @@ namespace Core
 
     protected:
     public:
-        NotifyManager(string name);
+        NotifyManager();
         virtual ~NotifyManager();
         virtual void init();
         virtual void shutdown();

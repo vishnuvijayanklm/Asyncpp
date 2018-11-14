@@ -1,5 +1,24 @@
-main.cpp|66|2018-11-08T09:27:33.4501332|[IN][0][14406]|myMap Size 100 temp Size 100
-Application.cpp|14|2018-11-08T09:27:33.4503145|[VB][0x14b9040][14406]|Application::~Application>>>
-Application.cpp|63|2018-11-08T09:27:33.4503544|[VB][0x14b9040][14406]|Application::Shutdown>>>
-Application.cpp|75|2018-11-08T09:27:33.4503863|[VB][0x14b9040][14406]|Application::Shutdown<<<
-Application.cpp|16|2018-11-08T09:27:33.4504117|[VB][0x14b9040][14406]|Application::~Application<<<
+Application.cpp|30|2018-11-14T06:56:13.9361123|[IN][0x180f010][17970]|Argv ./framework
+Option.cpp|62|2018-11-14T06:56:13.9361827|[IN][0x7fff851574a0][17970]|Option::process  [-v,--version]
+Option.cpp|62|2018-11-14T06:56:13.9361983|[IN][0x7fff851574a0][17970]|Option::process  [-v,--version]
+ThreadPool.cpp|7|2018-11-14T06:56:13.9362162|[VB][0x1811ba0][17970]|ThreadPool::ThreadPool>>>
+ThreadPool.cpp|24|2018-11-14T06:56:13.9362268|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T06:56:13.9363900|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|11|2018-11-14T06:56:13.9364067|[VB][0x1811ba0][17970]|ThreadPool::ThreadPool<<<
+NotifyManager.cpp|16|2018-11-14T06:56:13.9364221|[VB][0x18118b0][17970]|NotifyManager::init>>>
+ThreadPool.cpp|46|2018-11-14T06:56:13.9364408|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T06:56:13.9364520|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:56:13.9364631|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T06:56:13.9364726|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:56:13.9364852|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|24|2018-11-14T06:56:13.9364947|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T06:56:13.9366235|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|62|2018-11-14T06:56:13.9366397|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:56:13.9366531|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|24|2018-11-14T06:56:13.9366629|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T06:56:13.9366749|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads<<<
+main.cpp|125|2018-11-14T06:56:13.9368682|[CR][0][17970]|Exception : -121 : Thread Pool outage 
+Application.cpp|15|2018-11-14T06:56:13.9368931|[VB][0x180f010][17970]|Application::~Application>>>
+Application.cpp|65|2018-11-14T06:56:13.9369051|[VB][0x180f010][17970]|Application::Shutdown>>>
+Application.cpp|77|2018-11-14T06:56:13.9369188|[VB][0x180f010][17970]|Application::Shutdown<<<
+Application.cpp|17|2018-11-14T06:56:13.9369297|[VB][0x180f010][17970]|Application::~Application<<<

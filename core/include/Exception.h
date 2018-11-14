@@ -56,15 +56,18 @@ const char* getAdditionalInfo() const       \
                                         }                                           \
 };
 
-/*-------------Option Exception 10X------------------------*/
+/*-------------Option Exception -10X------------------------*/
 REGISTER_EXCEPTION(MANDATORY_OPTION_MISSING,OPTION_EXCEPTION,-100,"Mandatory option missing");
 REGISTER_EXCEPTION(UNKNOWN_OPTION,OPTION_EXCEPTION,-101,"Unknown Option");
 
-/*-------------Subsystem Exception 11X---------------------*/
+/*-------------Subsystem Exception -11X---------------------*/
 REGISTER_EXCEPTION(SUBSYSTEM_NOT_CONFIGURED,SUBSYSTEM_EXCEPTION,-110,"Subsystem not configured");
 REGISTER_EXCEPTION(DUPLICATE_SUBSYSTEM,SUBSYSTEM_EXCEPTION,-111,"Duplicate Subsytem");
 REGISTER_EXCEPTION(INVALID_SUBSYSTEM,SUBSYSTEM_EXCEPTION,-112,"Invalid Subsystem / Subsystem pointer empty");
 
-
+/*-------------Threadpool Exception -12X---------------------*/
+REGISTER_EXCEPTION(INVALID_THREAD_SIZE_CONFIGURED,THREAD_POOL_EXCEPTION,-120,"Invalid thread size configured");
+REGISTER_EXCEPTION(THREAD_POOL_OUTAGE,THREAD_POOL_EXCEPTION,-121,"Thread Pool outage");
+REGISTER_EXCEPTION(INVALID_THREAD_PTR,THREAD_POOL_EXCEPTION,-122,"Ihread ptr is invalid/null");
 #endif // EXCEPTION_H
 

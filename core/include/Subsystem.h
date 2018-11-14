@@ -1,24 +1,24 @@
-#ifndef SUBSYSTEM_H_INCLUDED
-#define SUBSYSTEM_H_INCLUDED
+#ifndef SUBSYSTEM_H
+#define SUBSYSTEM_H
 #include <string>
 #include <iostream>
-#include <defines.h>
+#include <SubsystemList.h>
 using namespace std;
-
 namespace Core
 {
     class ISubsystem
     {
-        const string m_name;
+        const SubsystemId m_id;
+	
     public:
-        ISubsystem(string name):m_name(name){}
+        ISubsystem(SubsystemId id):m_id(id){}
         virtual void init() = 0;
         virtual void shutdown() = 0;
-        const string& name() const
+        const SubsystemId& id() const
         {
-            return this->m_name;
+            return this->m_id;
         }
 
     };
 }
-#endif // SUBSYSTEM_H_INCLUDED
+#endif // SUBSYSTEM_H

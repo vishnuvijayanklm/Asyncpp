@@ -1,5 +1,5 @@
-#ifndef EVENTINFO_H_INCLUDED
-#define EVENTINFO_H_INCLUDED
+#ifndef EVENTINFO_H
+#define EVENTINFO_H
 
 #include <memory>
 class IEventInfo
@@ -28,4 +28,4 @@ public:
        // this->m_Promise->set_value(this->m_Event());
     }
 };
-#endif // EVENTINFO_H_INCLUDED
+#endif // EVENTINFO_H

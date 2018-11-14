@@ -1,5 +1,27 @@
-main.cpp|66|2018-11-08T09:27:32.7485705|[IN][0][14401]|myMap Size 100 temp Size 100
-Application.cpp|14|2018-11-08T09:27:32.7486739|[VB][0x1d1f040][14401]|Application::~Application>>>
-Application.cpp|63|2018-11-08T09:27:32.7486893|[VB][0x1d1f040][14401]|Application::Shutdown>>>
-Application.cpp|75|2018-11-08T09:27:32.7487060|[VB][0x1d1f040][14401]|Application::Shutdown<<<
-Application.cpp|16|2018-11-08T09:27:32.7487217|[VB][0x1d1f040][14401]|Application::~Application<<<
+Application.cpp|30|2018-11-14T06:55:38.4433203|[IN][0x116c010][17900]|Argv ./framework
+Option.cpp|62|2018-11-14T06:55:38.4434158|[IN][0x7fff6375e470][17900]|Option::process  [-v,--version]
+Option.cpp|62|2018-11-14T06:55:38.4434354|[IN][0x7fff6375e470][17900]|Option::process  [-v,--version]
+ThreadPool.cpp|7|2018-11-14T06:55:38.4434563|[VB][0x116eba0][17900]|ThreadPool::ThreadPool>>>
+ThreadPool.cpp|24|2018-11-14T06:55:38.4434689|[VB][0x116eba0][17900]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T06:55:38.4439117|[VB][0x116eba0][17900]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|11|2018-11-14T06:55:38.4439310|[VB][0x116eba0][17900]|ThreadPool::ThreadPool<<<
+NotifyManager.cpp|16|2018-11-14T06:55:38.4439500|[VB][0x116e8b0][17900]|NotifyManager::init>>>
+ThreadPool.cpp|46|2018-11-14T06:55:38.4439732|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T06:55:38.4439871|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:55:38.4440003|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T06:55:38.4440117|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:55:38.4440265|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|24|2018-11-14T06:55:38.4440380|[VB][0x116eba0][17900]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T06:55:38.4442537|[VB][0x116eba0][17900]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|62|2018-11-14T06:55:38.4442735|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:55:38.4442889|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T06:55:38.4443006|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T06:55:38.4443134|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|24|2018-11-14T06:55:38.4443249|[VB][0x116eba0][17900]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T06:55:38.4448543|[VB][0x116eba0][17900]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|62|2018-11-14T06:55:38.4448747|[VB][0x116eba0][17900]|ThreadPool::getThreadFromPool<<<
+NotifyManager.cpp|22|2018-11-14T06:55:38.4448870|[VB][0x116e8b0][17900]|NotifyManager::init<<<
+Application.cpp|110|2018-11-14T06:55:38.4449102|[IN][0x116c010][17900]|Dispatching>>>
+Application.cpp|15|2018-11-14T06:55:41.6352528|[VB][0x116c010][17900]|Application::~Application>>>
+Application.cpp|65|2018-11-14T06:55:41.6353391|[VB][0x116c010][17900]|Application::Shutdown>>>
+NotifyManager.cpp|26|2018-11-14T06:55:41.6353955|[VB][0x116e8b0][17900]|NotifyManager::Shutdown>>>

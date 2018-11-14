@@ -9,6 +9,7 @@
 #include <SharedLibraryLoader.h>
 #include <SharedLibraryManager.h>
 #include <Stl.h>
+#include <ThreadPool.h>
 Logger LOGGER;
 void threadTest(int i)
 {
@@ -19,7 +20,7 @@ void threadTest(int i)
     }
 }
 using namespace std;
-unique_ptr<Core::Application> pApplication(new Core::Application(("Application")));
+unique_ptr<Core::Application> pApplication(new Core::Application());
 void signalCatch(int s)
 {
     cerr<<"Signal caught "<<s<<endl;
@@ -49,6 +50,7 @@ int main(int argc,char *argv[])
     try
     {
         LOGGER.setLogFile("Logs","framework.log");
+/*	
 	StlMap<int,int,std::recursive_mutex> myMap;	
 	int val = 0;
 	//StlList<int> list;
@@ -75,7 +77,7 @@ int main(int argc,char *argv[])
 		LOG_INFONP((LOGGER),("Value from list %d",val));
 	}
 	myMap.stopGet();
-	return 0;
+	return 0;*/
 /*	
         StlTimedMap<int,int> timedMap;
         int i =0;

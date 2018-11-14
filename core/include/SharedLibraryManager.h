@@ -10,7 +10,7 @@ namespace Core
     {
         StlMap<string,shared_ptr<SharedLibraryLoader>> mLoaders;
     public:
-        SharedLibraryManager(string);
+        SharedLibraryManager();
         ~SharedLibraryManager();
         void init();
         void shutdown();

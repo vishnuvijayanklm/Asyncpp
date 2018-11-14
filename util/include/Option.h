@@ -5,7 +5,6 @@
 #include <Stl.h>
 #include <functional>
 #include <Exception.h>
-#include <defines.h>
 using namespace std;
 namespace Util
 {

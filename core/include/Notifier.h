@@ -3,7 +3,6 @@
 
 #include <Stl.h>
 #include <EventInfo.h>
-#include <thread>
 #include <Exception.h>
 #include <Runnable.h>
 #include <defines.h>
@@ -14,6 +13,7 @@ namespace Core
 	{
 		private:
 			StlQueue<unique_ptr<IEventInfo>> m_Queue;
+			void initialize();
 		protected:
 
 		public:

@@ -1,11 +1,12 @@
 #include "Application.h"
 #include <unistd.h>
 #include <iostream>
-
+#include <defines.h>
+#include <NotifyManager.h>
 namespace Core
 {
 
-    Application::Application(string name):ISubsystem(name)
+    Application::Application():ISubsystem(APPLICATION)
     {
     }
 
@@ -37,7 +38,8 @@ namespace Core
             option.process(this->m_CommandOptions);
         }
 	this->m_OptionsInfo.stopGet();
-        this->registerSubsystem(new NotifyManager("Notifier"));
+        this->registerSubsystem(new ThreadPool());
+        this->registerSubsystem(new NotifyManager());
     }
     void Application::init()
     {
@@ -49,14 +51,14 @@ namespace Core
         // this->registerSubsystem(new Notifier("Notifier"));
     }
 
-    ISubsystem* Application::getSubsystem(string name)
+    ISubsystem* Application::getSubsystem(SubsystemId id)
     {
         shared_ptr<ISubsystem> pSubsystem;
-        if(this->m_SubsystemInfo.find(name,pSubsystem))
+        if(this->m_SubsystemInfo.find(id,pSubsystem))
         {
             return pSubsystem.get();
         }
-        throw SUBSYSTEM_NOT_CONFIGURED(name);
+        throw SUBSYSTEM_NOT_CONFIGURED(to_string(id));
     }
     void Application::shutdown()
     {
@@ -79,13 +81,13 @@ namespace Core
     {
         if(pSubsystem)
         {
-            if(!this->m_SubsystemInfo.find(pSubsystem->name()))
+            if(!this->m_SubsystemInfo.find(pSubsystem->id()))
             {
                 pSubsystem->init();
-                this->m_SubsystemInfo.insert(pSubsystem->name(),unique_ptr<ISubsystem>(pSubsystem));
+                this->m_SubsystemInfo.insert(pSubsystem->id(),unique_ptr<ISubsystem>(pSubsystem));
                 return true;
             }
-            throw DUPLICATE_SUBSYSTEM(pSubsystem->name());
+            throw DUPLICATE_SUBSYSTEM(to_string(pSubsystem->id()));
         }
         throw INVALID_SUBSYSTEM();
         return false;
@@ -96,7 +98,7 @@ namespace Core
 	int i = 1000;
         while(i-->0)
         {
-            NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem("Notifier"));
+            NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem(NOTIFY_MANAGER));
             //while(1)
             {
                 if(!pNotifyManager)
@@ -113,6 +115,7 @@ namespace Core
                 }
                 //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
+		sleep(5);
         }
 	sleep(5);
     }

@@ -1,9 +1,10 @@
-#include "Notifier.h"
+#include <Notifier.h>
 namespace Core
 {
 	Notifier::Notifier()
 	{
-		this->start();
+		//this->start();
+		this->initialize();
 	}
 
 	Notifier::~Notifier()
@@ -11,6 +12,14 @@ namespace Core
 		//dtor
 	}
 
+	void Notifier::initialize()
+	{
+		ThreadPool *pThreadPool = (ThreadPool*)(pApplication->getSubsystem(THREADPOOL));
+		if(pThreadPool != nullptr)
+		{
+			pThreadPool->getThreadFromPool();	
+		}
+	}
 	void Notifier::run()
 	{
 		LOG_INFO((LOGGER),("Notifier started...."));	

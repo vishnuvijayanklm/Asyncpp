@@ -1,4 +1,5 @@
 #include "Option.h"
+#include <defines.h>
 namespace Util
 {
     Option::Option()

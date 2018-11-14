@@ -1,7 +1,7 @@
 #include "SharedLibraryManager.h"
 namespace Core
 {
-    SharedLibraryManager::SharedLibraryManager(string name):ISubsystem(name)
+    SharedLibraryManager::SharedLibraryManager():ISubsystem(SHAREDLIBRARY_MANAGER)
     {
     }
     SharedLibraryManager::~SharedLibraryManager()

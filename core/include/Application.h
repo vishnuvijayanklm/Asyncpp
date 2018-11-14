@@ -3,9 +3,11 @@
 #include <Subsystem.h>
 #include <Stl.h>
 #include <signal.h>
-#include <Option.h>
-#include <NotifyManager.h>
 #include <Exception.h>
+#include <ThreadPool.h>
+#include <Subsystem.h>
+#include <Option.h>
+//#include <NotifyManager.h>
 namespace Core
 {
 
@@ -15,7 +17,7 @@ namespace Core
 			typedef void(*fn)(int);
 			StlMap<int,fn> m_signalRegistry;
 			StlMap<string,Util::Option> m_OptionsInfo;
-			StlMap<string,shared_ptr<ISubsystem>> m_SubsystemInfo;
+			StlMap<SubsystemId,shared_ptr<ISubsystem>> m_SubsystemInfo;
 			StlVector<string> m_CommandOptions;
 
 			int version(string,string);
@@ -27,7 +29,7 @@ namespace Core
 			int getval();
 		public:
 
-			Application(string name);
+			Application();
 			virtual ~Application();
 			void init();
 			void run();
@@ -37,7 +39,7 @@ namespace Core
 			void registerSignal(int,fn);
 			void onApplicationStart(int argc,char *argv[]);
 			bool registerSubsystem(ISubsystem*);
-			ISubsystem* getSubsystem(string);
+			ISubsystem* getSubsystem(SubsystemId);
 	};
 }
 #endif // APPLICATION_H

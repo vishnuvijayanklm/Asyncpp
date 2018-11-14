@@ -285,6 +285,60 @@ core/src/SharedLibraryManager.cpp.s:
 	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/SharedLibraryManager.cpp.s
 .PHONY : core/src/SharedLibraryManager.cpp.s
 
+core/src/Thread.o: core/src/Thread.cpp.o
+
+.PHONY : core/src/Thread.o
+
+# target to build an object file
+core/src/Thread.cpp.o:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/Thread.cpp.o
+.PHONY : core/src/Thread.cpp.o
+
+core/src/Thread.i: core/src/Thread.cpp.i
+
+.PHONY : core/src/Thread.i
+
+# target to preprocess a source file
+core/src/Thread.cpp.i:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/Thread.cpp.i
+.PHONY : core/src/Thread.cpp.i
+
+core/src/Thread.s: core/src/Thread.cpp.s
+
+.PHONY : core/src/Thread.s
+
+# target to generate assembly for a file
+core/src/Thread.cpp.s:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/Thread.cpp.s
+.PHONY : core/src/Thread.cpp.s
+
+core/src/ThreadPool.o: core/src/ThreadPool.cpp.o
+
+.PHONY : core/src/ThreadPool.o
+
+# target to build an object file
+core/src/ThreadPool.cpp.o:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o
+.PHONY : core/src/ThreadPool.cpp.o
+
+core/src/ThreadPool.i: core/src/ThreadPool.cpp.i
+
+.PHONY : core/src/ThreadPool.i
+
+# target to preprocess a source file
+core/src/ThreadPool.cpp.i:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.i
+.PHONY : core/src/ThreadPool.cpp.i
+
+core/src/ThreadPool.s: core/src/ThreadPool.cpp.s
+
+.PHONY : core/src/ThreadPool.s
+
+# target to generate assembly for a file
+core/src/ThreadPool.cpp.s:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.s
+.PHONY : core/src/ThreadPool.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -474,6 +528,12 @@ help:
 	@echo "... core/src/SharedLibraryManager.o"
 	@echo "... core/src/SharedLibraryManager.i"
 	@echo "... core/src/SharedLibraryManager.s"
+	@echo "... core/src/Thread.o"
+	@echo "... core/src/Thread.i"
+	@echo "... core/src/Thread.s"
+	@echo "... core/src/ThreadPool.o"
+	@echo "... core/src/ThreadPool.i"
+	@echo "... core/src/ThreadPool.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

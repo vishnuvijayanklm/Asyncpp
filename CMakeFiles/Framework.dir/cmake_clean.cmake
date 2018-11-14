@@ -1,7 +1,9 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o"
   "CMakeFiles/Framework.dir/core/src/SharedLibraryLoader.cpp.o"
   "CMakeFiles/Framework.dir/core/src/Exception.cpp.o"
   "CMakeFiles/Framework.dir/core/src/Notifier.cpp.o"
+  "CMakeFiles/Framework.dir/core/src/Thread.cpp.o"
   "CMakeFiles/Framework.dir/core/src/NotifyManager.cpp.o"
   "CMakeFiles/Framework.dir/core/src/SharedLibraryManager.cpp.o"
   "CMakeFiles/Framework.dir/core/src/Application.cpp.o"
