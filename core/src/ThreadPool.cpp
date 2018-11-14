@@ -41,7 +41,7 @@ namespace Core
 		LOG_VERBOSE((LOGGER),("ThreadPool::initializeThreads<<<"));
 	}
 
-	Thread& ThreadPool::getThreadFromPool()
+	Thread* ThreadPool::getThreadFromPool()
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::getThreadFromPool>>>"));
 		Thread *pThread = nullptr;
@@ -60,6 +60,6 @@ namespace Core
 		
 		this->m_UsedPool.push(pThread);
 		LOG_VERBOSE((LOGGER),("ThreadPool::getThreadFromPool<<<"));
-		return *pThread;
+		return pThread;
 	}
 }

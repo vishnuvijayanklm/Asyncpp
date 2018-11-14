@@ -24,7 +24,7 @@ namespace Core
         		virtual void init();
         		virtual void shutdown();
 			void initializeThreads();
-			Thread& getThreadFromPool();
+			Thread* getThreadFromPool();
 	};
 }
 #endif

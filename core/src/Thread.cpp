@@ -10,21 +10,42 @@ namespace Core
 	Thread::~Thread()
 	{
 	}
-	
+
 	void Thread::run()
 	{
-		while(1)
+		while(this->isAlive())
 		{
-			sleep(1);
+			try
+			{
+				unique_ptr<IEventInfo> pEvent;
+				while(this->m_Queue.pop(pEvent,true))
+				{
+					if(pEvent.get())
+					{
+						pEvent->processEvent();
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			catch(Exception &e)
+			{
+
+			}
+			catch(exception &e)
+			{
+
+			}
+			catch(...)
+			{
+
+			}
 		}
 	}
 		
 	void Thread::onStop()
 	{
-	}
-	template<typename T>
-	void Thread::execute(T fn)
-	{
-		this->m_Queue.push(unique_ptr<IEventInfo>(fn));
 	}
 }

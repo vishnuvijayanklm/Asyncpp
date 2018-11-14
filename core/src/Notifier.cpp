@@ -17,41 +17,35 @@ namespace Core
 		ThreadPool *pThreadPool = (ThreadPool*)(pApplication->getSubsystem(THREADPOOL));
 		if(pThreadPool != nullptr)
 		{
-			pThreadPool->getThreadFromPool();	
+			pThreadPool->getThreadFromPool()->execute(bind(&Notifier::run,this));	
 		}
 	}
 	void Notifier::run()
 	{
 		LOG_INFO((LOGGER),("Notifier started...."));	
-		while(this->isAlive())
+		try
 		{
-			try
+			unique_ptr<IEventInfo> pEvent;
+			while(this->m_Queue.pop(pEvent,true))
 			{
-				unique_ptr<IEventInfo> pEvent;
-				while(this->m_Queue.pop(pEvent,true))
+				if(pEvent.get())
 				{
-					if(pEvent.get())
-					{
-						pEvent->processEvent();
-					}
-					else
-					{
-						break;
-					}
+					pEvent->processEvent();
+				}
+				else
+				{
+					break;
 				}
 			}
-			catch(Exception &e)
-			{
-
-			}
-			catch(exception &e)
-			{
-
-			}
-			catch(...)
-			{
-
-			}
+		}
+		catch(Exception &e)
+		{
+		}
+		catch(exception &e)
+		{
+		}
+		catch(...)
+		{
 		}
 		LOG_INFO((LOGGER),("Notifier stopped...."));	
 	}

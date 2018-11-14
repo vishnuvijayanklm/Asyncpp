@@ -86,6 +86,7 @@ CMakeFiles/Framework.dir/core/src/Thread.cpp.o
  /root/Desktop/framework/core/src/Thread.cpp
  containers/include/Stl.h
  core/include/EventInfo.h
+ core/include/Exception.h
  core/include/Thread.h
  util/include/Runnable.h
 CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o

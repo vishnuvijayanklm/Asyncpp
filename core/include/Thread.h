@@ -3,6 +3,7 @@
 #include <Stl.h>
 #include <Runnable.h>
 #include <EventInfo.h>
+#include <Exception.h>
 using namespace std;
 namespace Core
 {
@@ -15,7 +16,12 @@ namespace Core
 			void run() override;
                         void onStop() override;
 			template<typename T>
-			void execute(T); 
+			inline void execute(T); 
 	};
+	template<typename T>
+        void Thread::execute(T fn)
+	{
+		this->m_Queue.push(unique_ptr<IEventInfo>(new Event<T>(fn)));
+	}
 }
 #endif

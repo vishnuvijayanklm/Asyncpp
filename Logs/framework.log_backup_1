@@ -1,24 +1,40 @@
-Application.cpp|30|2018-11-14T06:56:13.9361123|[IN][0x180f010][17970]|Argv ./framework
-Option.cpp|62|2018-11-14T06:56:13.9361827|[IN][0x7fff851574a0][17970]|Option::process  [-v,--version]
-Option.cpp|62|2018-11-14T06:56:13.9361983|[IN][0x7fff851574a0][17970]|Option::process  [-v,--version]
-ThreadPool.cpp|7|2018-11-14T06:56:13.9362162|[VB][0x1811ba0][17970]|ThreadPool::ThreadPool>>>
-ThreadPool.cpp|24|2018-11-14T06:56:13.9362268|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads>>>
-ThreadPool.cpp|41|2018-11-14T06:56:13.9363900|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads<<<
-ThreadPool.cpp|11|2018-11-14T06:56:13.9364067|[VB][0x1811ba0][17970]|ThreadPool::ThreadPool<<<
-NotifyManager.cpp|16|2018-11-14T06:56:13.9364221|[VB][0x18118b0][17970]|NotifyManager::init>>>
-ThreadPool.cpp|46|2018-11-14T06:56:13.9364408|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
-ThreadPool.cpp|62|2018-11-14T06:56:13.9364520|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool<<<
-ThreadPool.cpp|46|2018-11-14T06:56:13.9364631|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
-ThreadPool.cpp|62|2018-11-14T06:56:13.9364726|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool<<<
-ThreadPool.cpp|46|2018-11-14T06:56:13.9364852|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
-ThreadPool.cpp|24|2018-11-14T06:56:13.9364947|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads>>>
-ThreadPool.cpp|41|2018-11-14T06:56:13.9366235|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads<<<
-ThreadPool.cpp|62|2018-11-14T06:56:13.9366397|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool<<<
-ThreadPool.cpp|46|2018-11-14T06:56:13.9366531|[VB][0x1811ba0][17970]|ThreadPool::getThreadFromPool>>>
-ThreadPool.cpp|24|2018-11-14T06:56:13.9366629|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads>>>
-ThreadPool.cpp|41|2018-11-14T06:56:13.9366749|[VB][0x1811ba0][17970]|ThreadPool::initializeThreads<<<
-main.cpp|125|2018-11-14T06:56:13.9368682|[CR][0][17970]|Exception : -121 : Thread Pool outage 
-Application.cpp|15|2018-11-14T06:56:13.9368931|[VB][0x180f010][17970]|Application::~Application>>>
-Application.cpp|65|2018-11-14T06:56:13.9369051|[VB][0x180f010][17970]|Application::Shutdown>>>
-Application.cpp|77|2018-11-14T06:56:13.9369188|[VB][0x180f010][17970]|Application::Shutdown<<<
-Application.cpp|17|2018-11-14T06:56:13.9369297|[VB][0x180f010][17970]|Application::~Application<<<
+Application.cpp|30|2018-11-14T09:11:35.1503507|[IN][0x10f4010][20492]|Argv ./framework
+Option.cpp|62|2018-11-14T09:11:35.1504479|[IN][0x7fffa4bb2710][20492]|Option::process  [-v,--version]
+Option.cpp|62|2018-11-14T09:11:35.1504677|[IN][0x7fffa4bb2710][20492]|Option::process  [-v,--version]
+ThreadPool.cpp|7|2018-11-14T09:11:35.1504895|[VB][0x10f6ba0][20492]|ThreadPool::ThreadPool>>>
+ThreadPool.cpp|24|2018-11-14T09:11:35.1505027|[VB][0x10f6ba0][20492]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T09:11:35.1507365|[VB][0x10f6ba0][20492]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|11|2018-11-14T09:11:35.1508130|[VB][0x10f6ba0][20492]|ThreadPool::ThreadPool<<<
+NotifyManager.cpp|16|2018-11-14T09:11:35.1509239|[VB][0x10f68b0][20492]|NotifyManager::init>>>
+ThreadPool.cpp|46|2018-11-14T09:11:35.1509474|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T09:11:35.1509614|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T09:11:35.1509832|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T09:11:35.1510019|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T09:11:35.1511030|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|24|2018-11-14T09:11:35.1511215|[VB][0x10f6ba0][20492]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T09:11:35.1528451|[VB][0x10f6ba0][20492]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|62|2018-11-14T09:11:35.1529988|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool<<<
+Notifier.cpp|25|2018-11-14T09:11:35.1530142|[IN][0x10f7a58][20498]|ThreadPool::getThreadFromPool<<<
+Notifier.cpp|25|2018-11-14T09:11:35.1530762|[IN][0x10f7978][20497]|ThreadPool::getThreadFromPool<<<
+Notifier.cpp|57|2018-11-14T09:11:35.1531086|[IN][0x10f7978][20497]|Notifier stopped....
+ThreadPool.cpp|46|2018-11-14T09:11:35.1531837|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|62|2018-11-14T09:11:35.1532069|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool<<<
+ThreadPool.cpp|46|2018-11-14T09:11:35.1532748|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool>>>
+ThreadPool.cpp|24|2018-11-14T09:11:35.1533419|[VB][0x10f6ba0][20492]|ThreadPool::initializeThreads>>>
+Notifier.cpp|57|2018-11-14T09:11:35.1533991|[IN][0x10f7a58][20498]|ThreadPool::initializeThreads>>>
+ThreadPool.cpp|41|2018-11-14T09:11:35.1535561|[VB][0x10f6ba0][20492]|ThreadPool::initializeThreads<<<
+ThreadPool.cpp|62|2018-11-14T09:11:35.1536888|[VB][0x10f6ba0][20492]|ThreadPool::getThreadFromPool<<<
+Notifier.cpp|25|2018-11-14T09:11:35.1537103|[IN][0x10f7c18][20500]|ThreadPool::getThreadFromPool<<<
+Notifier.cpp|57|2018-11-14T09:11:35.1537911|[IN][0x10f7c18][20500]|Notifier stopped....
+NotifyManager.cpp|22|2018-11-14T09:11:35.1539643|[VB][0x10f68b0][20492]|NotifyManager::init<<<
+Application.cpp|110|2018-11-14T09:11:35.1540199|[IN][0x10f4010][20492]|Dispatching>>>
+Notifier.cpp|25|2018-11-14T09:11:35.1541772|[IN][0x10f7b38][20499]|Notifier started....
+Notifier.cpp|57|2018-11-14T09:11:35.1542006|[IN][0x10f7b38][20499]|Notifier stopped....
+Notifier.cpp|25|2018-11-14T09:11:35.1543406|[IN][0x10f7cf8][20501]|Notifier started....
+Notifier.cpp|57|2018-11-14T09:11:35.1543694|[IN][0x10f7cf8][20501]|Notifier stopped....
+Application.cpp|15|2018-11-14T09:11:36.2109670|[VB][0x10f4010][20492]|Application::~Application>>>
+Application.cpp|65|2018-11-14T09:11:36.2110671|[VB][0x10f4010][20492]|Application::Shutdown>>>
+NotifyManager.cpp|26|2018-11-14T09:11:36.2111210|[VB][0x10f68b0][20492]|NotifyManager::Shutdown>>>
+NotifyManager.cpp|36|2018-11-14T09:11:36.2111682|[VB][0x10f68b0][20492]|NotifyManager::Shutdown<<<
+Application.cpp|77|2018-11-14T09:11:36.2111995|[VB][0x10f4010][20492]|Application::Shutdown<<<
+Application.cpp|17|2018-11-14T09:11:36.2112260|[VB][0x10f4010][20492]|Application::~Application<<<

@@ -85,6 +85,7 @@ CMakeFiles/Framework.dir/core/src/SharedLibraryManager.cpp.o: util/include/defin
 CMakeFiles/Framework.dir/core/src/Thread.cpp.o: core/src/Thread.cpp
 CMakeFiles/Framework.dir/core/src/Thread.cpp.o: containers/include/Stl.h
 CMakeFiles/Framework.dir/core/src/Thread.cpp.o: core/include/EventInfo.h
+CMakeFiles/Framework.dir/core/src/Thread.cpp.o: core/include/Exception.h
 CMakeFiles/Framework.dir/core/src/Thread.cpp.o: core/include/Thread.h
 CMakeFiles/Framework.dir/core/src/Thread.cpp.o: util/include/Runnable.h
 

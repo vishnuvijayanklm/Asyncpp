@@ -28,7 +28,7 @@ namespace Core
 		{
 			for(int i=0;i<NOTIFIER_COUNT;i++)
 			{
-				this->pNotifier[i].stop();
+				//this->pNotifier[i].stop();
 			}	
 			delete[] this->pNotifier;
 		}
