@@ -10,6 +10,8 @@
 #include <SharedLibraryManager.h>
 #include <Stl.h>
 #include <ThreadPool.h>
+#include <LockFree.h>
+LockFreeQueue<int> Q;
 Logger LOGGER;
 void threadTest(int i)
 {
