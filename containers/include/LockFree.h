@@ -33,27 +33,28 @@ class LockFreeQueue
 	}
 	void push(T i)
 	{
-		Node<T> *p = new Node<T>();
-		if(p)
+		Node<T> *pNode = new Node<T>();
+		if(pNode)
 		{
-			p->mValue = i;
-			p->pNext = mHead.load(std::memory_order_relaxed);
-			while(!std::atomic_compare_exchange_strong_explicit(&mHead,&p->pNext,p,std::memory_order_release,std::memory_order_relaxed));
+			pNode->mValue = i;
+			pNode->pNext = mHead.load(std::memory_order_relaxed);
+			while(!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode->pNext,pNode,std::memory_order_release,std::memory_order_relaxed));
 			this->mSize++;
 		}
 	}
 
 	bool pop(T &ret)
 	{
-		Node<T> *p = nullptr;
-		while(mHead.load(std::memory_order_relaxed) && (!std::atomic_compare_exchange_strong_explicit(&mHead,&p,mHead.load()->pNext,std::memory_order_release,std::memory_order_relaxed)));
-		if(!p)
+		Node<T> *pNode = nullptr;
+		while(mHead.load(std::memory_order_relaxed) && (!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode,mHead.load()->pNext,std::memory_order_release,std::memory_order_relaxed)));
+		if(!pNode)
 		{
 			return false;
 		}
-		ret = p->getValue();
+		ret = pNode->getValue();
 		this->mSize--;
-		delete p;
+		delete pNode;
+		pNode = nullptr;
 		return true;
 	}
 
