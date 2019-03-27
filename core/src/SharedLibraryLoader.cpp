@@ -42,5 +42,6 @@ namespace Core
         {
             dlclose(this->mLibraryHandle);
         }
+	this->mLibraryHandle = nullptr;
     }
 }

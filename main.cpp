@@ -112,7 +112,7 @@ int main(int argc,char *argv[])
             }
         }
         return 0;*/
-        if(!pApplication.get())
+        if(unlikely(pApplication.get() == nullptr))
         {
             LOG_ERRORNP((LOGGER),("Failed to get appliaction object"));
             return -1;

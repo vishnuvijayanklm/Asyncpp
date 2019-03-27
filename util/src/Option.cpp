@@ -16,8 +16,8 @@ namespace Util
     {
         this->m_shortName.resize(shortName.size());
         this->m_fullName.resize(fullName.size());
-        std::transform(shortName.begin(), shortName.end(),this->m_shortName.begin(),::tolower);
-        std::transform(fullName.begin(), fullName.end(),this->m_fullName.begin(),::tolower);
+        std::transform(shortName.begin(),shortName.end(),this->m_shortName.begin(),::tolower);
+        std::transform(fullName.begin(),fullName.end(),this->m_fullName.begin(),::tolower);
     }
 
     Option::~Option()
@@ -62,7 +62,7 @@ namespace Util
         LOG_INFO((LOGGER),("Option::process  [%s,%s]",this->m_shortName.c_str(),this->m_fullName.c_str()));
         if(Args.isExist(this->m_fullName) || Args.isExist(this->m_shortName))
         {
-            if(this->m_OptionCallback)
+            if(likely(this->m_OptionCallback != nullptr))
             {
                 return this->m_OptionCallback(this->m_fullName,"Test");
             }
@@ -70,7 +70,7 @@ namespace Util
         }
         else
         {
-            if(this->m_isRequired)
+            if(unlikely(this->m_isRequired))
             {
                 throw MANDATORY_OPTION_MISSING(this->m_fullName +"/" + this->m_shortName);
             }

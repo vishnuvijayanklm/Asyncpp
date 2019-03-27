@@ -45,15 +45,15 @@ namespace Core
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::getThreadFromPool>>>"));
 		Thread *pThread = nullptr;
-		if(!this->m_FreePool.pop(pThread))
+		if(likely(!this->m_FreePool.pop(pThread)))
 		{
 			this->initializeThreads();
-			if(!this->m_FreePool.pop(pThread))
+			if(unlikely(!this->m_FreePool.pop(pThread)))
 			{
 				throw THREAD_POOL_OUTAGE();
 			}
 		}	
-		if(!pThread)
+		if(unlikely(pThread == nullptr))
 		{
 			throw INVALID_THREAD_PTR(); 	
 		}

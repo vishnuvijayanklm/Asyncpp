@@ -29,7 +29,7 @@ namespace Core
     template<typename T>
     inline bool NotifyManager::dispatch(T notifyFn,unsigned int SynchronizationKey)
     {
-        if(SynchronizationKey == SYNC_DISABLED)
+        if(likely(SynchronizationKey == SYNC_DISABLED))
         {
             return pNotifier[this->m_SyncKey++ % NOTIFIER_COUNT].addEvent(notifyFn);
         }

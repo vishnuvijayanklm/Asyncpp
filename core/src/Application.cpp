@@ -96,7 +96,7 @@ namespace Core
     void Application::run()
     {
 	int i = 1000;
-        while(i-->0)
+        while(i>0)
         {
             NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem(NOTIFY_MANAGER));
             //while(1)
@@ -107,7 +107,7 @@ namespace Core
                 }
                 else
                 {
-                    LOG_INFO(LOGGER,("Dispatching>>>"));
+          //          LOG_INFO(LOGGER,("Dispatching>>>"));
                     //future<int> ret;
                     pNotifyManager->dispatch(bind(&Application::versionS,this));
                     pNotifyManager->dispatch(bind(&Application::version,this,"",""));
@@ -115,9 +115,9 @@ namespace Core
                 }
                 //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
-		sleep(5);
+		//sleep(5);
         }
-	sleep(5);
+	//sleep(5);
     }
 
     void Application::registerSignal(int sig,fn fnptr)

@@ -24,7 +24,7 @@ namespace Core
 	void NotifyManager::shutdown()
 	{
 		LOG_VERBOSE((LOGGER),("NotifyManager::Shutdown>>>"));
-		if(this->pNotifier)
+		if(likely(this->pNotifier != nullptr))
 		{
 			for(int i=0;i<NOTIFIER_COUNT;i++)
 			{

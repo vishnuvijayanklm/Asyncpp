@@ -1,4 +1,5 @@
 #include <atomic>
+#include <defines.h>
 template<typename T>
 class LockFreeQueue
 {
@@ -34,7 +35,7 @@ class LockFreeQueue
 	void push(T i)
 	{
 		Node<T> *pNode = new Node<T>();
-		if(pNode)
+		if(likely(pNode))
 		{
 			pNode->mValue = i;
 			pNode->pNext = mHead.load(std::memory_order_relaxed);
@@ -47,7 +48,7 @@ class LockFreeQueue
 	{
 		Node<T> *pNode = nullptr;
 		while(mHead.load(std::memory_order_relaxed) && (!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode,mHead.load()->pNext,std::memory_order_release,std::memory_order_relaxed)));
-		if(!pNode)
+		if(unlikely(!pNode))
 		{
 			return false;
 		}
