@@ -1,5 +1,6 @@
 #include <Thread.h>
 #include <unistd.h>
+#include <defines.h>
 namespace Core
 {
 	Thread::Thread()
@@ -20,7 +21,7 @@ namespace Core
 				unique_ptr<IEventInfo> pEvent;
 				while(this->m_Queue.pop(pEvent,true))
 				{
-					if(pEvent.get())
+					if(likely(pEvent.get() != nullptr))
 					{
 						pEvent->processEvent();
 					}

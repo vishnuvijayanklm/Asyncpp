@@ -24,7 +24,7 @@ namespace Core
 	{
 		LOG_VERBOSE((LOGGER),("SharedLibraryManager::loadLibrary>>>"));
 		shared_ptr<SharedLibraryLoader> loader;
-		if(!this->mLoaders.find(libraryname,loader))
+		if(unlikely(!this->mLoaders.find(libraryname,loader)))
 		{
 			loader = make_shared<SharedLibraryLoader>(libraryname);
 			loader->loadLibrary();

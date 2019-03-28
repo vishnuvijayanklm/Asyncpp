@@ -15,7 +15,7 @@ namespace Core
 	void Notifier::initialize()
 	{
 		ThreadPool *pThreadPool = (ThreadPool*)(pApplication->getSubsystem(THREADPOOL));
-		if(unlikely(pThreadPool != nullptr))
+		if(likely(pThreadPool != nullptr))
 		{
 			pThreadPool->getThreadFromPool()->execute(bind(&Notifier::run,this));	
 		}

@@ -27,10 +27,11 @@ void signalCatch(int s)
 {
     cerr<<"Signal caught "<<s<<endl;
     cout<<"Calling"<<endl;
-    //LOG_INFONP((LOGGER),("Exception caught %d",s));
+    LOG_INFONP((LOGGER),("Exception caught %d",s));
    /*  if(pApplication.get())
      	pApplication->shutdown();*/
-    cout<<"Exiting......."<<endl;
+    //cout<<"Exiting......."<<endl;
+    //pApplication->registerSignal(s,nullptr);
     exit(0);
 }
 void fileTest()

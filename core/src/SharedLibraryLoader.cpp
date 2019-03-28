@@ -18,7 +18,7 @@ namespace Core
 
     bool SharedLibraryLoader::loadLibrary(string libraryname)
     {
-        if(!libraryname.empty())
+        if(likely(!libraryname.empty()))
         {
             this->mSharedLibraryName = libraryname;
         }
@@ -28,7 +28,7 @@ namespace Core
 
     void* SharedLibraryLoader::loadSymbol(string symbolName)
     {
-        if(this->mLibraryHandle == nullptr)
+        if(unlikely(this->mLibraryHandle == nullptr))
         {
             return nullptr;
         }
@@ -38,7 +38,7 @@ namespace Core
 
     void SharedLibraryLoader::unloadLibrary()
     {
-        if(this->mLibraryHandle != nullptr)
+        if(likely(this->mLibraryHandle != nullptr))
         {
             dlclose(this->mLibraryHandle);
         }

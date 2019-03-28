@@ -54,7 +54,7 @@ namespace Core
     ISubsystem* Application::getSubsystem(SubsystemId id)
     {
         shared_ptr<ISubsystem> pSubsystem;
-        if(this->m_SubsystemInfo.find(id,pSubsystem))
+        if(likely(this->m_SubsystemInfo.find(id,pSubsystem)))
         {
             return pSubsystem.get();
         }
@@ -69,7 +69,7 @@ namespace Core
         shared_ptr<ISubsystem> pSubsystem;
         while(this->m_SubsystemInfo.removeFirstElement(pSubsystem))
         {
-            if(pSubsystem.get())
+            if(likely(pSubsystem.get() != nullptr))
             {
             	pSubsystem->shutdown();
             }
@@ -79,9 +79,9 @@ namespace Core
 
     bool Application::registerSubsystem(ISubsystem *pSubsystem)
     {
-        if(pSubsystem)
+        if(likely(pSubsystem != nullptr))
         {
-            if(!this->m_SubsystemInfo.find(pSubsystem->id()))
+            if(likely(!this->m_SubsystemInfo.find(pSubsystem->id())))
             {
                 pSubsystem->init();
                 this->m_SubsystemInfo.insert(pSubsystem->id(),unique_ptr<ISubsystem>(pSubsystem));
@@ -101,7 +101,7 @@ namespace Core
             NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem(NOTIFY_MANAGER));
             //while(1)
             {
-                if(!pNotifyManager)
+                if(unlikely(pNotifyManager == nullptr))
                 {
                     LOG_ERROR((LOGGER),("NotifyManager not found"));
                 }

@@ -1,5 +1,6 @@
 #include "Logger.h"
 #include <string.h>
+#include <defines.h>
 Logger::Logger()
 {
 	this->m_logLevel = 127;
@@ -34,10 +35,10 @@ Logger::Logger(string Path,string fileName,unsigned int logLevel,unsigned int lo
 void Logger::writeLogHeader(string fileName,unsigned int lineNo,string logType,void *p_Addr,uint64_t tid,char* msg)
 {
 	lock_guard<mutex> lock(this->m_logmutex);
-	if(!this->m_log.is_open())
+	if(unlikely(!this->m_log.is_open()))
 	{
 		this->backUpAndLoadNewFile();
-		if(!this->m_log.is_open())
+		if(unlikely(!this->m_log.is_open()))
 		{
 			cout<<msg<<endl;
 			return;
@@ -55,7 +56,7 @@ void Logger::writeLogHeader(string fileName,unsigned int lineNo,string logType,v
 	this->m_log << fileName.c_str() << "|" << lineNo << "|" << temp <<"|[" << logType << "][" << p_Addr << "][" << tid << "]|"<<msg<<endl;
 	this->m_log.flush();
 
-	if(this->m_logLevel & LOG_CON)
+	if(unlikely(this->m_logLevel & LOG_CON))
 	{
 		cout<<msg<<endl;
 	}
@@ -99,7 +100,7 @@ char* Logger::writeLogData(const char *p_log, ...)
 
 void Logger::spiltLogFile()
 {
-	if(!this->m_log.is_open())
+	if(unlikely(!this->m_log.is_open()))
 	{
 		return;
 	}
@@ -120,7 +121,7 @@ void Logger::backUpAndLoadNewFile()
 {
 	char buffer[2048];
 	unsigned int totalbackupfile = this->m_logBackupCount;
-	if(this->m_logFile.empty())
+	if(unlikely(this->m_logFile.empty()))
 	{
 		return;
 	}
@@ -143,7 +144,7 @@ void Logger::backUpAndLoadNewFile()
 	system(buffer);
 #endif
 
-	if(this->m_log.is_open())
+	if(likely(this->m_log.is_open()))
 	{
 		this->m_log.close();
 	}
