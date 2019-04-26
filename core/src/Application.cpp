@@ -130,7 +130,7 @@ namespace Core
     {
         this->addOption(Util::Option("-v","--version")
                         .isRepeatable(false)
-                        .isRequired(false)
+                        .isRequired(true)
                         .setCallBack(bind(&Application::version,this,placeholders::_1,placeholders::_2)));
     }
 

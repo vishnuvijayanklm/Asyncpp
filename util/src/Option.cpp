@@ -59,7 +59,7 @@ namespace Util
 
     bool Option::process(StlVector<string>& Args)
     {
-        LOG_INFO((LOGGER),("Option::process  [%s,%s]",this->m_shortName.c_str(),this->m_fullName.c_str()));
+        LOG_INFO((LOGGER),("Option::process  [%s,%s] Required %d",this->m_shortName.c_str(),this->m_fullName.c_str(),this->m_isRequired));
         if(Args.isExist(this->m_fullName) || Args.isExist(this->m_shortName))
         {
             if(likely(this->m_OptionCallback != nullptr))
