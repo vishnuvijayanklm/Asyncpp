@@ -27,7 +27,10 @@ namespace Core
 		if(unlikely(!this->mLoaders.find(libraryname,loader)))
 		{
 			loader = make_shared<SharedLibraryLoader>(libraryname);
-			loader->loadLibrary();
+			if(unlikely(loader->loadLibrary() == false))
+			{
+				return nullptr;
+			}
 			this->mLoaders.insert(libraryname,loader);
 		}
 		LOG_VERBOSE((LOGGER),("SharedLibraryManager::loadLibrary<<<"));

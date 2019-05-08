@@ -4,13 +4,13 @@
 extern unique_ptr<Core::Application> pApplication;
 namespace Util
 {
-    File::File()
-    {
-        //ctor
-    }
+	File::File()
+	{
+		//ctor
+	}
 
-    File::~File()
-    {
-        this->close();
-    }
+	File::~File()
+	{
+		this->close();
+	}
 }

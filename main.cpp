@@ -121,6 +121,19 @@ int main(int argc,char *argv[])
         pApplication->init();
         pApplication->onApplicationStart(argc,argv);
         pApplication->registerSignal(SIGINT,signalCatch);
+	Core::SharedLibraryManager* pSharedLibraryManager = (Core::SharedLibraryManager*)pApplication->getSubsystem(SHAREDLIBRARY_MANAGER);
+	if(pSharedLibraryManager)
+	{
+		Core::SharedLibraryLoader *pLibraryLoader = pSharedLibraryManager->loadLibrary("./shared.so");
+		if(pLibraryLoader)
+		{	
+			auto x = (void(*)())pLibraryLoader->loadSymbol("create_object");
+			if(x)
+			{
+				x();
+			}
+		}
+	}
         pApplication->run();
     }
     catch(Core::Exception &e)

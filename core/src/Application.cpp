@@ -3,6 +3,7 @@
 #include <iostream>
 #include <defines.h>
 #include <NotifyManager.h>
+#include <SharedLibraryManager.h>
 namespace Core
 {
 
@@ -40,6 +41,7 @@ namespace Core
 	this->m_OptionsInfo.stopGet();
         this->registerSubsystem(new ThreadPool());
         this->registerSubsystem(new NotifyManager());
+        this->registerSubsystem(new SharedLibraryManager());
     }
     void Application::init()
     {
@@ -109,9 +111,12 @@ namespace Core
                 {
           //          LOG_INFO(LOGGER,("Dispatching>>>"));
                     //future<int> ret;
-                    pNotifyManager->dispatch(bind(&Application::versionS,this));
-                    pNotifyManager->dispatch(bind(&Application::version,this,"",""));
-                    //LOG_INFO(LOGGER,("Response %d",ret.get()));
+                    //pNotifyManager->dispatch(bind(&Application::versionS,this));
+	            promise<int> response;	            
+		    pNotifyManager->dispatch(bind(&Application::version,this,"",""),response);
+                    LOG_INFO(LOGGER,("Before >>>"));
+		    LOG_INFO(LOGGER,("Response %d",response.get_future().get()));
+                    LOG_INFO(LOGGER,("Before <<<"));
                 }
                 //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }

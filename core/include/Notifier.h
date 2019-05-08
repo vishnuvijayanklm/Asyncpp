@@ -22,7 +22,8 @@ namespace Core
 			void run();
 			template<typename T>
 			inline bool addEvent(T event);
-			//void onStop();
+			template<typename T,typename T1>
+			inline bool addEvent(T event,promise<T1> &response);
 	};
 
 	template<typename T>
@@ -31,6 +32,14 @@ namespace Core
 		this->m_Queue.push(unique_ptr<IEventInfo>(new Event<T>(event)));
 		return true;
 	}
+
+	template<typename T,typename T1>
+        bool Notifier::addEvent(T event,promise<T1> &response)
+        {
+                this->m_Queue.push(unique_ptr<IEventInfo>(new EventWithResp<T,T1>(event,response)));
+                return true;
+        }
+
 	/*
 	void Notifier::onStop()
 	{
