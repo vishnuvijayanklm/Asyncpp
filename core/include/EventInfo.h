@@ -42,7 +42,12 @@ class EventWithResp:public IEventInfo
 		virtual ~EventWithResp(){}
 		virtual void processEvent()
 		{
-			this->m_Response.set_value(this->m_Event());
+			cout<<"Before this>>>"<<endl;
+			T1 resp = this->m_Event();
+			cout<<"After this<<<"<<endl;
+			this->m_Response.set_value(10);
+			//this->m_Response.get_future() = this->m_Event();
+			//this->m_Response.set_value(this->m_Event());
 		}
 };
 
