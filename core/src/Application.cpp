@@ -106,21 +106,25 @@ namespace Core
                 if(unlikely(pNotifyManager == nullptr))
                 {
                     LOG_ERROR((LOGGER),("NotifyManager not found"));
-                }
-                else
-                {
-          //          LOG_INFO(LOGGER,("Dispatching>>>"));
-                    //future<int> ret;
-                    //pNotifyManager->dispatch(bind(&Application::versionS,this));
-	            promise<int> response;	            
-		    pNotifyManager->dispatch(bind(&Application::version,this,"",""),response);
-                    LOG_INFO(LOGGER,("Before >>>"));
-		    LOG_INFO(LOGGER,("Response %d",response.get_future().get()));
-                    LOG_INFO(LOGGER,("Before <<<"));
-                }
+		}
+		else
+		{
+			//          LOG_INFO(LOGGER,("Dispatching>>>"));
+			//future<int> ret;
+			//pNotifyManager->dispatch(bind(&Application::versionS,this));
+			EventResponse<int> resp;
+			pNotifyManager->dispatch(bind(&Application::version,this,"",""),resp);
+			//usleep(10);
+			//response.get_future().wait();
+			//LOG_INFO(LOGGER,("Getting Response>>>"));
+			LOG_INFO(LOGGER,("Response %d",resp.get()));
+			//LOG_INFO(LOGGER,("Getting Response<<<"));
+			//usleep(10);
+			//sleep(2);
+		}
                 //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
-		//sleep(5);
+		//usleep(1000);
         }
 	//sleep(5);
     }

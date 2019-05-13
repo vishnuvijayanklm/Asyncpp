@@ -26,7 +26,7 @@ namespace Core
 			template<typename T>
 			inline bool dispatch(T notifyFn,unsigned int SynchronizationKey = SYNC_DISABLED);
 			template<typename T,typename T1>
-			inline bool dispatch(T notifyFn,promise<T1> &response,unsigned int SynchronizationKey = SYNC_DISABLED);
+			inline bool dispatch(T notifyFn,EventResponse<T1> &response,unsigned int SynchronizationKey = SYNC_DISABLED);
 	};
 
 	template<typename T>
@@ -40,7 +40,7 @@ namespace Core
 	}
 
 	template<typename T,typename T1>
-        inline bool NotifyManager::dispatch(T notifyFn,promise<T1> &response,unsigned int SynchronizationKey)
+        inline bool NotifyManager::dispatch(T notifyFn,EventResponse<T1> &response,unsigned int SynchronizationKey)
         {       
                 if(likely(SynchronizationKey == SYNC_DISABLED))
                 {       

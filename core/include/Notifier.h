@@ -23,7 +23,7 @@ namespace Core
 			template<typename T>
 			inline bool addEvent(T event);
 			template<typename T,typename T1>
-			inline bool addEvent(T event,promise<T1> &response);
+			inline bool addEvent(T event,EventResponse<T1> &response);
 	};
 
 	template<typename T>
@@ -34,7 +34,7 @@ namespace Core
 	}
 
 	template<typename T,typename T1>
-        bool Notifier::addEvent(T event,promise<T1> &response)
+        bool Notifier::addEvent(T event,EventResponse<T1> &response)
         {
                 this->m_Queue.push(unique_ptr<IEventInfo>(new EventWithResp<T,T1>(event,response)));
                 return true;

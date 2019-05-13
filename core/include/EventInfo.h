@@ -3,6 +3,36 @@
 
 #include <memory>
 #include <future>
+#include <condition_variable>
+#include <mutex>
+#include <Logger.h>
+extern Logger LOGGER;
+template<typename T>
+class EventResponse
+{
+		T m_Response;
+		atomic<bool> m_ResponseAvaliable;
+	public:
+		EventResponse()
+		{
+			this->m_ResponseAvaliable.store(false,std::memory_order_relaxed);
+		}
+		T get()
+		{
+			while(!this->m_ResponseAvaliable.load(std::memory_order_relaxed))
+			{
+				this_thread::yield();
+			}
+			return this->m_Response;
+		}
+
+		void set_value(T response)
+		{
+			this->m_Response = response;
+			this->m_ResponseAvaliable.store(true,std::memory_order_relaxed);
+		}
+};
+
 class IEventInfo
 {
 	private:
@@ -34,20 +64,15 @@ class EventWithResp:public IEventInfo
 {
 	private:
 		T m_Event;
-		promise<T1> &m_Response;
+		EventResponse<T1> &m_Response;
 	public:
-		EventWithResp(T &event,promise<T1> &response):m_Event(event),m_Response(response)
+		EventWithResp(T &event,EventResponse<T1> &response):m_Event(event),m_Response(response)
 		{
 		}
 		virtual ~EventWithResp(){}
 		virtual void processEvent()
 		{
-			cout<<"Before this>>>"<<endl;
-			T1 resp = this->m_Event();
-			cout<<"After this<<<"<<endl;
-			this->m_Response.set_value(10);
-			//this->m_Response.get_future() = this->m_Event();
-			//this->m_Response.set_value(this->m_Event());
+			this->m_Response.set_value(this->m_Event());
 		}
 };
 
