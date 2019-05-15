@@ -39,7 +39,10 @@ class LockFreeQueue
 		{
 			pNode->mValue = i;
 			pNode->pNext = mHead.load(std::memory_order_relaxed);
-			while(!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode->pNext,pNode,std::memory_order_release,std::memory_order_relaxed));
+			while(!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode->pNext,pNode,std::memory_order_release,std::memory_order_relaxed))
+			{
+				this_thread::yield();
+			}
 			this->mSize++;
 		}
 	}
@@ -47,7 +50,10 @@ class LockFreeQueue
 	bool pop(T &ret)
 	{
 		Node<T> *pNode = nullptr;
-		while(mHead.load(std::memory_order_relaxed) && (!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode,mHead.load()->pNext,std::memory_order_release,std::memory_order_relaxed)));
+		while(mHead.load(std::memory_order_relaxed) && (!std::atomic_compare_exchange_strong_explicit(&mHead,&pNode,mHead.load()->pNext,std::memory_order_release,std::memory_order_relaxed)))
+		{
+			this_thread::yield();
+		}
 		if(unlikely(!pNode))
 		{
 			return false;

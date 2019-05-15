@@ -17,7 +17,12 @@ class EventResponse
 		{
 			this->m_ResponseAvaliable.store(false,std::memory_order_relaxed);
 		}
-		T get()
+
+		~EventResponse()
+		{
+		}
+		
+		T get_value()
 		{
 			while(!this->m_ResponseAvaliable.load(std::memory_order_relaxed))
 			{

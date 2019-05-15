@@ -109,24 +109,13 @@ namespace Core
 		}
 		else
 		{
-			//          LOG_INFO(LOGGER,("Dispatching>>>"));
-			//future<int> ret;
-			//pNotifyManager->dispatch(bind(&Application::versionS,this));
 			EventResponse<int> resp;
-			pNotifyManager->dispatch(bind(&Application::version,this,"",""),resp);
-			//usleep(10);
-			//response.get_future().wait();
-			//LOG_INFO(LOGGER,("Getting Response>>>"));
-			LOG_INFO(LOGGER,("Response %d",resp.get()));
-			//LOG_INFO(LOGGER,("Getting Response<<<"));
-			//usleep(10);
-			//sleep(2);
+			pNotifyManager->dispatch(bind(&Application::version,this,"",""),resp,1);
+			pNotifyManager->dispatch(bind(&Application::versionS,this),1);
+			LOG_INFO(LOGGER,("Response %d",resp.get_value()));
 		}
-                //std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
-		//usleep(1000);
         }
-	//sleep(5);
     }
 
     void Application::registerSignal(int sig,fn fnptr)

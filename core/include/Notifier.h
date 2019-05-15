@@ -33,6 +33,7 @@ namespace Core
 		return true;
 	}
 
+	
 	template<typename T,typename T1>
         bool Notifier::addEvent(T event,EventResponse<T1> &response)
         {
