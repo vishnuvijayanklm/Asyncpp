@@ -1,9 +1,9 @@
 # Framework++
 
-Framework++ is a framework written in c++ for developing hazard free applications.
+Framework++ is a framework written in c++ for developing async operations.
+Features supported
 
-Features
-
+* Async operation
 * Advance Logger
 * Event Notifers
 * Thread Pool
