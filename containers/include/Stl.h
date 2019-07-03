@@ -39,6 +39,7 @@ class StlQueue:private queue<T>
 	{
 		lock_guard<mutex> lock(this->m_mtx);
 		queue<T>::push(move(value));
+		unique_lock<mutex> lockCondition(this->m_conditionMutex);
 		this->m_conditionVariable.notify_one();
 	}
 	bool pop(T &value,bool isblocked = false)
@@ -64,6 +65,18 @@ class StlQueue:private queue<T>
 		}
 		return false;
 	}
+
+	bool pop()
+        {
+		lock_guard<mutex> lock(this->m_mtx);
+                if(this->empty())
+                {
+                        return false;
+                }
+
+                queue<T>::pop();
+                return true;
+        }
 	size_t size()
 	{
 		lock_guard<std::mutex> lock(this->m_mtx);

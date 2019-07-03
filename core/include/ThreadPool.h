@@ -23,8 +23,8 @@ namespace Core
         		virtual ~ThreadPool();
         		virtual void init();
         		virtual void shutdown();
-			void initializeThreads();
-			Thread* getThreadFromPool();
+			void initializeThreads() throw(INVALID_THREAD_SIZE_CONFIGURED);
+			Thread* getThreadFromPool() throw(THREAD_POOL_OUTAGE,INVALID_THREAD_PTR);
 	};
 }
 #endif

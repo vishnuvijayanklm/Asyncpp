@@ -15,6 +15,10 @@ namespace Core
 		private:
 			volatile unsigned int m_SyncKey;
 			Notifier *pNotifier;
+			
+			#ifdef WITH_EVENTPOOL	
+			StlQueue<IEventInfo*> mEventPoolQ;
+			#endif
 
 		protected:
 		public:
@@ -28,25 +32,41 @@ namespace Core
 			inline bool dispatch(T notifyFn,EventResponse<T1> &response,unsigned int SynchronizationKey = SYNC_DISABLED);
 	};
 
-	template<typename T>
-	inline bool NotifyManager::dispatch(T notifyFn,unsigned int SynchronizationKey)
-	{
-		if(likely(SynchronizationKey == SYNC_DISABLED))
+		template<typename T>
+		inline bool NotifyManager::dispatch(T notifyFn,unsigned int SynchronizationKey)
 		{
-			return pNotifier[this->m_SyncKey++ % NOTIFIER_COUNT].addEvent(notifyFn);
+			#ifdef WITH_EVENTPOOL
+			if(this->mEventPoolQ.pop())
+			{
+			#endif 
+				if(likely(SynchronizationKey == SYNC_DISABLED))
+				{
+					return pNotifier[this->m_SyncKey++ % NOTIFIER_COUNT].addEvent(notifyFn);
+				}
+				return pNotifier[SynchronizationKey % NOTIFIER_COUNT].addEvent(notifyFn);
+			#ifdef WITH_EVENTPOOL
+			}
+			throw EVENT_POOL_OUTAGE();
+			#endif
 		}
-		return pNotifier[SynchronizationKey % NOTIFIER_COUNT].addEvent(notifyFn);
-	}
 
-	template<typename T,typename T1>
-        inline bool NotifyManager::dispatch(T notifyFn,EventResponse<T1> &response,unsigned int SynchronizationKey)
-        {      
-		if(likely(SynchronizationKey == SYNC_DISABLED))
-                {       
-                        return pNotifier[this->m_SyncKey++ % NOTIFIER_COUNT].addEvent(notifyFn,response);
-                }       
-                return pNotifier[SynchronizationKey % NOTIFIER_COUNT].addEvent(notifyFn,response);        
-	}
+		template<typename T,typename T1>
+		inline bool NotifyManager::dispatch(T notifyFn,EventResponse<T1> &response,unsigned int SynchronizationKey)
+		{      
+			#ifdef WITH_EVENTPOOL
+			if(this->mEventPoolQ.pop())
+			{
+			#endif
+				if(likely(SynchronizationKey == SYNC_DISABLED))
+				{       
+					return pNotifier[this->m_SyncKey++ % NOTIFIER_COUNT].addEvent(notifyFn,response);
+				}       
+				return pNotifier[SynchronizationKey % NOTIFIER_COUNT].addEvent(notifyFn,response);        
+			#ifdef WITH_EVENTPOOL
+			}
+			throw EVENT_POOL_OUTAGE();
+			#endif
+		}
 }
 
 #endif //NOTIFYMANAGER_H

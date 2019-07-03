@@ -19,7 +19,7 @@ namespace Core
 	void ThreadPool::shutdown()
 	{
 	}
-	void ThreadPool::initializeThreads()
+	void ThreadPool::initializeThreads() throw(INVALID_THREAD_SIZE_CONFIGURED)
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::initializeThreads>>>"));
 		if(this->m_minSize < MIN_THREAD_POOL_SIZE || this->m_maxSize > MAX_THREAD_POOL_SIZE)
@@ -41,7 +41,7 @@ namespace Core
 		LOG_VERBOSE((LOGGER),("ThreadPool::initializeThreads<<<"));
 	}
 
-	Thread* ThreadPool::getThreadFromPool()
+	Thread* ThreadPool::getThreadFromPool() throw(THREAD_POOL_OUTAGE,INVALID_THREAD_PTR)
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::getThreadFromPool>>>"));
 		Thread *pThread = nullptr;

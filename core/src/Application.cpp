@@ -111,7 +111,7 @@ namespace Core
 		{
 			EventResponse<int> resp;
 			pNotifyManager->dispatch(bind(&Application::version,this,"",""),resp,1);
-			pNotifyManager->dispatch(bind(&Application::versionS,this),1);
+			//pNotifyManager->dispatch(bind(&Application::versionS,this),1);
 			LOG_INFO(LOGGER,("Response %d",resp.get_value()));
 		}
             }
