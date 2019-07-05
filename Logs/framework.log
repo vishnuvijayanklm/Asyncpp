@@ -1,0 +1,5 @@
+Application.cpp|31|2019-07-05T10:53:42.9421959|[IN][0x1c6c010][12055]|Argv ./framework
+Option.cpp|62|2019-07-05T10:53:42.9423129|[IN][0x7fffa6c25fb0][12055]|Option::process  [-v,--version] Required 1
+main.cpp|164|2019-07-05T10:53:42.9424604|[CR][0][12055]|Exception : -100 : Mandatory option missing --version/-v Errno 0
+Application.cpp|16|2019-07-05T10:53:42.9425191|[VB][0x1c6c010][12055]|Application::~Application>>>
+Application.cpp|67|2019-07-05T10:53:42.9425414|[VB][0x1c6c010][12055]|Application::Shutdown>>>
