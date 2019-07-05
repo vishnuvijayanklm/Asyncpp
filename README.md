@@ -8,3 +8,4 @@ Features supported
 * Event Notifers
 * Thread Pool
 * Stl and Lock Free Queues
+* IPC
