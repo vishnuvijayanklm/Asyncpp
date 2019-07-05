@@ -11,6 +11,7 @@
 #include <Stl.h>
 #include <ThreadPool.h>
 #include <LockFree.h>
+#include <SharedMemory.h>
 LockFreeQueue<int> Q;
 Logger LOGGER;
 void threadTest(int i)
@@ -118,6 +119,28 @@ int main(int argc,char *argv[])
             LOG_ERRORNP((LOGGER),("Failed to get appliaction object"));
             return -1;
         }
+
+	while(1)
+	{
+		IPC::SharedMemory shm("/1",1024,true);
+	
+		int i = 0;	
+		unsigned char *ptr = shm.begin();
+		
+		while(ptr && (ptr != shm.end()))
+		{
+			*ptr++ = 'A' + (i++ % 26);
+		}
+		ptr = shm.begin();
+		while(ptr && (ptr != shm.end()))
+                {
+			cout<<*ptr;
+                        ptr++;
+                }
+		cout<<endl;
+		sleep(10);
+	}
+
         pApplication->init();
         pApplication->onApplicationStart(argc,argv);
         pApplication->registerSignal(SIGINT,signalCatch);
@@ -138,7 +161,7 @@ int main(int argc,char *argv[])
     }
     catch(Core::Exception &e)
     {
-        LOG_CRITICALNP((LOGGER),("Exception : %d : %s %s",e.getCode(),e.what(),e.getAdditionalInfo()));
+        LOG_CRITICALNP((LOGGER),("Exception : %d : %s %s Errno %d",e.getCode(),e.what(),e.getAdditionalInfo(),e.getErrno()));
     }
     catch(exception &e)
     {

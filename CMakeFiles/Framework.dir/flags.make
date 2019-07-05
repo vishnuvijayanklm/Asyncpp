@@ -6,5 +6,5 @@ CXX_FLAGS =  -lstdc++ -lrt -lpthread -ldl -std=c++11    -lstdc++ -lrt -lpthread 
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/root/Desktop/framework/core/include -I/root/Desktop/framework/containers/include -I/root/Desktop/framework/util/include 
+CXX_INCLUDES = -I/root/Desktop/framework/core/include -I/root/Desktop/framework/containers/include -I/root/Desktop/framework/util/include -I/root/Desktop/framework/ipc/include 
 

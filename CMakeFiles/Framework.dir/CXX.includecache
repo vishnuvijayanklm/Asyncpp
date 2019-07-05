@@ -56,6 +56,14 @@ ThreadPool.h
 defines.h
 -
 
+/root/Desktop/framework/ipc/src/SharedMemory.cpp
+SharedMemory.h
+-
+iostream
+-
+errno.h
+-
+
 /root/Desktop/framework/main.cpp
 iostream
 -
@@ -82,6 +90,8 @@ Stl.h
 ThreadPool.h
 -
 LockFree.h
+-
+SharedMemory.h
 -
 
 /root/Desktop/framework/util/src/File.cpp
@@ -175,6 +185,8 @@ exception
 -
 string
 -
+errno.h
+-
 
 core/include/Notifier.h
 Stl.h
@@ -246,6 +258,22 @@ Stl.h
 Exception.h
 -
 Thread.h
+-
+
+ipc/include/SharedMemory.h
+sys/mman.h
+-
+sys/stat.h
+-
+fcntl.h
+-
+string
+-
+Exception.h
+-
+unistd.h
+-
+iostream
 -
 
 util/include/File.h

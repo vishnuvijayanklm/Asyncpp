@@ -339,6 +339,33 @@ core/src/ThreadPool.cpp.s:
 	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.s
 .PHONY : core/src/ThreadPool.cpp.s
 
+ipc/src/SharedMemory.o: ipc/src/SharedMemory.cpp.o
+
+.PHONY : ipc/src/SharedMemory.o
+
+# target to build an object file
+ipc/src/SharedMemory.cpp.o:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o
+.PHONY : ipc/src/SharedMemory.cpp.o
+
+ipc/src/SharedMemory.i: ipc/src/SharedMemory.cpp.i
+
+.PHONY : ipc/src/SharedMemory.i
+
+# target to preprocess a source file
+ipc/src/SharedMemory.cpp.i:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.i
+.PHONY : ipc/src/SharedMemory.cpp.i
+
+ipc/src/SharedMemory.s: ipc/src/SharedMemory.cpp.s
+
+.PHONY : ipc/src/SharedMemory.s
+
+# target to generate assembly for a file
+ipc/src/SharedMemory.cpp.s:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.s
+.PHONY : ipc/src/SharedMemory.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -534,6 +561,9 @@ help:
 	@echo "... core/src/ThreadPool.o"
 	@echo "... core/src/ThreadPool.i"
 	@echo "... core/src/ThreadPool.s"
+	@echo "... ipc/src/SharedMemory.o"
+	@echo "... ipc/src/SharedMemory.i"
+	@echo "... ipc/src/SharedMemory.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

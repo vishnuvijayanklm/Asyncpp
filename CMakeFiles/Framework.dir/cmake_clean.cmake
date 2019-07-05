@@ -13,6 +13,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Framework.dir/util/src/Runnable.cpp.o"
   "CMakeFiles/Framework.dir/util/src/Option.cpp.o"
   "CMakeFiles/Framework.dir/main.cpp.o"
+  "CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o"
   "Framework.pdb"
   "Framework"
 )

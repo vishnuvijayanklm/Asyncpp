@@ -2,6 +2,7 @@
 #define EXCEPTION_H
 #include <exception>
 #include <string>
+#include <errno.h>
 using namespace std;
 namespace Core
 {
@@ -16,44 +17,52 @@ namespace Core
         virtual const char* what() const throw() = 0;
         virtual const char* getString() const = 0;
         virtual int getCode() const = 0;
+	virtual unsigned int getErrno() const = 0;
         virtual const char* getAdditionalInfo() const = 0;
     };
 }
 
 #define REGISTER_EXCEPTION(EXCEPTION,BASE,errorCode,errorMsg)\
-class EXCEPTION : public /*BASE*/ Core::Exception  \
-{                                                       \
-private :                                           \
-string m_additionalInfo;                    \
-protected:                                          \
-public:                                             \
-    EXCEPTION()                                 \
-                                                        {                                           \
-                                                                                                    this->m_additionalInfo.clear();         \
-                                                                                                }                                           \
-EXCEPTION(string additionalInfo)            \
-{                                           \
-                                            this->m_additionalInfo = additionalInfo;\
-                                                                 }                                           \
-~EXCEPTION()                                \
-{                                           \
-                                        }                                           \
-const char* what() const throw()            \
-{                                           \
-                                            return errorMsg;                        \
-                                        }                                           \
-const char* getString() const               \
-{                                           \
-                                            return errorMsg;                        \
-                                        }                                           \
-int getCode() const                         \
-{                                           \
-                                            return errorCode;                       \
-                                        }                                           \
-const char* getAdditionalInfo() const       \
-{                                           \
-                                            return this->m_additionalInfo.c_str();  \
-                                        }                                           \
+	class EXCEPTION : public /*BASE*/ Core::Exception  \
+{                                                      \
+	private :                       	    	\
+		string m_additionalInfo;		\
+		unsigned int mErrno;			\
+	protected:                                  	\
+	public:                                     	\
+	EXCEPTION()                                 	\
+	{                                           	\
+		this->m_additionalInfo.clear();         \
+		this->mErrno = errno;			\
+	}                                           	\
+	EXCEPTION(string additionalInfo)            	\
+	{                                           	\
+		this->m_additionalInfo = additionalInfo;\
+		this->mErrno = errno;                   \
+	}                                           	\
+	~EXCEPTION()                                	\
+	{                                           	\
+	}                                           	\
+	const char* what() const throw()            	\
+	{                                           	\
+		return errorMsg;                        \
+	}                                           	\
+	const char* getString() const               	\
+	{                                           	\
+		return errorMsg;                        \
+	}                                           	\
+	int getCode() const                         	\
+	{                                           	\
+		return errorCode;                       \
+	}                                           	\
+	const char* getAdditionalInfo() const       	\
+	{                                           	\
+		return this->m_additionalInfo.c_str();  \
+	}                                           	\
+	unsigned int getErrno() const			\
+	{						\
+		return this->mErrno;			\
+	}						\
 };
 
 /*-------------Option Exception -10X------------------------*/
@@ -72,5 +81,10 @@ REGISTER_EXCEPTION(INVALID_THREAD_PTR,THREAD_POOL_EXCEPTION,-122,"Ihread ptr is 
 
 /*-------------EventPool Exception -13X---------------------*/
 REGISTER_EXCEPTION(EVENT_POOL_OUTAGE,EVENT_POOL_EXCEPTION,-130,"EventPool outage");
+
+/*-------------SharedMemory Exception -14X---------------------*/
+REGISTER_EXCEPTION(FAILED_CREATE_SHARED_MEMORY,SHARED_MEMORY_EXCEPTION,-140,"SharedMemory creation failed");
+REGISTER_EXCEPTION(RESIZE_SHARED_MEMORY_FAILED,SHARED_MEMORY_EXCEPTION,-141,"SharedMemory resize failed");
+REGISTER_EXCEPTION(SHARED_MEMORY_MAP_FAILED,SHARED_MEMORY_EXCEPTION,-142,"SharedMemory mapping failed");
 #endif // EXCEPTION_H
 

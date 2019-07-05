@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/root/Desktop/framework/core/src/SharedLibraryManager.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/SharedLibraryManager.cpp.o"
   "/root/Desktop/framework/core/src/Thread.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/Thread.cpp.o"
   "/root/Desktop/framework/core/src/ThreadPool.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o"
+  "/root/Desktop/framework/ipc/src/SharedMemory.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o"
   "/root/Desktop/framework/main.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/main.cpp.o"
   "/root/Desktop/framework/util/src/File.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/util/src/File.cpp.o"
   "/root/Desktop/framework/util/src/Logger.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/util/src/Logger.cpp.o"
@@ -26,6 +27,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "core/include"
   "containers/include"
   "util/include"
+  "ipc/include"
   )
 
 # Targets to which this target links.

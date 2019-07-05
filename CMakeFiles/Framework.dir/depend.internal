@@ -112,6 +112,10 @@ CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o
  util/include/Option.h
  util/include/Runnable.h
  util/include/defines.h
+CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o
+ /root/Desktop/framework/ipc/src/SharedMemory.cpp
+ core/include/Exception.h
+ ipc/include/SharedMemory.h
 CMakeFiles/Framework.dir/main.cpp.o
  /root/Desktop/framework/main.cpp
  containers/include/LockFree.h
@@ -125,6 +129,7 @@ CMakeFiles/Framework.dir/main.cpp.o
  core/include/SubsystemList.h
  core/include/Thread.h
  core/include/ThreadPool.h
+ ipc/include/SharedMemory.h
  util/include/File.h
  util/include/Logger.h
  util/include/Option.h
