@@ -1,17 +1,20 @@
 #include <iostream>
-#include <Application.h>
-#include <Exception.h>
+#include <core/include/Application.h>
+#include <core/include/Exception.h>
 #include <memory>
 #include <unistd.h>
-#include <Runnable.h>
-#include <File.h>
-#include <defines.h>
-#include <SharedLibraryLoader.h>
-#include <SharedLibraryManager.h>
-#include <Stl.h>
-#include <ThreadPool.h>
-#include <LockFree.h>
-#include <SharedMemory.h>
+#include <util/include/Runnable.h>
+#include <util/include/File.h>
+#include <util/include/defines.h>
+#include <core/include/SharedLibraryLoader.h>
+#include <core/include/SharedLibraryManager.h>
+#include <containers/include/Stl.h>
+#include <core/include/ThreadPool.h>
+#include <containers/include/LockFree.h>
+#include <ipc/include/SharedMemory.h>
+#include <ipc/include/Transceiver.h>
+#include <ipc/include/IPCMessage.h>
+
 LockFreeQueue<int> Q;
 Logger LOGGER;
 void threadTest(int i)
@@ -122,8 +125,10 @@ int main(int argc,char *argv[])
 
 	while(1)
 	{
-		IPC::SharedMemory shm("/1",1024,true);
-	
+		cout<<"SIZE ======= "<<sizeof(IPC::ShmHeader)<<endl;
+		IPC::Transceiver transceiver("/1",1024,5,true);
+			
+		/*
 		int i = 0;	
 		unsigned char *ptr = shm.begin();
 		
@@ -137,10 +142,12 @@ int main(int argc,char *argv[])
 			cout<<*ptr;
                         ptr++;
                 }
-		cout<<endl;
-		sleep(10);
+		cout<<endl;*/
+		usleep(10);
+		//sleep(1);
 	}
 
+	return 0;
         pApplication->init();
         pApplication->onApplicationStart(argc,argv);
         pApplication->registerSignal(SIGINT,signalCatch);

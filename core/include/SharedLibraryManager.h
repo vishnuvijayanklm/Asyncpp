@@ -1,9 +1,9 @@
 #ifndef SHAREDLIBRARYMANAGER_H
 #define SHAREDLIBRARYMANAGER_H
-#include <Subsystem.h>
-#include <defines.h>
-#include <SharedLibraryLoader.h>
-#include <Stl.h>
+#include <core/include/Subsystem.h>
+#include <util/include/defines.h>
+#include <core/include/SharedLibraryLoader.h>
+#include <containers/include/Stl.h>
 namespace Core
 {
     class SharedLibraryManager: public ISubsystem

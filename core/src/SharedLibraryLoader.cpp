@@ -1,4 +1,5 @@
-#include "SharedLibraryLoader.h"
+#include <core/include/SharedLibraryLoader.h>
+
 namespace Core
 {
     SharedLibraryLoader::SharedLibraryLoader(string libraryname)

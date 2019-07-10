@@ -116,6 +116,13 @@ CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o: ipc/src/SharedMemory.cpp
 CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o: core/include/Exception.h
 CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o: ipc/include/SharedMemory.h
 
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o: ipc/src/Transceiver.cpp
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o: containers/include/Stl.h
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o: core/include/Exception.h
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o: ipc/include/IPCMessage.h
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o: ipc/include/SharedMemory.h
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o: ipc/include/Transceiver.h
+
 CMakeFiles/Framework.dir/main.cpp.o: main.cpp
 CMakeFiles/Framework.dir/main.cpp.o: containers/include/LockFree.h
 CMakeFiles/Framework.dir/main.cpp.o: containers/include/Stl.h
@@ -128,7 +135,9 @@ CMakeFiles/Framework.dir/main.cpp.o: core/include/Subsystem.h
 CMakeFiles/Framework.dir/main.cpp.o: core/include/SubsystemList.h
 CMakeFiles/Framework.dir/main.cpp.o: core/include/Thread.h
 CMakeFiles/Framework.dir/main.cpp.o: core/include/ThreadPool.h
+CMakeFiles/Framework.dir/main.cpp.o: ipc/include/IPCMessage.h
 CMakeFiles/Framework.dir/main.cpp.o: ipc/include/SharedMemory.h
+CMakeFiles/Framework.dir/main.cpp.o: ipc/include/Transceiver.h
 CMakeFiles/Framework.dir/main.cpp.o: util/include/File.h
 CMakeFiles/Framework.dir/main.cpp.o: util/include/Logger.h
 CMakeFiles/Framework.dir/main.cpp.o: util/include/Option.h

@@ -3,9 +3,9 @@
 #include <string>
 #include <dlfcn.h>
 #include <iostream>
-#include <defines.h>
-using namespace std;
+#include <util/include/defines.h>
 
+using namespace std;
 namespace Core
 {
     class SharedLibraryLoader

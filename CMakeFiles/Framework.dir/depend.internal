@@ -116,6 +116,13 @@ CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o
  /root/Desktop/framework/ipc/src/SharedMemory.cpp
  core/include/Exception.h
  ipc/include/SharedMemory.h
+CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o
+ /root/Desktop/framework/ipc/src/Transceiver.cpp
+ containers/include/Stl.h
+ core/include/Exception.h
+ ipc/include/IPCMessage.h
+ ipc/include/SharedMemory.h
+ ipc/include/Transceiver.h
 CMakeFiles/Framework.dir/main.cpp.o
  /root/Desktop/framework/main.cpp
  containers/include/LockFree.h
@@ -129,7 +136,9 @@ CMakeFiles/Framework.dir/main.cpp.o
  core/include/SubsystemList.h
  core/include/Thread.h
  core/include/ThreadPool.h
+ ipc/include/IPCMessage.h
  ipc/include/SharedMemory.h
+ ipc/include/Transceiver.h
  util/include/File.h
  util/include/Logger.h
  util/include/Option.h

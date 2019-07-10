@@ -1,9 +1,10 @@
 #ifndef THREAD_H
 #define THREAD_H
-#include <Stl.h>
-#include <Runnable.h>
-#include <EventInfo.h>
-#include <Exception.h>
+#include <containers/include/Stl.h>
+#include <util/include/Runnable.h>
+#include <core/include/EventInfo.h>
+#include <core/include/Exception.h>
+
 using namespace std;
 namespace Core
 {

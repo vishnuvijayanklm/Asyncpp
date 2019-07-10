@@ -1,4 +1,5 @@
-#include "NotifyManager.h"
+#include <core/include/NotifyManager.h>
+
 namespace Core
 {
 	NotifyManager::NotifyManager():ISubsystem(NOTIFY_MANAGER)

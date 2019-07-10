@@ -7,127 +7,137 @@
 #IncludeRegexTransform: 
 
 /root/Desktop/framework/core/src/Application.cpp
-Application.h
-/root/Desktop/framework/core/src/Application.h
+core/include/Application.h
+-
+core/include/NotifyManager.h
+-
+core/include/SharedLibraryManager.h
+-
+util/include/defines.h
+-
 unistd.h
 -
 iostream
 -
-defines.h
--
-NotifyManager.h
--
-SharedLibraryManager.h
--
 
 /root/Desktop/framework/core/src/Exception.cpp
-Exception.h
-/root/Desktop/framework/core/src/Exception.h
+core/include/Exception.h
+-
 iostream
 -
 
 /root/Desktop/framework/core/src/Notifier.cpp
-Notifier.h
+core/include/Notifier.h
 -
 
 /root/Desktop/framework/core/src/NotifyManager.cpp
-NotifyManager.h
-/root/Desktop/framework/core/src/NotifyManager.h
+core/include/NotifyManager.h
+-
 
 /root/Desktop/framework/core/src/SharedLibraryLoader.cpp
-SharedLibraryLoader.h
-/root/Desktop/framework/core/src/SharedLibraryLoader.h
+core/include/SharedLibraryLoader.h
+-
 
 /root/Desktop/framework/core/src/SharedLibraryManager.cpp
-SharedLibraryManager.h
-/root/Desktop/framework/core/src/SharedLibraryManager.h
+core/include/SharedLibraryManager.h
+-
 
 /root/Desktop/framework/core/src/Thread.cpp
-Thread.h
+core/include/Thread.h
 -
 unistd.h
 -
-defines.h
+util/include/defines.h
 -
 
 /root/Desktop/framework/core/src/ThreadPool.cpp
-ThreadPool.h
+core/include/ThreadPool.h
 -
-defines.h
+util/include/defines.h
 -
 
 /root/Desktop/framework/ipc/src/SharedMemory.cpp
-SharedMemory.h
+ipc/include/SharedMemory.h
 -
 iostream
 -
 errno.h
 -
 
+/root/Desktop/framework/ipc/src/Transceiver.cpp
+ipc/include/Transceiver.h
+-
+array
+-
+
 /root/Desktop/framework/main.cpp
 iostream
 -
-Application.h
+core/include/Application.h
 -
-Exception.h
+core/include/Exception.h
 -
 memory
 -
 unistd.h
 -
-Runnable.h
+util/include/Runnable.h
 -
-File.h
+util/include/File.h
 -
-defines.h
+util/include/defines.h
 -
-SharedLibraryLoader.h
+core/include/SharedLibraryLoader.h
 -
-SharedLibraryManager.h
+core/include/SharedLibraryManager.h
 -
-Stl.h
+containers/include/Stl.h
 -
-ThreadPool.h
+core/include/ThreadPool.h
 -
-LockFree.h
+containers/include/LockFree.h
 -
-SharedMemory.h
+ipc/include/SharedMemory.h
+-
+ipc/include/Transceiver.h
+-
+ipc/include/IPCMessage.h
 -
 
 /root/Desktop/framework/util/src/File.cpp
-File.h
+util/include/File.h
 -
-Application.h
+core/include/Application.h
 -
-NotifyManager.h
+core/include/NotifyManager.h
 -
 
 /root/Desktop/framework/util/src/Logger.cpp
-Logger.h
-/root/Desktop/framework/util/src/Logger.h
+util/include/Logger.h
+-
 string.h
 -
-defines.h
+util/include/defines.h
 -
 
 /root/Desktop/framework/util/src/Option.cpp
-Option.h
-/root/Desktop/framework/util/src/Option.h
-defines.h
+util/include/Option.h
+-
+util/include/defines.h
 -
 
 /root/Desktop/framework/util/src/Runnable.cpp
-Runnable.h
-/root/Desktop/framework/util/src/Runnable.h
+util/include/Runnable.h
+-
 
 /root/Desktop/framework/util/src/TimerManager.cpp
-TimerManager.h
-/root/Desktop/framework/util/src/TimerManager.h
+util/include/TimerManager.h
+-
 
 containers/include/LockFree.h
 atomic
 -
-defines.h
+util/include/defines.h
 -
 
 containers/include/Stl.h
@@ -153,31 +163,23 @@ list
 -
 
 core/include/Application.h
-Subsystem.h
+core/include/Subsystem.h
 -
-Stl.h
+containers/include/Stl.h
+-
+core/include/Exception.h
+-
+core/include/ThreadPool.h
+-
+util/include/Option.h
 -
 signal.h
 -
-Exception.h
--
-ThreadPool.h
--
-Subsystem.h
--
-Option.h
--
 
 core/include/EventInfo.h
-memory
+atomic
 -
-future
--
-condition_variable
--
-mutex
--
-Logger.h
+thread
 -
 
 core/include/Exception.h
@@ -189,23 +191,23 @@ errno.h
 -
 
 core/include/Notifier.h
-Stl.h
+containers/include/Stl.h
 -
-EventInfo.h
+core/include/EventInfo.h
 -
-Exception.h
+core/include/Exception.h
 -
-Runnable.h
+util/include/Runnable.h
 -
-defines.h
+util/include/defines.h
 -
 
 core/include/NotifyManager.h
-Subsystem.h
+core/include/Subsystem.h
 -
-defines.h
+util/include/defines.h
 -
-Notifier.h
+core/include/Notifier.h
 -
 
 core/include/SharedLibraryLoader.h
@@ -215,17 +217,17 @@ dlfcn.h
 -
 iostream
 -
-defines.h
+util/include/defines.h
 -
 
 core/include/SharedLibraryManager.h
-Subsystem.h
+core/include/Subsystem.h
 -
-defines.h
+util/include/defines.h
 -
-SharedLibraryLoader.h
+core/include/SharedLibraryLoader.h
 -
-Stl.h
+containers/include/Stl.h
 -
 
 core/include/Subsystem.h
@@ -233,34 +235,40 @@ string
 -
 iostream
 -
-SubsystemList.h
+core/include/SubsystemList.h
 -
 
 core/include/SubsystemList.h
 
 core/include/Thread.h
-Stl.h
+containers/include/Stl.h
 -
-Runnable.h
+util/include/Runnable.h
 -
-EventInfo.h
+core/include/EventInfo.h
 -
-Exception.h
+core/include/Exception.h
 -
 
 core/include/ThreadPool.h
-Subsystem.h
+core/include/Subsystem.h
+-
+core/include/Exception.h
+-
+core/include/Thread.h
+-
+containers/include/Stl.h
 -
 thread
 -
-Stl.h
--
-Exception.h
--
-Thread.h
+
+ipc/include/IPCMessage.h
+string.h
 -
 
 ipc/include/SharedMemory.h
+core/include/Exception.h
+-
 sys/mman.h
 -
 sys/stat.h
@@ -269,11 +277,19 @@ fcntl.h
 -
 string
 -
-Exception.h
--
 unistd.h
 -
 iostream
+-
+
+ipc/include/Transceiver.h
+string
+-
+ipc/include/SharedMemory.h
+-
+ipc/include/IPCMessage.h
+-
+containers/include/Stl.h
 -
 
 util/include/File.h
@@ -313,11 +329,11 @@ string
 -
 iostream
 -
-Stl.h
--
 functional
 -
-Exception.h
+containers/include/Stl.h
+-
+core/include/Exception.h
 -
 
 util/include/Runnable.h
@@ -329,10 +345,10 @@ functional
 util/include/TimerManager.h
 
 util/include/defines.h
-Logger.h
+util/include/Logger.h
 -
-SubsystemList.h
+core/include/SubsystemList.h
 -
-Application.h
+core/include/Application.h
 -
 

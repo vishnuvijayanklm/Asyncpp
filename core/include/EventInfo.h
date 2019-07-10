@@ -1,12 +1,9 @@
 #ifndef EVENTINFO_H
 #define EVENTINFO_H
 
-#include <memory>
-#include <future>
-#include <condition_variable>
-#include <mutex>
-#include <Logger.h>
-extern Logger LOGGER;
+#include <atomic>
+#include <thread>
+
 template<typename T>
 class EventResponse
 {

@@ -1,6 +1,6 @@
-#include "Logger.h"
+#include <util/include/Logger.h>
 #include <string.h>
-#include <defines.h>
+#include <util/include/defines.h>
 Logger::Logger()
 {
 	this->m_logLevel = 127;

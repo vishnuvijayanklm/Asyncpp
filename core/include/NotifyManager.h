@@ -1,9 +1,9 @@
 #ifndef NOTIFYMANAGER_H
 #define NOTIFYMANAGER_H
 
-#include <Subsystem.h>
-#include <defines.h>
-#include <Notifier.h>
+#include <core/include/Subsystem.h>
+#include <util/include/defines.h>
+#include <core/include/Notifier.h>
 #define SYNC_DISABLED (unsigned int)-1
 #ifndef NOTIFIER_COUNT
 #define NOTIFIER_COUNT 5

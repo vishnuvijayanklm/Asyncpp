@@ -1,13 +1,11 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
-#include <Subsystem.h>
-#include <Stl.h>
+#include <core/include/Subsystem.h>
+#include <containers/include/Stl.h>
+#include <core/include/Exception.h>
+#include <core/include/ThreadPool.h>
+#include <util/include/Option.h>
 #include <signal.h>
-#include <Exception.h>
-#include <ThreadPool.h>
-#include <Subsystem.h>
-#include <Option.h>
-//#include <NotifyManager.h>
 namespace Core
 {
 

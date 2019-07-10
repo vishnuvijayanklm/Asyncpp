@@ -1,9 +1,9 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include <Logger.h>
-#include <SubsystemList.h>
-#include <Application.h>
+#include <util/include/Logger.h>
+#include <core/include/SubsystemList.h>
+#include <core/include/Application.h>
 #define likely(x)       __builtin_expect((x),1)
 #define unlikely(x)     __builtin_expect((x),0)
 

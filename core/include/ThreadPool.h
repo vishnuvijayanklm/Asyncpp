@@ -1,10 +1,11 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
-#include <Subsystem.h>
+#include <core/include/Subsystem.h>
+#include <core/include/Exception.h>
+#include <core/include/Thread.h>
+#include <containers/include/Stl.h>
 #include <thread>
-#include <Stl.h>
-#include <Exception.h>
-#include <Thread.h>
+
 using namespace std;
 #define MIN_THREAD_POOL_SIZE 0x02
 #define MAX_THREAD_POOL_SIZE 0xff

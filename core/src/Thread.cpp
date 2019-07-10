@@ -1,6 +1,6 @@
-#include <Thread.h>
+#include <core/include/Thread.h>
 #include <unistd.h>
-#include <defines.h>
+#include <util/include/defines.h>
 namespace Core
 {
 	Thread::Thread()

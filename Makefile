@@ -366,6 +366,33 @@ ipc/src/SharedMemory.cpp.s:
 	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.s
 .PHONY : ipc/src/SharedMemory.cpp.s
 
+ipc/src/Transceiver.o: ipc/src/Transceiver.cpp.o
+
+.PHONY : ipc/src/Transceiver.o
+
+# target to build an object file
+ipc/src/Transceiver.cpp.o:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o
+.PHONY : ipc/src/Transceiver.cpp.o
+
+ipc/src/Transceiver.i: ipc/src/Transceiver.cpp.i
+
+.PHONY : ipc/src/Transceiver.i
+
+# target to preprocess a source file
+ipc/src/Transceiver.cpp.i:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.i
+.PHONY : ipc/src/Transceiver.cpp.i
+
+ipc/src/Transceiver.s: ipc/src/Transceiver.cpp.s
+
+.PHONY : ipc/src/Transceiver.s
+
+# target to generate assembly for a file
+ipc/src/Transceiver.cpp.s:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.s
+.PHONY : ipc/src/Transceiver.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -564,6 +591,9 @@ help:
 	@echo "... ipc/src/SharedMemory.o"
 	@echo "... ipc/src/SharedMemory.i"
 	@echo "... ipc/src/SharedMemory.s"
+	@echo "... ipc/src/Transceiver.o"
+	@echo "... ipc/src/Transceiver.i"
+	@echo "... ipc/src/Transceiver.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

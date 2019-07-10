@@ -1,9 +1,9 @@
-#include "Application.h"
+#include <core/include/Application.h>
+#include <core/include/NotifyManager.h>
+#include <core/include/SharedLibraryManager.h>
+#include <util/include/defines.h>
 #include <unistd.h>
 #include <iostream>
-#include <defines.h>
-#include <NotifyManager.h>
-#include <SharedLibraryManager.h>
 namespace Core
 {
 

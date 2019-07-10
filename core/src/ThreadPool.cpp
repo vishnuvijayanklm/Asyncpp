@@ -1,5 +1,5 @@
-#include <ThreadPool.h>
-#include <defines.h>
+#include <core/include/ThreadPool.h>
+#include <util/include/defines.h>
 namespace Core
 {
 	ThreadPool::ThreadPool(int minSize,int maxSize):ISubsystem(THREADPOOL)

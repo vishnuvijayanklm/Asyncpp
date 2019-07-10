@@ -1,11 +1,12 @@
 #ifndef NOTIFIER_H
 #define NOTIFIER_H
 
-#include <Stl.h>
-#include <EventInfo.h>
-#include <Exception.h>
-#include <Runnable.h>
-#include <defines.h>
+#include <containers/include/Stl.h>
+#include <core/include/EventInfo.h>
+#include <core/include/Exception.h>
+#include <util/include/Runnable.h>
+#include <util/include/defines.h>
+
 using namespace std;
 namespace Core
 {

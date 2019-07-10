@@ -11,10 +11,11 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lstdc++ -lrt -lpthread -l
 add_definitions(${CMAKE_CXX_FLAGS})
 add_definitions(${CMAKE_EXE_LINKER_FLAGS})
 
-include_directories(core/include)
-include_directories(containers/include)
-include_directories(util/include)
-include_directories(ipc/include)
+#include_directories(core/include)
+#include_directories(containers/include)
+#include_directories(util/include)
+#include_directories(ipc/include)
+include_directories(./)
 
 file(GLOB SOURCES "core/src/*.cpp" "util/src/*.cpp" "*.cpp" "ipc/src/*.cpp")
 #file(GLOB SOURCES "core/src/*.cpp" "util/src/*.cpp")
