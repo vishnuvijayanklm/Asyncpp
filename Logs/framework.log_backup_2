@@ -1,0 +1,5 @@
+main.cpp|182|2019-07-12T06:20:27.1042033|[CR][0][8280]|Exception : -150 : Message Queue open failed  Errno 22
+Application.cpp|16|2019-07-12T06:20:27.1043318|[VB][0x1ead040][8280]|Application::~Application>>>
+Application.cpp|67|2019-07-12T06:20:27.1043776|[VB][0x1ead040][8280]|Application::Shutdown>>>
+Application.cpp|79|2019-07-12T06:20:27.1043874|[VB][0x1ead040][8280]|Application::Shutdown<<<
+Application.cpp|18|2019-07-12T06:20:27.1044136|[VB][0x1ead040][8280]|Application::~Application<<<
