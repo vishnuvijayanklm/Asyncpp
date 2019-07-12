@@ -14,15 +14,17 @@
 #include <ipc/include/SharedMemory.h>
 #include <ipc/include/Transceiver.h>
 #include <ipc/include/IPCMessage.h>
+#include <ipc/include/MessageQueue.h>
 
 LockFreeQueue<int> Q;
 Logger LOGGER;
+IPC::MessageQueue msgQ(0x00100);
 void threadTest(int i)
 {
     while(1)
     {
-        cerr<<"In threadTest "<<i<<endl;
-        sleep(1);
+	char p[3];
+	cout<<"RECV ==== "<<msgQ.read(p,3,true)<<endl;
     }
 }
 using namespace std;
@@ -57,7 +59,8 @@ int main(int argc,char *argv[])
     try
     {
         LOGGER.setLogFile("Logs","framework.log");
-/*	
+	std::thread t(threadTest,1);
+		/*	
 	StlMap<int,int,std::recursive_mutex> myMap;	
 	int val = 0;
 	//StlList<int> list;
@@ -122,12 +125,15 @@ int main(int argc,char *argv[])
             LOG_ERRORNP((LOGGER),("Failed to get appliaction object"));
             return -1;
         }
-
+	msgQ.open();
 	while(1)
 	{
+		
 		cout<<"SIZE ======= "<<sizeof(IPC::ShmHeader)<<endl;
-		IPC::Transceiver transceiver("/1",1024,5,true);
-			
+		//IPC::Transceiver transceiver("/1",1024,5,true);
+		cout<<"=======ID==========="<<std::hex<<msgQ.getMsqId()<<endl;
+		char ptr[] = "Hai";
+		cout<<"=======SEND========="<<msgQ.send(ptr,3)<<endl;
 		/*
 		int i = 0;	
 		unsigned char *ptr = shm.begin();
@@ -143,7 +149,7 @@ int main(int argc,char *argv[])
                         ptr++;
                 }
 		cout<<endl;*/
-		usleep(10);
+		usleep(100000);
 		//sleep(1);
 	}
 

@@ -15,6 +15,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Framework.dir/main.cpp.o"
   "CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o"
   "CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o"
+  "CMakeFiles/Framework.dir/ipc/src/MessageQueue.cpp.o"
   "Framework.pdb"
   "Framework"
 )

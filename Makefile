@@ -339,6 +339,33 @@ core/src/ThreadPool.cpp.s:
 	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.s
 .PHONY : core/src/ThreadPool.cpp.s
 
+ipc/src/MessageQueue.o: ipc/src/MessageQueue.cpp.o
+
+.PHONY : ipc/src/MessageQueue.o
+
+# target to build an object file
+ipc/src/MessageQueue.cpp.o:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/MessageQueue.cpp.o
+.PHONY : ipc/src/MessageQueue.cpp.o
+
+ipc/src/MessageQueue.i: ipc/src/MessageQueue.cpp.i
+
+.PHONY : ipc/src/MessageQueue.i
+
+# target to preprocess a source file
+ipc/src/MessageQueue.cpp.i:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/MessageQueue.cpp.i
+.PHONY : ipc/src/MessageQueue.cpp.i
+
+ipc/src/MessageQueue.s: ipc/src/MessageQueue.cpp.s
+
+.PHONY : ipc/src/MessageQueue.s
+
+# target to generate assembly for a file
+ipc/src/MessageQueue.cpp.s:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/ipc/src/MessageQueue.cpp.s
+.PHONY : ipc/src/MessageQueue.cpp.s
+
 ipc/src/SharedMemory.o: ipc/src/SharedMemory.cpp.o
 
 .PHONY : ipc/src/SharedMemory.o
@@ -588,6 +615,9 @@ help:
 	@echo "... core/src/ThreadPool.o"
 	@echo "... core/src/ThreadPool.i"
 	@echo "... core/src/ThreadPool.s"
+	@echo "... ipc/src/MessageQueue.o"
+	@echo "... ipc/src/MessageQueue.i"
+	@echo "... ipc/src/MessageQueue.s"
 	@echo "... ipc/src/SharedMemory.o"
 	@echo "... ipc/src/SharedMemory.i"
 	@echo "... ipc/src/SharedMemory.s"

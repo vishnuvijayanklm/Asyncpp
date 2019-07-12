@@ -112,6 +112,21 @@ CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o
  util/include/Option.h
  util/include/Runnable.h
  util/include/defines.h
+CMakeFiles/Framework.dir/ipc/src/MessageQueue.cpp.o
+ /root/Desktop/framework/ipc/src/MessageQueue.cpp
+ containers/include/Stl.h
+ core/include/Application.h
+ core/include/EventInfo.h
+ core/include/Exception.h
+ core/include/Subsystem.h
+ core/include/SubsystemList.h
+ core/include/Thread.h
+ core/include/ThreadPool.h
+ ipc/include/MessageQueue.h
+ util/include/Logger.h
+ util/include/Option.h
+ util/include/Runnable.h
+ util/include/defines.h
 CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o
  /root/Desktop/framework/ipc/src/SharedMemory.cpp
  core/include/Exception.h
@@ -137,6 +152,7 @@ CMakeFiles/Framework.dir/main.cpp.o
  core/include/Thread.h
  core/include/ThreadPool.h
  ipc/include/IPCMessage.h
+ ipc/include/MessageQueue.h
  ipc/include/SharedMemory.h
  ipc/include/Transceiver.h
  util/include/File.h

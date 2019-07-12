@@ -56,6 +56,10 @@ core/include/ThreadPool.h
 util/include/defines.h
 -
 
+/root/Desktop/framework/ipc/src/MessageQueue.cpp
+ipc/include/MessageQueue.h
+-
+
 /root/Desktop/framework/ipc/src/SharedMemory.cpp
 ipc/include/SharedMemory.h
 -
@@ -102,6 +106,8 @@ ipc/include/SharedMemory.h
 ipc/include/Transceiver.h
 -
 ipc/include/IPCMessage.h
+-
+ipc/include/MessageQueue.h
 -
 
 /root/Desktop/framework/util/src/File.cpp
@@ -264,6 +270,18 @@ thread
 
 ipc/include/IPCMessage.h
 string.h
+-
+
+ipc/include/MessageQueue.h
+core/include/Exception.h
+-
+util/include/defines.h
+-
+sys/types.h
+-
+sys/ipc.h
+-
+sys/msg.h
 -
 
 ipc/include/SharedMemory.h

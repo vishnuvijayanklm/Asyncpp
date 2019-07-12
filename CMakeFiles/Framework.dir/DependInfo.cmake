@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/root/Desktop/framework/core/src/SharedLibraryManager.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/SharedLibraryManager.cpp.o"
   "/root/Desktop/framework/core/src/Thread.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/Thread.cpp.o"
   "/root/Desktop/framework/core/src/ThreadPool.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/core/src/ThreadPool.cpp.o"
+  "/root/Desktop/framework/ipc/src/MessageQueue.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/ipc/src/MessageQueue.cpp.o"
   "/root/Desktop/framework/ipc/src/SharedMemory.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/ipc/src/SharedMemory.cpp.o"
   "/root/Desktop/framework/ipc/src/Transceiver.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/ipc/src/Transceiver.cpp.o"
   "/root/Desktop/framework/main.cpp" "/root/Desktop/framework/CMakeFiles/Framework.dir/main.cpp.o"
