@@ -23,6 +23,13 @@ class StlQueue:private queue<T>
 		this->m_size = 0;
 	}
 
+	StlQueue(StlQueue& rhs)
+        {
+		lock_guard<mutex> lock(this->m_mtx);
+		lock_guard<mutex> lockrhs(rhs.m_mtx);
+		queue<T>::operator=(rhs); 
+	}
+
 	~StlQueue()
 	{
 

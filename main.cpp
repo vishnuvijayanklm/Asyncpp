@@ -48,6 +48,7 @@ void signalCatch(int s)
     //pApplication->registerSignal(s,nullptr);
     exit(0);
 }
+
 void fileTest()
 {
     Util::File f;
@@ -61,16 +62,31 @@ void fileTest()
         cout<<"Failed "<<endl;
     }
 }
+
+TEST_CASE(TESTCASE0)
+{
+	CHECK_NE(1,2);
+	CHECK_NE(2,2);
+	CHECK_EQ(1,2);
+	CHECK_EQ(11,11);
+}
+
+TEST_CASE(TESTCASE1)
+{
+	CHECK_NE(1,2);
+	CHECK_EQ(2,2);
+	CHECK_EQ(11,11);
+}
+
 int main(int argc,char *argv[])
 {
     //Core::NotifyManager *pManager = nullptr;
     try
     {
-	CHECK_NE(1,2);
-	CHECK_NE(2,2);
-	CHECK_EQ(1,2);
-	CHECK_EQ(11,11);
-        
+
+	UNIT_TEST::TestCase::getInstance()->runAllTestCases();
+	UNIT_TEST::TestCase::getInstance()->runAllTestCases();
+	return 0;
 	LOGGER.setLogFile("Logs","framework.log");
 	std::thread t(threadTest,1);
 		/*	
