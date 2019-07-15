@@ -1,53 +1,72 @@
 #include <ipc/include/MessageQueue.h>
+#include <mqueue.h>
 
 namespace IPC
 {
-	MessageQueue::MessageQueue(key_t key)
+	MessageQueue::MessageQueue(string name,size_t maxSize,size_t msgSize,bool isCreate)
 	{
-		this->mKey = key;
-		this->mMsqId = -1;
+		this->mName = name;
+                this->mMaxSize = maxSize;
+                this->mMsgSize = msgSize;
+		this->mMqdt = IPC_ERROR;
+		this->mIsCreate = isCreate;
 	}
 
 	MessageQueue::~MessageQueue()
 	{
 		this->close();
+		this->unlink();
 	}
 
-	void MessageQueue::open()
+	bool MessageQueue::open()
 	{
-		this->mMsqId = msgget(this->mKey,S_IRUSR | S_IWUSR | IPC_CREAT);		
+		this->close();
 
-		if(this->mMsqId == IPC_ERROR)
+		struct mq_attr attr;
+		attr.mq_maxmsg = this->mMaxSize;
+  		attr.mq_msgsize = this->mMsgSize;
+  		attr.mq_flags = 0;
+	
+		int oflag = O_RDWR;
+		
+		if(this->mIsCreate)
 		{
-			throw MESSAGE_QUEUE_OPEN_FAILED();	
-		}	
+			oflag |= O_CREAT; 
+		}
+
+		this->mMqdt = mq_open (this->mName.c_str(),oflag,0664,&attr);
+
+		return this->mMqdt != -1;	
 	}	
 
 	void MessageQueue::close()
 	{
-		if(this->mMsqId != IPC_ERROR)
+		if(this->mMqdt != IPC_ERROR)
 		{
-			msgctl(this->mMsqId,IPC_RMID,NULL); 
+			mq_close(this->mMqdt);
 		}
 	}
 
-	size_t MessageQueue::send(char *ptr,size_t len)
+	void MessageQueue::unlink()
 	{
-		if(msgsnd(this->mMsqId,static_cast<void*>(ptr),len,0) == IPC_ERROR)
+		if(!this->mName.empty())
 		{
-			return IPC_ERROR;
+			mq_unlink(this->mName.c_str());
 		}
-		return len;
+	}
+
+	int MessageQueue::send(char *ptr,size_t len)
+	{
+		return mq_send(this->mMqdt,ptr,len,0);
 	}
 
 	size_t MessageQueue::read(char *ptr,size_t len,bool isblocked)
 	{
-		int msgflg = 0;
-		
-		if(!isblocked)
-		{
-			msgflg |= IPC_NOWAIT;
-		}
-		return msgrcv(this->mMsqId,ptr,len,0,msgflg);
+		return mq_receive(this->mMqdt,ptr,len,0);
+	}
+
+	void MessageQueue::recvFn(union sigval sv)
+	{
+		cout<<"RECV FN"<<endl;
 	}
 }

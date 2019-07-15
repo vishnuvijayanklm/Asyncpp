@@ -15,16 +15,24 @@
 #include <ipc/include/Transceiver.h>
 #include <ipc/include/IPCMessage.h>
 #include <ipc/include/MessageQueue.h>
+#include <unit_test/include/TestCase.h>
 
 LockFreeQueue<int> Q;
 Logger LOGGER;
-IPC::MessageQueue msgQ(0x00100);
+IPC::MessageQueue msgQ("/mq",100,3,true);
 void threadTest(int i)
 {
     while(1)
     {
 	char p[3];
-	cout<<"RECV ==== "<<msgQ.read(p,3,true)<<endl;
+	if(msgQ.read(p,4,true) == -1)
+	{
+		cout<<"RECV ERROR"<<endl;
+	}
+	else
+	{
+		cout<<"RECV "<<p<<endl;
+	}
     }
 }
 using namespace std;
@@ -58,7 +66,12 @@ int main(int argc,char *argv[])
     //Core::NotifyManager *pManager = nullptr;
     try
     {
-        LOGGER.setLogFile("Logs","framework.log");
+	CHECK_NE(1,2);
+	CHECK_NE(2,2);
+	CHECK_EQ(1,2);
+	CHECK_EQ(11,11);
+        
+	LOGGER.setLogFile("Logs","framework.log");
 	std::thread t(threadTest,1);
 		/*	
 	StlMap<int,int,std::recursive_mutex> myMap;	
@@ -131,9 +144,10 @@ int main(int argc,char *argv[])
 		
 		cout<<"SIZE ======= "<<sizeof(IPC::ShmHeader)<<endl;
 		//IPC::Transceiver transceiver("/1",1024,5,true);
-		cout<<"=======ID==========="<<std::hex<<msgQ.getMsqId()<<endl;
+		cout<<"=======ID==========="<<std::hex<<msgQ.id()<<endl;
 		char ptr[] = "Hai";
 		cout<<"=======SEND========="<<msgQ.send(ptr,3)<<endl;
+		sleep(1);
 		/*
 		int i = 0;	
 		unsigned char *ptr = shm.begin();

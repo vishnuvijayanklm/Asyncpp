@@ -3,9 +3,7 @@
 
 #include <core/include/Exception.h>
 #include <util/include/defines.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
+#include <mqueue.h>
 
 using namespace std;
 
@@ -13,25 +11,31 @@ namespace IPC
 {
 	class MessageQueue
 	{
-			key_t mKey;
-			int mMsqId;
+			mqd_t mMqdt;
+			bool mIsCreate;
+			size_t mMaxSize;
+			size_t mMsgSize;
+			string mName;
 
+			void unlink();
+
+			void recvFn(union sigval sv);
 		public:
-			MessageQueue(key_t);
+			MessageQueue(string name,size_t maxSize,size_t msgSize,bool isCreate = false);
 			~MessageQueue();
-			
-			void open();
+		
+			bool open();	
 			void close();
-
-			inline int getMsqId() const;
+		
+			inline mqd_t id() const;	
 			
-			size_t send(char *ptr,size_t len);
+			int send(char *ptr,size_t len);
 			size_t read(char *ptr,size_t len,bool isblocked = false);
 	};
 
-	int MessageQueue::getMsqId() const
+	mqd_t MessageQueue::id() const
 	{
-		return this->mMsqId;
+		return this->mMqdt;
 	}
 }
 #endif

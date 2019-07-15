@@ -1,5 +1,0 @@
-main.cpp|183|2019-07-12T06:57:23.6910839|[CR][0][9180]|Exception : -150 : Message Queue open failed  Errno 17
-Application.cpp|16|2019-07-12T06:57:23.6912696|[VB][0x24af040][9180]|Application::~Application>>>
-Application.cpp|67|2019-07-12T06:57:23.6912984|[VB][0x24af040][9180]|Application::Shutdown>>>
-Application.cpp|79|2019-07-12T06:57:23.6913194|[VB][0x24af040][9180]|Application::Shutdown<<<
-Application.cpp|18|2019-07-12T06:57:23.6913372|[VB][0x24af040][9180]|Application::~Application<<<
