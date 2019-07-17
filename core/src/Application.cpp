@@ -128,7 +128,7 @@ namespace Core
     {
         this->addOption(Util::Option("-v","--version")
                         .isRepeatable(false)
-                        .isRequired(true)
+                        .isRequired(false)
                         .setCallBack(bind(&Application::version,this,placeholders::_1,placeholders::_2)));
     }
 

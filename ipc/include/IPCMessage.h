@@ -42,7 +42,7 @@ namespace IPC
 
 			void reserve(size_t size)
 			{
-				this->mEnd = this->mBegin + size;
+				this->mEnd = (this->mBegin + size);
 			}
 			
 			void* operator new(size_t size,void *ptr)

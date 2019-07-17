@@ -17,7 +17,8 @@ add_definitions(${CMAKE_EXE_LINKER_FLAGS})
 #include_directories(ipc/include)
 include_directories(./)
 
-file(GLOB SOURCES "core/src/*.cpp" "util/src/*.cpp" "*.cpp" "ipc/src/*.cpp")
+file(GLOB SOURCES "core/src/*.cpp" "util/src/*.cpp" "*.cpp" "ipc/src/*.cpp" "async/src/*.cpp")
+
 #file(GLOB SOURCES "core/src/*.cpp" "util/src/*.cpp")
 project (Framework)
 #ADD_LIBRARY(framework STATIC ${SOURCES})

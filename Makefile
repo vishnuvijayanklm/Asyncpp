@@ -123,6 +123,33 @@ Framework/fast:
 	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/build
 .PHONY : Framework/fast
 
+async/src/PollManager.o: async/src/PollManager.cpp.o
+
+.PHONY : async/src/PollManager.o
+
+# target to build an object file
+async/src/PollManager.cpp.o:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/async/src/PollManager.cpp.o
+.PHONY : async/src/PollManager.cpp.o
+
+async/src/PollManager.i: async/src/PollManager.cpp.i
+
+.PHONY : async/src/PollManager.i
+
+# target to preprocess a source file
+async/src/PollManager.cpp.i:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/async/src/PollManager.cpp.i
+.PHONY : async/src/PollManager.cpp.i
+
+async/src/PollManager.s: async/src/PollManager.cpp.s
+
+.PHONY : async/src/PollManager.s
+
+# target to generate assembly for a file
+async/src/PollManager.cpp.s:
+	$(MAKE) -f CMakeFiles/Framework.dir/build.make CMakeFiles/Framework.dir/async/src/PollManager.cpp.s
+.PHONY : async/src/PollManager.cpp.s
+
 core/src/Application.o: core/src/Application.cpp.o
 
 .PHONY : core/src/Application.o
@@ -591,6 +618,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Framework"
+	@echo "... async/src/PollManager.o"
+	@echo "... async/src/PollManager.i"
+	@echo "... async/src/PollManager.s"
 	@echo "... core/src/Application.o"
 	@echo "... core/src/Application.i"
 	@echo "... core/src/Application.s"

@@ -15,28 +15,29 @@
 #include <ipc/include/Transceiver.h>
 #include <ipc/include/IPCMessage.h>
 #include <ipc/include/MessageQueue.h>
-#include <unit_test/include/TestCase.h>
+#include <async/include/PollManager.h>
 
+using namespace std;
+unique_ptr<Core::Application> pApplication(new Core::Application());
 LockFreeQueue<int> Q;
 Logger LOGGER;
-IPC::MessageQueue msgQ("/mq",100,3,true);
+/*
 void threadTest(int i)
 {
     while(1)
     {
-	char p[3];
-	if(msgQ.read(p,4,true) == -1)
-	{
-		cout<<"RECV ERROR"<<endl;
-	}
-	else
-	{
-		cout<<"RECV "<<p<<endl;
-	}
+        char p[3];
+        if(msgQ.read(p,4) == -1)
+        {
+                cout<<"RECV ERROR"<<endl;
+        }
+        else
+        {
+                cout<<"RECV "<<p<<endl;
+        }
     }
-}
-using namespace std;
-unique_ptr<Core::Application> pApplication(new Core::Application());
+}*/
+
 void signalCatch(int s)
 {
     cerr<<"Signal caught "<<s<<endl;
@@ -62,7 +63,7 @@ void fileTest()
         cout<<"Failed "<<endl;
     }
 }
-
+/*
 TEST_CASE(TESTCASE0)
 {
 	CHECK_NE(1,2);
@@ -76,7 +77,7 @@ TEST_CASE(TESTCASE1)
 	CHECK_NE(1,2);
 	CHECK_EQ(2,2);
 	CHECK_EQ(11,11);
-}
+}*/
 
 int main(int argc,char *argv[])
 {
@@ -84,11 +85,9 @@ int main(int argc,char *argv[])
     try
     {
 
-	UNIT_TEST::TestCase::getInstance()->runAllTestCases();
-	UNIT_TEST::TestCase::getInstance()->runAllTestCases();
-	return 0;
 	LOGGER.setLogFile("Logs","framework.log");
-	std::thread t(threadTest,1);
+	Async::PollManager::getInstance();
+	//std::thread t(threadTest,1);
 		/*	
 	StlMap<int,int,std::recursive_mutex> myMap;	
 	int val = 0;
@@ -154,16 +153,37 @@ int main(int argc,char *argv[])
             LOG_ERRORNP((LOGGER),("Failed to get appliaction object"));
             return -1;
         }
+        pApplication->init();
+        pApplication->onApplicationStart(argc,argv);
+        //pApplication->registerSignal(SIGINT,signalCatch);
+	IPC::MessageQueue msgQ("/mq",100,sizeof(IPC::ShmHeader*),true);
 	msgQ.open();
+	msgQ.read([](shared_ptr<char> ptr, size_t len)
+	{
+		long p;
+		memcpy(&p,ptr.get(),len);
+		IPC::ShmHeader *pShm = (IPC::ShmHeader*)p;
+
+		char pp[100];
+		pShm->read(pp);	
+		pp[pShm->size()] = 0x00;
+		cout<<"Data "<<pp<<" Free "<<pShm->free()<<endl;
+	});
+	
+	//IPC::Transceiver("/1",1024,10,true);	
+	int i = 0;
 	while(1)
 	{
+		char *Shmptr = new char[sizeof(IPC::ShmHeader) +10];
+		IPC::ShmHeader *pShm = new (Shmptr) IPC::ShmHeader();
+		pShm->reserve(10);
 		
-		cout<<"SIZE ======= "<<sizeof(IPC::ShmHeader)<<endl;
-		//IPC::Transceiver transceiver("/1",1024,5,true);
-		cout<<"=======ID==========="<<std::hex<<msgQ.id()<<endl;
-		char ptr[] = "Hai";
-		cout<<"=======SEND========="<<msgQ.send(ptr,3)<<endl;
-		sleep(1);
+		string s = "Hai_" + to_string(i++);	
+		pShm->write(s.c_str(),s.length());
+		long x = (long)pShm;	
+		msgQ.send((char*)&pShm,sizeof(IPC::ShmHeader*));
+	
+		//sleep(1);
 		/*
 		int i = 0;	
 		unsigned char *ptr = shm.begin();
@@ -179,14 +199,12 @@ int main(int argc,char *argv[])
                         ptr++;
                 }
 		cout<<endl;*/
+		//usleep(1);
 		usleep(100000);
-		//sleep(1);
 	}
 
 	return 0;
-        pApplication->init();
-        pApplication->onApplicationStart(argc,argv);
-        pApplication->registerSignal(SIGINT,signalCatch);
+	
 	Core::SharedLibraryManager* pSharedLibraryManager = (Core::SharedLibraryManager*)pApplication->getSubsystem(SHAREDLIBRARY_MANAGER);
 	if(pSharedLibraryManager)
 	{
