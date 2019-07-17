@@ -16,6 +16,7 @@
 #include <ipc/include/IPCMessage.h>
 #include <ipc/include/MessageQueue.h>
 #include <async/include/PollManager.h>
+#include <async/include/Task.h>
 
 using namespace std;
 unique_ptr<Core::Application> pApplication(new Core::Application());
@@ -148,7 +149,33 @@ int main(int argc,char *argv[])
             }
         }
         return 0;*/
-        if(unlikely(pApplication.get() == nullptr))
+        
+	Async::Task task = Async::Task(
+				[]()
+				{
+					cout<<"Hai1"<<endl;
+				})
+				.then([]()
+				{
+					cout<<"Hai2"<<endl;
+				})
+				.then([]()
+				{
+					cout<<"Hai3"<<endl;
+				})
+				.then([]()
+				{
+					cout<<"Hai4"<<endl;
+				})
+				.then([]()
+				{
+					cout<<"Hai5"<<endl;
+				})
+				.execute();
+	task.execute();
+
+	return 0;
+	if(unlikely(pApplication.get() == nullptr))
         {
             LOG_ERRORNP((LOGGER),("Failed to get appliaction object"));
             return -1;
