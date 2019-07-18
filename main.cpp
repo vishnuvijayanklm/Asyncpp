@@ -151,7 +151,7 @@ int main(int argc,char *argv[])
         return 0;*/
 	while(1)
 	{ 
-		Async::Task([]()
+		Async::SyncTask([]()
 		{
 			cout<<"Hai 1"<<endl;
 			char *ptr = new char[10];
@@ -193,8 +193,8 @@ int main(int argc,char *argv[])
 		.then([]()
 		{
 			cout<<"Hai 5"<<endl;
-		}).execute();
-		usleep(100000);
+		});
+		usleep(1000000);
 	}
 
 	return 0;

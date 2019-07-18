@@ -6,7 +6,6 @@
 #include <core/include/Notifier.h>
 #include <core/include/Synchronizer.h>
 
-#define SYNC_DISABLED (unsigned int)-1
 #ifndef NOTIFIER_COUNT
 #define NOTIFIER_COUNT 5
 #endif
@@ -20,11 +19,6 @@ namespace Core
 		
 			Notifier *pNotifier;
 		
-			/*	
-#ifdef WITH_EVENTPOOL	
-StlQueue<IEventInfo*> mEventPoolQ;
-#endif*/
-
 			NotifyManager();
 
 		public:
@@ -33,12 +27,12 @@ StlQueue<IEventInfo*> mEventPoolQ;
 			virtual ~NotifyManager();
 			virtual void init();
 
-			inline bool dispatch(shared_ptr<Async::ITaskInfo> &task); 
+			inline bool dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey); 
 	};
 
-	bool NotifyManager::dispatch(shared_ptr<Async::ITaskInfo> &task)
+	bool NotifyManager::dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey key = Synchronizer::getSyncKey())
 	{
-		return pNotifier[this->m_SyncKey++ % NOTIFIER_COUNT ].addTask(task);
+		return pNotifier[key.getKey() % NOTIFIER_COUNT ].addTask(task);
 	}
 }
 
