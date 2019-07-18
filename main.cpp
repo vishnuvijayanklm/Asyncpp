@@ -149,13 +149,57 @@ int main(int argc,char *argv[])
             }
         }
         return 0;*/
-        
-	Async::Task task = Async::Task(
-				[]()
-				{
-					cout<<"Hai1"<<endl;
-				})
-				.then([]()
+      	while(1)
+	{ 
+		Async::Task([]()
+		{
+			cout<<"Hai 1"<<endl;
+			char *ptr = new char[10];
+			return ptr;
+		},
+		[](char *ptr)
+		{
+			printf("Got %p\n",ptr);	
+			delete ptr;
+			ptr = nullptr;
+		})
+		.then([]()
+		{
+			cout<<"Hai 2"<<endl;
+			return 2;
+		},
+		[](int x)
+		{
+			cout<<"Got "<<x<<endl;
+		})
+		.then([]()
+		{	
+			cout<<"Hai 3"<<endl;
+			return 'A';
+		},
+		[](char c)
+		{
+			cout<<"Got "<<c<<endl;
+		})
+		.then([]()
+                {
+                        cout<<"Hai 4"<<endl;
+                	return "Hai 4";
+		},
+		[](string s)
+                {
+                        cout<<"Got "<<s<<endl;
+                })
+		.then([]()
+		{
+			cout<<"Hai 5"<<endl;
+		}).execute();
+		usleep(100000);
+	}
+	 //Async::Task([](){cout<<"Hai1"<<endl;
+			//		return 1;
+	//			});
+				/*.then([]()
 				{
 					cout<<"Hai2"<<endl;
 				})
@@ -171,8 +215,8 @@ int main(int argc,char *argv[])
 				{
 					cout<<"Hai5"<<endl;
 				})
-				.execute();
-	task.execute();
+				.execute();*/
+	//task.execute();
 
 	return 0;
 	if(unlikely(pApplication.get() == nullptr))
