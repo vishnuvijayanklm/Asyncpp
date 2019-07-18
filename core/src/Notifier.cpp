@@ -4,7 +4,8 @@ namespace Core
 	Notifier::Notifier()
 	{
 		//this->start();
-		this->initialize();
+		//this->initialize();
+		this->start();
 	}
 
 	Notifier::~Notifier()
@@ -12,25 +13,26 @@ namespace Core
 		//dtor
 	}
 
-	void Notifier::initialize()
+	/*void Notifier::initialize()
 	{
 		ThreadPool *pThreadPool = (ThreadPool*)(pApplication->getSubsystem(THREADPOOL));
 		if(likely(pThreadPool != nullptr))
 		{
 			pThreadPool->getThreadFromPool()->execute(bind(&Notifier::run,this));	
 		}
-	}
+	}*/
+
 	void Notifier::run()
 	{
 		LOG_INFO((LOGGER),("Notifier started...."));	
 		try
 		{
-			unique_ptr<IEventInfo> pEvent;
-			while(this->m_Queue.pop(pEvent,true))
+			shared_ptr<Async::ITaskInfo> pTask;
+			while(this->m_Queue.pop(pTask,true))
 			{
-				if(likely(pEvent.get() != nullptr))
+				if(likely(pTask.get() != nullptr))
 				{
-					pEvent->processEvent();
+					pTask.get()->executeTask();
 				}
 				else
 				{

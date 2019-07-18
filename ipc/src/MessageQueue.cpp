@@ -91,7 +91,7 @@ namespace IPC
 			if(ptr != nullptr)
 			{
 				size_t len = this->read(ptr.get(),this->mMsgSize);
-				this->mpNotifyManager->dispatch(bind(&MessageQueue::callBack,this,ptr,len));
+				//this->mpNotifyManager->dispatch(bind(&MessageQueue::callBack,this,ptr,len));
 			}
 		}
 	}

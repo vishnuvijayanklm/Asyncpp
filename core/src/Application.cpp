@@ -40,7 +40,7 @@ namespace Core
         }
 	this->m_OptionsInfo.stopGet();
         this->registerSubsystem(new ThreadPool());
-        this->registerSubsystem(new NotifyManager());
+        //this->registerSubsystem(new NotifyManager());
         this->registerSubsystem(new SharedLibraryManager());
     }
     void Application::init()
@@ -110,7 +110,7 @@ namespace Core
 		else
 		{
 			EventResponse<int> resp;
-			pNotifyManager->dispatch(bind(&Application::version,this,"",""),resp,1);
+			//pNotifyManager->dispatch(bind(&Application::version,this,"",""),resp,1);
 			//pNotifyManager->dispatch(bind(&Application::versionS,this),1);
 			LOG_INFO(LOGGER,("Response %d",resp.get_value()));
 		}

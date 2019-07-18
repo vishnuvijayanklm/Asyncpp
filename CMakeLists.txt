@@ -7,7 +7,7 @@ set(CMAKE_CXX_COMPILER "g++")
 #add_definitions(-lstdc+)
 #add_definitions(-Wall)
 set(CMAKE_CXX_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lstdc++ -lrt -lpthread -ldl -std=c++11")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lstdc++ -lrt -lpthread -ldl -std=c++11 -g -DWITH_EVENTPOOL1")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lstdc++ -lrt -lpthread -ldl -std=c++11 -g")#-DWITH_EVENTPOOL1")
 add_definitions(${CMAKE_CXX_FLAGS})
 add_definitions(${CMAKE_EXE_LINKER_FLAGS})
 

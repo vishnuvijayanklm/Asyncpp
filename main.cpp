@@ -149,7 +149,7 @@ int main(int argc,char *argv[])
             }
         }
         return 0;*/
-      	while(1)
+	while(1)
 	{ 
 		Async::Task([]()
 		{
@@ -196,27 +196,6 @@ int main(int argc,char *argv[])
 		}).execute();
 		usleep(100000);
 	}
-	 //Async::Task([](){cout<<"Hai1"<<endl;
-			//		return 1;
-	//			});
-				/*.then([]()
-				{
-					cout<<"Hai2"<<endl;
-				})
-				.then([]()
-				{
-					cout<<"Hai3"<<endl;
-				})
-				.then([]()
-				{
-					cout<<"Hai4"<<endl;
-				})
-				.then([]()
-				{
-					cout<<"Hai5"<<endl;
-				})
-				.execute();*/
-	//task.execute();
 
 	return 0;
 	if(unlikely(pApplication.get() == nullptr))

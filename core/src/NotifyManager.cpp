@@ -2,14 +2,21 @@
 
 namespace Core
 {
-	NotifyManager::NotifyManager():ISubsystem(NOTIFY_MANAGER)
+	NotifyManager::NotifyManager()
 	{
 		this->pNotifier = nullptr;
+		this->init();
 	}
 
 	NotifyManager::~NotifyManager()
 	{
 		//dtor
+	}
+
+	NotifyManager* NotifyManager::getInstance()
+	{
+		static NotifyManager *pNotifyManager = new NotifyManager;
+		return pNotifyManager;
 	}
 
 	void NotifyManager::init()
@@ -21,19 +28,5 @@ namespace Core
 		this->m_SyncKey = 0;
 		this->pNotifier = new Notifier[NOTIFIER_COUNT];
 		LOG_VERBOSE((LOGGER),("NotifyManager::init<<<"));
-	}
-	void NotifyManager::shutdown()
-	{
-		LOG_VERBOSE((LOGGER),("NotifyManager::Shutdown>>>"));
-		if(likely(this->pNotifier != nullptr))
-		{
-			for(int i=0;i<NOTIFIER_COUNT;i++)
-			{
-				//this->pNotifier[i].stop();
-			}	
-			delete[] this->pNotifier;
-		}
-		this->pNotifier = nullptr;
-		LOG_VERBOSE((LOGGER),("NotifyManager::Shutdown<<<"));
 	}
 }

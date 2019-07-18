@@ -2,9 +2,16 @@
 #define ASYNCTASK_H
 #include <containers/include/Stl.h>
 #include <async/include/TaskInfo.h>
+#include <core/include/NotifyManager.h>
 
 namespace Async
 {
+
+	enum class TASK_EXECUTION_TYPE
+	{
+		ASYNC,
+		SYNC
+	};
 
 	class Task
 	{
@@ -46,14 +53,16 @@ namespace Async
 				}
 				return *this;
 			}
-			Task& execute()
+
+			Task& execute(TASK_EXECUTION_TYPE executionType = TASK_EXECUTION_TYPE::SYNC)
 			{
 				shared_ptr<ITaskInfo> ptr;
                                 while(this->mTasks.pop(ptr))
                                 {
                                         if(ptr.get() != nullptr)
                                         {
-                                                ptr.get()->executeTask();
+						Core::NotifyManager::getInstance()->dispatch(ptr);
+                                                //ptr.get()->executeTask();
                                         }
                                 }
 				return *this;

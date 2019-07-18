@@ -3,72 +3,71 @@
 
 #include <functional>
 
-class ITaskInfo
+namespace Async
 {
-	public:
-	ITaskInfo()
+
+	class ITaskInfo
 	{
-	}
+		public:
+			ITaskInfo(){}
 
-	virtual ~ITaskInfo()
+			virtual ~ITaskInfo(){}
+			virtual void executeTask() = 0;
+	};
+
+
+	template<typename T>
+	class TaskInfo : public ITaskInfo
 	{
-	}
+			T mTask;
+		public:
+			TaskInfo(T task):mTask(task)
+			{
 
-	virtual void executeTask() = 0;
-};
+			}	
 
+			~TaskInfo()
+			{
+			}
 
-template<typename T>
-class TaskInfo : public ITaskInfo
-{
-	T mTask;
-	public:
-	TaskInfo(T task):mTask(task)
+			void executeTask() override
+			{
+				this->mTask();
+			}
+
+			T getTask()
+			{
+				this->mTask;
+			}
+	};
+
+	template<typename T,typename T1>
+	class TaskInfoResponse : public ITaskInfo
 	{
-		
-	}
-
-	~TaskInfo()
-	{
-	}
-
-	void executeTask() override
-	{
-		this->mTask();
-	}
-
-	T getTask()
-	{
-		this->mTask;
-	}
-};
-
-template<typename T,typename T1>
-class TaskInfoResponse : public ITaskInfo
-{
-	T mTask;
-        T1 mResponse;
+		T mTask;
+		T1 mResponse;
 
 	public:
-	
-	TaskInfoResponse(T task,T1 response): mTask(task),mResponse(response)
-	{
-		
-	}
 
-	~TaskInfoResponse()
-	{
-	}
+		TaskInfoResponse(T task,T1 response): mTask(task),mResponse(response)
+		{
 
-	void executeTask() override
-        {
-		this->mResponse(this->mTask());
-        }
+		}
 
-        T getTask()
-        {
-                this->mTask;
-        }
+		~TaskInfoResponse()
+		{
+		}
 
-};
+		void executeTask() override
+		{
+			this->mResponse(this->mTask());
+		}
+
+		T getTask()
+		{
+			this->mTask;
+		}
+
+	};
+}
 #endif

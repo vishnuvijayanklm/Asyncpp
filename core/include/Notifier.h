@@ -6,14 +6,15 @@
 #include <core/include/Exception.h>
 #include <util/include/Runnable.h>
 #include <util/include/defines.h>
+#include <async/include/TaskInfo.h>
 
 using namespace std;
 namespace Core
 {
-	class Notifier
+	class Notifier : public Util::Runnable
 	{
 		private:
-			StlQueue<unique_ptr<IEventInfo>> m_Queue;
+			StlQueue<shared_ptr<Async::ITaskInfo>> m_Queue;
 			void initialize();
 		protected:
 
@@ -21,12 +22,21 @@ namespace Core
 			Notifier();
 			virtual ~Notifier();
 			void run();
+			
+			inline bool addTask(shared_ptr<Async::ITaskInfo>);
+			/*
 			template<typename T>
 			inline bool addEvent(T event);
 			template<typename T,typename T1>
 			inline bool addEvent(T event,EventResponse<T1> &response);
+			*/
 	};
 
+	bool Notifier::addTask(shared_ptr<Async::ITaskInfo> task)
+	{
+		this->m_Queue.push(task);
+	}
+	/*
 	template<typename T>
 	bool Notifier::addEvent(T event)
 	{
@@ -34,18 +44,11 @@ namespace Core
 		return true;
 	}
 
-	
 	template<typename T,typename T1>
         bool Notifier::addEvent(T event,EventResponse<T1> &response)
         {
                 this->m_Queue.push(unique_ptr<IEventInfo>(new EventWithResp<T,T1>(event,response)));
                 return true;
-        }
-
-	/*
-	void Notifier::onStop()
-	{
-		this->m_Queue.push(unique_ptr<IEventInfo>(nullptr));
-	}*/	
+        }*/
 }
 #endif // NOTIFIER_H
