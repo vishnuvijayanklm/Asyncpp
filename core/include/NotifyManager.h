@@ -27,10 +27,10 @@ namespace Core
 			virtual ~NotifyManager();
 			virtual void init();
 
-			inline bool dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey); 
+			inline bool dispatch(shared_ptr<Async::ITaskInfo>,SyncKey); 
 	};
 
-	bool NotifyManager::dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey key = Synchronizer::getSyncKey())
+	bool NotifyManager::dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey key = Core::Synchronizer::getSyncKey())
 	{
 		return pNotifier[key.getKey() % NOTIFIER_COUNT ].addTask(task);
 	}

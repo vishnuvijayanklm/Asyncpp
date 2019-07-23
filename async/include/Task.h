@@ -7,145 +7,116 @@
 
 namespace Async
 {
-
-	enum class TASK_EXECUTION_TYPE
-	{
-		ASYNC,
-		SYNC
-	};
-
-	class Task
-	{
-			StlQueue<shared_ptr<ITaskInfo> > mTasks;
-		public:
-			template<typename T>
-			Task(T fn)
-			{
-				this->mTasks.push(shared_ptr<ITaskInfo>(new TaskInfo<T>(fn)));
-			}
-
-			template<typename T,typename T1 = function<void(int)>>
-                        Task(T fn,T1 resp)
-                        {
-				if(resp != nullptr)
-				{
-					this->mTasks.push(shared_ptr<ITaskInfo>(new TaskInfoResponse<T,T1>(fn,resp)));
-                        	}
-			}
-
-			~Task()
-			{
-				this->mTasks.clear();
-			}
-
-			template<typename T>
-                        Task& then(T fn)
-			{
-				this->mTasks.push(shared_ptr<ITaskInfo>(new TaskInfo<T>(fn)));
-				return *this;
-			}
-
-			template<typename T,typename T1 >
-			Task& then(T fn,T1 resp)
-			{
-				if(resp != nullptr)
-				{
-					this->mTasks.push(shared_ptr<ITaskInfo>(new TaskInfoResponse<T,T1>(fn,resp)));
-				}
-				return *this;
-			}
-
-			Task& execute(TASK_EXECUTION_TYPE executionType = TASK_EXECUTION_TYPE::SYNC)
-			{
-				shared_ptr<ITaskInfo> ptr;
-				
-				Core::SyncKey Key;
-
-				if(executionType == TASK_EXECUTION_TYPE::SYNC)
-                                {
-				 	Key = Core::Synchronizer::getSyncKey();
-				}
-                                while(this->mTasks.pop(ptr))
-                                {
-                                        if(ptr.get() != nullptr)
-                                        {
-						if(executionType == TASK_EXECUTION_TYPE::SYNC)
-						{
-							Core::NotifyManager::getInstance()->dispatch(ptr,Key);
-						}
-						else
-						{
-							Core::NotifyManager::getInstance()->dispatch(ptr,Core::Synchronizer::getSyncKey());
-                                        	}
-					}
-                                }
-				return *this;
-			}
-	};
-
 	class ITask
 	{
-		public:
-			template<typename T>
-			ITask(T Task)
-			{
-				this->dispatchTask(Task);
-			}
-
-			template<typename T,typename T1>
-			ITask(T Task,T1 Response)
-			{
-				this->dispatchTask(Task,Response);
-			}
-
-			template<typename T>
-			ITask& then(T Task)
-			{
-				this->dispatchTask(Task);
-				return *this;
-			}
-
-			template<typename T,typename T1>
-			ITask& then(T Task,T1 Response)
-			{
-				this->dispatchTask(Task,Response);	
-				return *this;
-			}
-
-			template<typename T>            
-                        void dispatchTask(T Task)
+			template<typename Fn>
+                        void dispatchTask(Fn&& Task,Core::SyncKey Key)
                         {
-                                Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfo<T>>(Task),this->getKey());
+				cout<<"Key "<<Key.getKey()<<endl;
+                                Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfo<Fn>>(Task),Key);
                         }
 
-			template<typename T,typename T1>
-			void dispatchTask(T Task,T1 Response)
-			{
-				Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoResponse<T,T1>>(Task,Response),this->getKey());
+			template<typename Fn,typename Resp>
+                        void dispatchTask(Fn&& Task,Resp&& Response,Core::SyncKey Key)
+                        {
+                        	Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoResponse<Fn,Resp>>(Task,Response),Key);
 			}
 	
+			StlQueue<shared_ptr<ITaskInfo> > mTaskQ;	
+		public:
+			ITask()
+			{
+			}
+
+			virtual ~ITask()
+			{
+				
+			}
+
+			template<typename Fn>
+			ITask(Fn&& Task,Core::SyncKey Key)
+			{
+				this->dispatchTask(Task,Key);
+			}
+
+			template<typename Fn,typename Resp>
+			ITask(Fn&& Task,Resp&& Response,Core::SyncKey Key)
+			{
+				this->dispatchTask(Task,Response,Key);
+			}
+			
+		
+			template<typename Fn>
+			ITask& add(Fn&& Task)
+			{
+				this->dispatchTask(Task,this->getKey());
+				return *this;
+			}
+
+			template<typename Fn,typename Resp>
+			ITask& add(Fn&& Task,Resp&& Response)
+			{
+				this->dispatchTask(Task,Response,this->getKey());	
+				return *this;
+			}
+
 			virtual Core::SyncKey getKey() = 0;
 	};
 
 	class SyncTask	: public ITask
 	{
-			const Core::SyncKey mKey;
+			Core::SyncKey mKey;
 		public:
-			template<typename T>
-			SyncTask(T Task):ITask(Task),mKey(Core::Synchronizer::getSyncKey())
-			{
-				
-			}	
+
+			SyncTask():mKey(Core::Synchronizer::getSyncKey())
+                        {
+                                
+                        } 
 			
-			template<typename T,typename T1>
-			SyncTask(T Task,T1 Response):ITask(Task,Response),mKey(Core::Synchronizer::getSyncKey())
+			template<typename Fn>
+                        SyncTask(Fn&& Task) : mKey(Core::Synchronizer::getSyncKey()),ITask(Task,mKey)
 			{
+			
 			}
+
+			template<typename Fn,typename Resp>
+                        SyncTask(Fn&& Task,Resp&& Response) : mKey(Core::Synchronizer::getSyncKey()),ITask(Task,Response,mKey)
+                        {
+
+                        }
 
 			Core::SyncKey getKey() override
 			{
 				return this->mKey;
 			}
 	};
+
+	class AsyncTask  : public ITask
+        {
+                public:
+
+                        AsyncTask()
+                        {
+
+                        }
+
+                        template<typename Fn>
+                       	AsyncTask(Fn&& Task) : ITask(Task,Core::Synchronizer::getSyncKey())
+                        {
+
+                        }
+
+                        template<typename Fn,typename Resp>
+                        AsyncTask(Fn&& Task,Resp&& Response): ITask(Task,Response,Core::Synchronizer::getSyncKey())
+                        {
+
+                        }
+
+                        Core::SyncKey getKey() override
+                        {
+                                return Core::Synchronizer::getSyncKey();;
+                        }
+        };
+
 }
 #endif //ASYNCTASK_H

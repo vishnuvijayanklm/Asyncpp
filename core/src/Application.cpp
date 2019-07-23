@@ -100,7 +100,7 @@ namespace Core
 	int i = 1000;
         while(i>0)
         {
-            NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem(NOTIFY_MANAGER));
+            /*NotifyManager *pNotifyManager = (NotifyManager*)(this->getSubsystem(NOTIFY_MANAGER));
             //while(1)
             {
                 if(unlikely(pNotifyManager == nullptr))
@@ -114,7 +114,8 @@ namespace Core
 			//pNotifyManager->dispatch(bind(&Application::versionS,this),1);
 			LOG_INFO(LOGGER,("Response %d",resp.get_value()));
 		}
-            }
+            }*/
+	sleep(10);
         }
     }
 

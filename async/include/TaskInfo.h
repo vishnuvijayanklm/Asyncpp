@@ -16,12 +16,12 @@ namespace Async
 	};
 
 
-	template<typename T>
+	template<typename Fn>
 	class TaskInfo : public ITaskInfo
 	{
-			T mTask;
+			Fn&& mTask;
 		public:
-			TaskInfo(T task):mTask(task)
+			TaskInfo(Fn&& task):mTask(std::forward<Fn>(task))
 			{
 
 			}	
@@ -34,22 +34,17 @@ namespace Async
 			{
 				this->mTask();
 			}
-
-			T getTask()
-			{
-				this->mTask;
-			}
 	};
 
-	template<typename T,typename T1>
+	template<typename Fn,typename Resp>
 	class TaskInfoResponse : public ITaskInfo
 	{
-		T mTask;
-		T1 mResponse;
+		Fn&& mTask;
+		Resp&& mResponse;
 
 	public:
 
-		TaskInfoResponse(T task,T1 response): mTask(task),mResponse(response)
+		TaskInfoResponse(Fn&& task,Resp&& response): mTask(std::forward<Fn>(task)),mResponse(std::forward<Resp>(response))
 		{
 
 		}
@@ -62,12 +57,6 @@ namespace Async
 		{
 			this->mResponse(this->mTask());
 		}
-
-		T getTask()
-		{
-			this->mTask;
-		}
-
 	};
 }
 #endif

@@ -4,9 +4,9 @@
 #include <core/include/Exception.h>
 #include <util/include/defines.h>
 #include <async/include/EventListener.h>
-#include <core/include/NotifyManager.h>
 #include <mqueue.h>
 #include <functional>
+#include <async/include/Task.h>
 
 using namespace std;
 
@@ -22,10 +22,9 @@ namespace IPC
 			
 			typedef std::function<void(shared_ptr<char>,size_t)> CallBack;
 			CallBack mCallBackFn;
-			
-			string mName;
-			Core::NotifyManager *mpNotifyManager;		
+			//Async::SyncTask mTask;			
 
+			string mName;
 	
 			void unlink();
 				
@@ -35,11 +34,12 @@ namespace IPC
 
 			bool open();	
 			void close();
-			void read(CallBack);
+			void recv(CallBack);
 			
 			inline mqd_t id() const;	
 			inline mq_attr getAttributes();
-			inline void callBack(shared_ptr<char>&,size_t);
+			
+			inline virtual void onRecv(shared_ptr<char>,size_t);
 
 			void onEventReceived() override;
 			
@@ -59,7 +59,7 @@ namespace IPC
 		return attr;
 	}
 	
-	void MessageQueue::callBack(shared_ptr<char> &ptr,size_t len)
+	void MessageQueue::onRecv(shared_ptr<char> ptr,size_t len)
 	{
 		if(this->mCallBackFn != nullptr)
 		{

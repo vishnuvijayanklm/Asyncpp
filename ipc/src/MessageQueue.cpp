@@ -14,8 +14,6 @@ namespace IPC
 		this->mIsCreate = isCreate;
 		this->mCallBackFn = nullptr;
 	
-		this->mpNotifyManager = (Core::NotifyManager*)(pApplication->getSubsystem(NOTIFY_MANAGER));
-	
 	}
 
 	MessageQueue::~MessageQueue()
@@ -66,7 +64,7 @@ namespace IPC
 		}
 	}
 
-	void MessageQueue::read(CallBack callBackFn)
+	void MessageQueue::recv(CallBack callBackFn)
 	{
 		this->mCallBackFn =  callBackFn;	
 	}	
@@ -91,7 +89,10 @@ namespace IPC
 			if(ptr != nullptr)
 			{
 				size_t len = this->read(ptr.get(),this->mMsgSize);
-				//this->mpNotifyManager->dispatch(bind(&MessageQueue::callBack,this,ptr,len));
+				if(len != -1)
+				{
+					//this->mTask.add(bind(&MessageQueue::onRecv,this,ptr,len));
+				}	
 			}
 		}
 	}

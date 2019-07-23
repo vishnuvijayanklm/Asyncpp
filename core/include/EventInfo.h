@@ -51,13 +51,13 @@ class Event:public IEventInfo
 	private:
 		T m_Event;
 	public:
-		Event(T &event):m_Event(event)
+		Event(T&& event):m_Event(event)
 		{
 		}	
 		virtual ~Event(){}
 		virtual void processEvent()
 		{
-			this->m_Event();
+			//this->m_Event();
 		}
 };
 
@@ -68,7 +68,7 @@ class EventWithResp:public IEventInfo
 		T m_Event;
 		EventResponse<T1> &m_Response;
 	public:
-		EventWithResp(T &event,EventResponse<T1> &response):m_Event(event),m_Response(response)
+		EventWithResp(T&& event,EventResponse<T1> &response):m_Event(event),m_Response(response)
 		{
 		}
 		virtual ~EventWithResp(){}
