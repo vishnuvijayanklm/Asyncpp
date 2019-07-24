@@ -10,17 +10,14 @@ Logger LOGGER;
 
 void test()
 {
-	while(1)
-	{
-		cout<<"IN TEST"<<endl;
-		sleep(1);	
-	}
+	cout<<"IN TEST"<<endl;
+	sleep(1);	
 }
 int main()
 {
-	/*Async::EventListener *pEvent = new Async::EventListener();
+	Async::EventListener *pEvent = new Async::EventListener();
 
-	pEvent->addEvent("event1",[]()
+	/*pEvent->addEvent("event1",[]()
 			{
 				cout<<"onEvent1"<<endl;
 			});		
@@ -40,8 +37,14 @@ int main()
 	pEvent->addEvent("event5",[]()
 			{
                                 cout<<"onEvent5"<<endl;
+                        });*/
+
+	pEvent->addEvent("event1",[](int x,int y)
+                        {
+                                cout<<"onEvent1"<<endl;
                         });
-*/
+	pEvent->async_notify("event1",10,11,10,1000);
+	return 0;
 	//Async::SyncTask(test).add(test);//.add(test);
 	while(1)
 	{
@@ -52,7 +55,7 @@ int main()
 			[](int x)
 			{ 
 				cout<<"Got "<<x<<endl;
-			}).add([]() {cout<<"Fn with no return"<<endl; });;
+			}).add([]() {cout<<"Fn with no return"<<endl; }).add(&test);
 			
 			Async::AsyncTask([]()
                         {
@@ -61,17 +64,9 @@ int main()
                         [](int x)
                         {
                                 cout<<"Got "<<x<<endl;
-                        }).add([]() {cout<<"Fn with no return"<<endl; });;
+                        }).add([]() {cout<<"Fn with no return"<<endl; }).add(test);
 		
-	sleep(1);
-	}
-	while(1)
-	{
-		//pEvent->async_notify("event4",10,10);
-		//pEvent->async_notify("event1");
-		cout<<"In loop"<<endl;
-		//pEvent->async_notify("event" + to_string((rand() % 5) +1));
-		usleep(1000000);
+			sleep(1);
 	}
 	return 0;
 }
