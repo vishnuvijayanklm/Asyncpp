@@ -12,7 +12,6 @@ namespace Async
 			template<typename Fn>
                         void dispatchTask(Fn&& Task,Core::SyncKey Key)
                         {
-				cout<<"Key "<<Key.getKey()<<endl;
                                 Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfo<Fn>>(Task),Key);
                         }
 
