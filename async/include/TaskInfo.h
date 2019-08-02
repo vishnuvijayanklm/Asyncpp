@@ -19,11 +19,10 @@ namespace Async
 	template<typename Fn>
 	class TaskInfo : public ITaskInfo
 	{
-			Fn&& mTask;
+			Fn mTask;
 		public:
-			TaskInfo(Fn&& task):mTask(std::forward<Fn>(task))
+			TaskInfo(Fn task):mTask(task)
 			{
-
 			}	
 
 			~TaskInfo()
@@ -39,12 +38,12 @@ namespace Async
 	template<typename Fn,typename Resp>
 	class TaskInfoResponse : public ITaskInfo
 	{
-		Fn&& mTask;
-		Resp&& mResponse;
+		Fn mTask;
+		Resp mResponse;
 
 	public:
 
-		TaskInfoResponse(Fn&& task,Resp&& response): mTask(std::forward<Fn>(task)),mResponse(std::forward<Resp>(response))
+		TaskInfoResponse(Fn task,Resp response): mTask(std::forward<Fn>(task)),mResponse(std::forward<Resp>(response))
 		{
 
 		}

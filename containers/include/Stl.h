@@ -151,7 +151,8 @@ class StlMap:private map<Key,Value>
 		StlMap()
 		{
 		}
-		StlMap(StlMap<Key,Value,mtx> &rhs)
+		
+		StlMap(StlMap&& rhs)
 		{
 			lock_guard<mtx> lock(this->m_mtx);
 			lock_guard<mtx> lockrhs(rhs.m_mtx);
@@ -301,32 +302,44 @@ class StlMap:private map<Key,Value>
 };
 
 
-template<typename Key,typename Value>
-class StlTimedMap:private map<Key,Value>
+template<typename Key,typename Value,typename Compare = less<Key>,typename Alloc = allocator<pair<const Key,Value>> >
+class StlTimedMap:private map<Key,Value,Compare,Alloc>
 {
 	public:
 		StlTimedMap()
 		{
 			this->m_timeExpired = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+			this->mCallBack = bind(&StlTimedMap::onTimerExpired,this,placeholders::_1,placeholders::_2);
+
 		}
 		~StlTimedMap()
 		{
 		}
+
+		void onTimerExpired(Key mapKey,Value val)
+		{
+
+		}
+
+		void setCallBack(function<void(Key,Value)> &CallBack)
+		{
+			lock_guard<mutex> lock(this->m_mtx);
+			this->mCallBack = CallBack;
+		}
 		void insert(Key mapKey,Value val,unsigned int timeOut)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			map<Key,Value>::insert(pair<Key,Value>(mapKey,val));
+			map<Key,Value,Compare,Alloc>::insert(pair<Key,Value>(mapKey,val));
 			this->addExpireEvent(mapKey,timeOut);
-			this->houseKeeep();
 		}
 		bool erase(Key key,Value &val)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			it = map<Key,Value>::find(key);
+			it = map<Key,Value,Compare,Alloc>::find(key);
 			if(it != map<Key,Value>::end())
 			{
 				val = it->second;
-				map<Key,Value>::erase(it);
+				map<Key,Value,Compare,Alloc>::erase(it);
 				return true;
 			}
 			return false;
@@ -334,10 +347,10 @@ class StlTimedMap:private map<Key,Value>
 		bool erase(Key key)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			it = map<Key,Value>::find(key);
+			it = map<Key,Value,Compare,Alloc>::find(key);
 			if(it != map<Key,Value>::end())
 			{
-				map<Key,Value>::erase(it);
+				map<Key,Value,Compare,Alloc>::erase(it);
 				return true;
 			}
 			return false;
@@ -346,8 +359,8 @@ class StlTimedMap:private map<Key,Value>
 		bool find(Key key,Value &val)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			it = map<Key,Value>::find(key);
-			if(it != map<Key,Value>::end())
+			it = map<Key,Value,Compare,Alloc>::find(key);
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				val = it->second;
 				return true;
@@ -358,18 +371,18 @@ class StlTimedMap:private map<Key,Value>
 		void clear()
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			map<Key,Value>::clear();
+			map<Key,Value,Compare,Alloc>::clear();
 		}
 
 		void startGet()
 		{
 			this->m_mtx.lock();
-			it = map<Key,Value>::begin();
+			it = map<Key,Value,Compare,Alloc>::begin();
 		}
 
 		bool getNextElement(Value &val)
 		{
-			if(it != map<Key,Value>::end())
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				val = it->second;
 				++it;
@@ -382,7 +395,7 @@ class StlTimedMap:private map<Key,Value>
 		}
 		bool getNextElement(Key &key,Value &val)
 		{
-			if(it != map<Key,Value>::end())
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				key = it->first;
 				val = it->second;
@@ -401,11 +414,11 @@ class StlTimedMap:private map<Key,Value>
 		bool removeFirstElement(Value &val)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			it = map<Key,Value>::begin();
-			if(it != map<Key,Value>::end())
+			it = map<Key,Value,Compare,Alloc>::begin();
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				val = it->second;
-				map<Key,Value>::erase(it);
+				map<Key,Value,Compare,Alloc>::erase(it);
 				return true;
 			}
 			return false;
@@ -414,12 +427,12 @@ class StlTimedMap:private map<Key,Value>
 		bool removeFirstElement(Key &key,Value &val)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			it = map<Key,Value>::begin();
-			if(it != map<Key,Value>::end())
+			it = map<Key,Value,Compare,Alloc>::begin();
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				key = it->first;
 				val = it->second;
-				map<Key,Value>::erase(it);
+				map<Key,Value,Compare,Alloc>::erase(it);
 				return true;
 			}
 			return false;
@@ -427,7 +440,7 @@ class StlTimedMap:private map<Key,Value>
 		size_t size()
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			return map<Key,Value>::size();
+			return map<Key,Value,Compare,Alloc>::size();
 		}
 
 		void addExpireEvent(Key mapKey,unsigned int timeOut)
@@ -446,7 +459,7 @@ class StlTimedMap:private map<Key,Value>
 			}
 		}
 
-		void houseKeeep()
+		void houseKeep()
 		{
 			shared_ptr<StlQueue<Key>> pQueue;
 			long long int currentTime = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
@@ -457,15 +470,13 @@ class StlTimedMap:private map<Key,Value>
 					if(pQueue.get())
 					{
 						Key mapKey;
+						Value val;
 						while(pQueue->pop(mapKey))
 						{
-							cout<<"Expired ================================="<<mapKey<<endl;
-							map<Key,Value>::erase(mapKey);
-							cout<<"Map Count "<<map<Key,Value>::size()<<endl;
+							this->erase(mapKey,val);
+							this->mCallBack(mapKey,val);
 						}
 						pQueue->clear();
-						//delete pQueue;
-						//pQueue = nullptr;
 					}
 				}
 				this->m_timeExpired++;
@@ -477,6 +488,7 @@ class StlTimedMap:private map<Key,Value>
 		std::mutex m_mtx;
 		long long int m_timeExpired;
 		StlMap<long long int,shared_ptr<StlQueue<Key>>> m_ExpireMap;
+		function<void(Key,Value)> mCallBack;
 };
 
 
