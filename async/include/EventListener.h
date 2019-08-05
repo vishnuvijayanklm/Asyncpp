@@ -10,39 +10,6 @@
 #include<stdarg.h>
 
 #define MAXEVENTS 0x40
-#define add_event(eventName,func)					\
-		class eventName						\
-		{							\
-			public:						\
-				eventName()				\
-				{					\
-				}					\
-				void notify()				\
-				{					\
-					return func();			\
-				}					\
-		}eventName_obj;		
-
-#define notify_event(eventName) \
-	eventName_obj.notify()
-	   
-/*
-#define add_event(eventName,function)\
-	class eventName			\
-	{   				\
-		public:			\
-					\
-		eventName()		\
-		{			\
-		}			\
-					\
-		template<typename... Args>\
-		void call(Args&&...args)\
-		{			\
-			function(args...)\
-		}			\
-	}; 				
-*/
 
 
 namespace Async
@@ -67,115 +34,53 @@ namespace Async
 				return this->mKey;
 			}
 	};
-
-	template<typename Fn>
-        class Event;
-	class EventWrapper
-	{
-		public:
-			EventWrapper()
-			{
-			}
-			virtual ~EventWrapper()
-			{
-
-			}
-
-			template<typename T>
-			auto callBack(Event<T> mEvent)->decltype(mEvent.getType())
-			{
-						
-			}
-	};
-
-	class IEvent
-	{
-		public:
-
-			void *ptr;
-
-			IEvent()
-			{
-				ptr = nullptr;
-			}
-
-			virtual void execute(IEvent *ptr,...) 
-			{
-			}
-
 	
-			virtual EventWrapper* executep() = 0;		
-			//virtual const type_info& type() = 0;
+	template <typename Fn>
+	struct Traits : public Traits<decltype(&Fn::operator())>
+	{
 	};
 
-	template<typename Fn>
-        class Event : public IEvent
-        {
-                      	Fn mEvent;
+
+
+	template <typename ClassType,typename Return, typename... Args>
+	struct Traits<Return(ClassType::*)(Args...) const> 
+	{
+		typedef std::function<Return(Args...)> Fn;
+	};
+
+	class Event
+	{
+		void *mEvent;
 		public:
-			Event(Fn fn):mEvent(fn)
-                        {
-				cout<<this<<endl;
-				
-			}
-			
-			virtual void execute(IEvent *ptr,...) 
+			template<typename Fn>
+			Event(Fn fn)
 			{
-				cout<<"Derived"<<endl;
-				va_list args;
-				va_start(args,ptr);
-				//this->mEvent(args);
-				//this->exe(-100,-1);
-				va_end(args);
+				auto f = this->toEvent(fn);
+				auto ev = new decltype(f)(this->toEvent(fn));
+				this->mEvent = static_cast<void*>(ev);
+
 			}
 
-			/*template<typename... Args>
-			void exe(Args&&... arg)
+			template <typename Fn>
+			typename Traits<Fn>::Fn toEvent(Fn fn)
 			{
-				this->mEvent(arg...);
-				cout<<"Hai"<<endl;
-				cout<<this<<endl;
-			}
-			
-			EventWrapper* executep() override
-			{
-				this->mEvent(-999,-1000);
-				//this->mEvent(-10,-11);
-				return nullptr;
-			}
-			
-			virtual const type_info& type()
-			{
-				return typeid(this->mEvent);
+				return static_cast<typename Traits<Fn>::Fn>(fn);
 			}
 
-			void operator=(int x)
+			template<typename...Args>
+			void triggerEvent(Args... args)
 			{
-				cout<<"In operator"<<endl;
+				auto event = static_cast<std::function<void(Args...)>*>(this->mEvent);
+				if(event)
+				{
+					(*event)(args...);
+				}
 			}
-			
-			template<typename... Args>
-			void agg(Args&&... args)
-			{
-				cout<<"In argg"<<endl;
-			}
-			void executep(IEvent *ptr)
-			{
-				va_list args;
-				va_start(args,ptr);		
-				this->mEvent(args);
-				va_end(args);
-			}*/
-			virtual EventWrapper* executep()
-			{
-
-			}	
 	};
 
-	
 	class EventListener
 	{
-			StlMap<std::string,std::shared_ptr<IEvent>> mEvents;
+			StlMap<std::string,std::shared_ptr<Event>> mEvents;
 		public:
 			EventListener()
 			{
@@ -186,23 +91,19 @@ namespace Async
 			}
 
 			template<typename Fn>
-			void addEvent(std::string eventName,Fn&& fn)
+			void addEvent(std::string eventName,Fn fn)
 			{
-				//function<void(...)> fn1 = fn;
-				this->mEvents.insert(eventName,std::make_shared<Event<Fn>>(fn));	
-			}
-			
+				this->mEvents.insert(eventName,make_shared<Event>(fn));
+			}	
 			template<typename... Args>
 			void async_notify(std::string eventName,Args&&... args)
 			{
-				shared_ptr<IEvent> ptr;
+				shared_ptr<Event> ptr;
 				if(this->mEvents.find(eventName,ptr))
 				{
 					if(ptr)
 					{
-						//ptr->exe(args...);
-						//ptr->exe(args...);
-						//ptr->execute(ptr.get(),args...);
+						ptr->triggerEvent(args...);
 					}
 				}
 			}

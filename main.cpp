@@ -24,12 +24,17 @@ class Example : public Async::ITimer
 {
 	shared_ptr<Async::TimerTicks> mTicks;
 	public:
-		Example()
+		Example():mTicks(make_shared<Async::TimerTicks>(this))
 		{
-			this->mTicks = make_shared<Async::TimerTicks>();
 			this->mTicks->setInterval(1,1);
-			Async::TimerTask::getTimer()->addTimer(this,this->mTicks);
+			this->mTicks->start();
 		}
+
+		~Example()
+		{
+
+		}
+
 		void onTimerExpired(Async::TimerTicks *pTicks)
 		{
 			LOG_INFO((LOGGER),("Timer Expired"));
@@ -43,11 +48,10 @@ int main()
 	LOGGER.setLoglevel(63);
 	Async::EventListener *pEvent = new Async::EventListener();
 	
-	/*pEvent->addEvent("event1",[]()
+	pEvent->addEvent("event1",[]()
 			{
 				cout<<"onEvent1"<<endl;
 			});		
-	
 	pEvent->addEvent("event2",[]()
 			{
                                 cout<<"onEvent2"<<endl;
@@ -64,22 +68,29 @@ int main()
 			{
                                 cout<<"onEvent5"<<endl;
                         });
-*/
 	pEvent->addEvent("event6",[](int x,int y)
                         {
-                                cout<<"X = "<<x<<" Y = "<<y<<endl;
+                                cout<<"Event6 X = "<<x<<" Y = "<<y<<endl;
           		});
 	//add_event(EVENT_1,[](){cout<<"Hai"<<endl;});
 	//notify_event(EVENT_1);
-	//pEvent->async_notify("event6",-100,-110);
+	pEvent->async_notify("event1",-100,-110);
+	pEvent->async_notify("event2",-100,-110);
+	pEvent->async_notify("event3",-100,-110);
+	pEvent->async_notify("event4",-100,-110);
+	pEvent->async_notify("event5",-100,-110);
+	pEvent->async_notify("event6",-100,-110);
 	//pEvent->async_notify("event1");
 
-	//return 0;
- 	while(1)
+	return 0;
+	while(1)
 	{
-		Example e[20];
-		sleep(2);
-		break;
+		while(1)
+		{
+			Example e[20];
+			sleep(2);
+			break;
+		}
 	}
 	while(1)
 	{

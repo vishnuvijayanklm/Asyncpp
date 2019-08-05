@@ -318,10 +318,9 @@ class StlTimedMap:private map<Key,Value,Compare,Alloc>
 
 		void onTimerExpired(Key mapKey,Value val)
 		{
-
 		}
 
-		void setCallBack(function<void(Key,Value)> &CallBack)
+		void setCallBack(function<void(Key,Value)> CallBack)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
 			this->mCallBack = CallBack;
@@ -336,7 +335,7 @@ class StlTimedMap:private map<Key,Value,Compare,Alloc>
 		{
 			lock_guard<mutex> lock(this->m_mtx);
 			it = map<Key,Value,Compare,Alloc>::find(key);
-			if(it != map<Key,Value>::end())
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				val = it->second;
 				map<Key,Value,Compare,Alloc>::erase(it);
@@ -348,7 +347,7 @@ class StlTimedMap:private map<Key,Value,Compare,Alloc>
 		{
 			lock_guard<mutex> lock(this->m_mtx);
 			it = map<Key,Value,Compare,Alloc>::find(key);
-			if(it != map<Key,Value>::end())
+			if(it != map<Key,Value,Compare,Alloc>::end())
 			{
 				map<Key,Value,Compare,Alloc>::erase(it);
 				return true;
