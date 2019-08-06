@@ -79,17 +79,17 @@ int main()
 	pEvent->async_notify("event3",-100,-110);
 	pEvent->async_notify("event4",-100,-110);
 	pEvent->async_notify("event5",-100,-110);
-	pEvent->async_notify("event6",-100,-110);
+	pEvent->async_notify("event6",-100,"AAA");
 	//pEvent->async_notify("event1");
 
-	return 0;
+		Example e[2000];
 	while(1)
 	{
 		while(1)
 		{
-			Example e[20];
+		//	Example e[20];
 			sleep(2);
-			break;
+			//break;
 		}
 	}
 	while(1)

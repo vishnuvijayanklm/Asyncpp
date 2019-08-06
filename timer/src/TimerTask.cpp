@@ -56,7 +56,6 @@ namespace Async
 	
 	void TimerTask::addTimer(ITimer *pTimer,TimerTicks *pTicks)
 	{
-		lock_guard<mutex> lock(this->mMutex);
 		if(pTimer && pTicks && pTicks->isActive())
 		{
 			this->mTimerMap.insert(pTicks,pTimer,pTicks->getInterval());
@@ -67,8 +66,9 @@ namespace Async
 	{
 		if(pTimer && pTicks && pTicks->isActive())
 		{
+			lock_guard<mutex> lock(this->mMutex);
 			pTicks->onExpired();
-			if(pTicks->isRepetitive())
+			if(pTicks->isRepetitive() && pTicks->isActive())
 			{
 				this->addTimer(pTimer,pTicks);
 			}
