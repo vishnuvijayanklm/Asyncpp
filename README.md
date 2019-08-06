@@ -15,7 +15,7 @@ Features supported
 Examples
 ========
 ```cpp
-Async::AsyncTask([]()
+Async::AsyncTask([]() // Task 1
 {
 	/* Funtion with return type
 	   Return value will be captured n the next block */
@@ -27,7 +27,7 @@ Async::AsyncTask([]()
 	/*Return type captured here */
 	// X will be -100
 })
-.add([]()
+.add([]() //Task 2
 {
 	/*Function without a return type */
 });
