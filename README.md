@@ -14,11 +14,13 @@ Features supported
 
 Examples
 ========
-```cpp
+## AsyncTask
+Set of n tasks will be executed asynchronosly/parallel
+```cpp 
 Async::AsyncTask([]() // Task 1
 {
 	/* Funtion with return type
-	   Return value will be captured n the next block */
+	   Return value will be captured in the next block */
 
 	   return -100;
 },
@@ -31,4 +33,28 @@ Async::AsyncTask([]() // Task 1
 {
 	/*Function without a return type */
 });
+
 ```
+## SyncTask
+Set of n tasks will be executed synchronosly
+```cpp 
+Async::SyncTask([]() // Task 1
+{
+	/* Funtion with return type
+	   Return value will be captured in the next block */
+
+	   return -100;
+},
+[](int x)
+{	
+	/*Return type captured here */
+	// X will be -100
+})
+.add([]() //Task 2
+{
+	/*Function without a return type */
+});
+
+```
+
+
