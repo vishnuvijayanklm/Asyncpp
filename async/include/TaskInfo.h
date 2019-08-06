@@ -9,18 +9,20 @@ namespace Async
 	class CancellationToken
 	{
 		public:
-		CancellationToken()
-		{
-		}
-		~CancellationToken()
-		{
-		}
+			CancellationToken()
+			{
+			}
+			~CancellationToken()
+			{
+			}
 
-		bool isCancellable()
-		{
-			return true;
-		}
+			bool isCancellable()
+			{
+				return true;
+			}
 	};
+
+
 	class ITaskInfo
 	{
 		public:
@@ -31,12 +33,12 @@ namespace Async
 	};
 
 
-	template<typename Fn>
+	template<typename Task>
 	class TaskInfo : public ITaskInfo
 	{
-			Fn mTask;
+			Task mTask;
 		public:
-			TaskInfo(Fn task):mTask(task)
+			TaskInfo(Task task):mTask(task)
 			{
 			}	
 
@@ -50,15 +52,16 @@ namespace Async
 			}
 	};
 
-	template<typename Fn,typename Resp>
+
+	template<typename Task,typename Response>
 	class TaskInfoResponse : public ITaskInfo
 	{
-		Fn mTask;
-		Resp mResponse;
+		Task mTask;
+		Response mResponse;
 
 	public:
 
-		TaskInfoResponse(Fn task,Resp response): mTask(std::forward<Fn>(task)),mResponse(std::forward<Resp>(response))
+		TaskInfoResponse(Task task,Response response): mTask(std::forward<Task>(task)),mResponse(std::forward<Response>(response))
 		{
 
 		}
@@ -72,6 +75,29 @@ namespace Async
 			this->mResponse(this->mTask());
 		}
 	};
+
+
+	template<typename Task>
+        class TaskInfoAck : public ITaskInfo
+        {
+                Task mTask;
+                std::function<void()> mResponse;
+        public:
+                TaskInfoAck(Task task,std::function<void()> response): mTask(std::forward<Task>(task)),mResponse(response)
+                {
+
+                }
+
+                ~TaskInfoAck()
+                {
+                }
+
+                void executeTask() override
+                {
+                        this->mTask();
+			this->mResponse();
+                }
+        };
 
 
 	template<typename Fn>

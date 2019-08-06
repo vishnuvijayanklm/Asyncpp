@@ -23,7 +23,7 @@ void fn(int x)
 
 class Example : public Async::ITimer
 {
-	shared_ptr<Async::TimerTicks> mTicks;
+		shared_ptr<Async::TimerTicks> mTicks;
 	public:
 		Example():mTicks(make_shared<Async::TimerTicks>(this))
 		{
@@ -103,14 +103,19 @@ int main()
 	
 	while(1)
 	{
-			Async::SyncTask(bind([]()
+			Async::SyncTask([]()
 			{
 				return 99;
-			}),
+			},
 			[](int x)
 			{ 
 				cout<<"Got "<<x<<endl;
-			}).add([]() {cout<<"Fn with no return"<<endl; }).add(&test);
+			})
+			.add([]()
+			{
+				cout<<"Fn with no return"<<endl;
+			}).
+			add(&test);
 			
 			Async::AsyncTask([]()
                         {
@@ -119,9 +124,14 @@ int main()
                         [](int x)
                         {
                                 cout<<"Got "<<x<<endl;
-                        }).add([]() {cout<<"Fn with no return"<<endl; }).add(test);
+                        })
+			.add([]()
+			{
+				cout<<"Fn with no return"<<endl;
+			})
+			.add(test);
 			
-			Example e[20000];
+			//Example e[20000];
 			sleep(1);
 	}
 	return 0;
