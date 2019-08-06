@@ -28,6 +28,6 @@ Async::AsyncTask([]()
 })
 .add([]()
 {
-	/*Fn without a return type */
+	/*Function without a return type */
 });
 ```
