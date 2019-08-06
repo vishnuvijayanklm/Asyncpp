@@ -9,6 +9,7 @@ Features supported
 * Thread Pool
 * Stl and Lock Free Queues
 * IPC
+* Timers
 
 
 Examples
