@@ -14,6 +14,7 @@ namespace Core
 
 	void Thread::run()
 	{
+		/*
 		while(this->isAlive())
 		{
 			try
@@ -43,7 +44,7 @@ namespace Core
 			{
 
 			}
-		}
+		}*/
 	}
 		
 	void Thread::onStop()

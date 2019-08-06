@@ -6,6 +6,21 @@
 namespace Async
 {
 
+	class CancellationToken
+	{
+		public:
+		CancellationToken()
+		{
+		}
+		~CancellationToken()
+		{
+		}
+
+		bool isCancellable()
+		{
+			return true;
+		}
+	};
 	class ITaskInfo
 	{
 		public:
@@ -57,5 +72,29 @@ namespace Async
 			this->mResponse(this->mTask());
 		}
 	};
+
+
+	template<typename Fn>
+	class TaskInfoCancellable : public ITaskInfo
+	{
+                        Fn mTask;
+			std::weak_ptr<CancellationToken> mToken;
+                public:
+                        TaskInfoCancellable(Fn task,std::shared_ptr<CancellationToken> token):mTask(task),mToken(token)
+                        {
+                        }
+
+                        ~TaskInfoCancellable()
+                        {
+                        }
+
+                        void executeTask() override
+                        {
+				if(!this->mToken.expired())
+				{
+                                	this->mTask();
+				}
+                        }
+        };
 }
 #endif

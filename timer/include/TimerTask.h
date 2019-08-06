@@ -27,7 +27,6 @@ namespace Async
 	class TimerTask : Async::IEventListener
 	{
 			int mTimerFd;
-			uint64_t mTicksExpired; 
 
 			void initialize();
 			void start();
@@ -56,6 +55,8 @@ namespace Async
 			bool mIsRunning;
 			Async::ITimer *pmTimer;
 			std::mutex mMutex;
+	
+			shared_ptr<Async::CancellationToken> mCancellationToken;
 		public:
 			TimerTicks(ITimer *pTimer)
 			{
@@ -63,7 +64,10 @@ namespace Async
 				this->mIsRepetitive = 0;
 				this->mIsRunning = false;
 				this->pmTimer = pTimer;
+				this->mCancellationToken = std::make_shared<CancellationToken>();
 			}
+
+			
 			~TimerTicks()
 			{
 				this->stop();
@@ -99,6 +103,10 @@ namespace Async
 				}
 			}
 
+			std::shared_ptr<CancellationToken>& getCancellationToken()
+			{
+				return this->mCancellationToken;
+			}
 			void stop()
 			{
 				this->mIsRunning = false;

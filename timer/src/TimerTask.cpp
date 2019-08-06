@@ -24,7 +24,6 @@ namespace Async
 	void TimerTask::initialize()
 	{
 		this->mTimerFd = -1;
-		this->mTicksExpired = 0;
 		this->mTimerMap.setCallBack(bind(&TimerTask::onTimerExpired,this,placeholders::_1,placeholders::_2));
 	}
 
@@ -49,7 +48,7 @@ namespace Async
 		uint64_t message;
 		if(read(this->mTimerFd,&message,sizeof(uint64_t)) > 0)
 		{
-			this->mTicksExpired++;
+			lock_guard<mutex> lock(this->mMutex);
 			this->mTimerMap.houseKeep();
 		}
 	}
@@ -64,15 +63,15 @@ namespace Async
 
 	void TimerTask::onTimerExpired(TimerTicks *pTicks,ITimer *pTimer)
 	{
+		LOG_INFO((LOGGER),("TimerTask::onTimerExpired [%p][%p]",pTicks,pTimer));
 		if(pTimer && pTicks && pTicks->isActive())
 		{
-			lock_guard<mutex> lock(this->mMutex);
 			pTicks->onExpired();
 			if(pTicks->isRepetitive() && pTicks->isActive())
 			{
 				this->addTimer(pTimer,pTicks);
 			}
-			Async::SyncTask(pTimer->getSyncKey()).add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks));
+			Async::SyncTask(pTimer->getSyncKey()).add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks),pTicks->getCancellationToken());
 		}
 	}
 	
@@ -81,7 +80,7 @@ namespace Async
 		lock_guard<mutex> lock(this->mMutex);
 		if(pTicks)
 		{
-			cout<<"Removing"<<endl;
+			LOG_INFO((LOGGER),("Removing [%p]",pTicks));
 			this->mTimerMap.erase(pTicks);
 		}	
 	}

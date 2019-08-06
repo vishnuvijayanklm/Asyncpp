@@ -2,15 +2,13 @@
 #define THREAD_H
 #include <containers/include/Stl.h>
 #include <util/include/Runnable.h>
-#include <core/include/EventInfo.h>
-#include <core/include/Exception.h>
 
 using namespace std;
 namespace Core
 {
 	class Thread:public Util::Runnable
 	{
-			StlQueue<unique_ptr<IEventInfo>> m_Queue;	
+		//	StlQueue<unique_ptr<IEventInfo>> m_Queue;	
 		public:
         		Thread();
 			virtual ~Thread();
@@ -22,7 +20,7 @@ namespace Core
 	template<typename T>
         void Thread::execute(T fn)
 	{
-		this->m_Queue.push(unique_ptr<IEventInfo>(new Event<T>(fn)));
+		//this->m_Queue.push(unique_ptr<IEventInfo>(new Event<T>(fn)));
 	}
 }
 #endif

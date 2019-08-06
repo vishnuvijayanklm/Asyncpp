@@ -19,12 +19,13 @@ namespace Core
 	void ThreadPool::shutdown()
 	{
 	}
-	void ThreadPool::initializeThreads() throw(INVALID_THREAD_SIZE_CONFIGURED)
+	
+	bool ThreadPool::initializeThreads() 
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::initializeThreads>>>"));
 		if(this->m_minSize < MIN_THREAD_POOL_SIZE || this->m_maxSize > MAX_THREAD_POOL_SIZE)
 		{
-			throw INVALID_THREAD_SIZE_CONFIGURED(string("Min thread should be >= " + to_string(MIN_THREAD_POOL_SIZE) + " and max thread should be <= "+ to_string(MAX_THREAD_POOL_SIZE)));
+			return false;
 		}
 
 		size_t size = this->m_FreePool.size() + this->m_UsedPool.size();
@@ -39,9 +40,10 @@ namespace Core
 			this->m_FreePool.push(pThread);
 		}
 		LOG_VERBOSE((LOGGER),("ThreadPool::initializeThreads<<<"));
+		return true;
 	}
 
-	Thread* ThreadPool::getThreadFromPool() throw(THREAD_POOL_OUTAGE,INVALID_THREAD_PTR)
+	Thread* ThreadPool::getThreadFromPool()
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::getThreadFromPool>>>"));
 		Thread *pThread = nullptr;
@@ -50,13 +52,9 @@ namespace Core
 			this->initializeThreads();
 			if(unlikely(!this->m_FreePool.pop(pThread)))
 			{
-				throw THREAD_POOL_OUTAGE();
+				return nullptr;
 			}
 		}	
-		if(unlikely(pThread == nullptr))
-		{
-			throw INVALID_THREAD_PTR(); 	
-		}
 		
 		this->m_UsedPool.push(pThread);
 		LOG_VERBOSE((LOGGER),("ThreadPool::getThreadFromPool<<<"));

@@ -2,7 +2,6 @@
 #define APPLICATION_H
 #include <core/include/Subsystem.h>
 #include <containers/include/Stl.h>
-#include <core/include/Exception.h>
 #include <core/include/ThreadPool.h>
 #include <util/include/Option.h>
 #include <signal.h>

@@ -2,8 +2,6 @@
 #define NOTIFIER_H
 
 #include <containers/include/Stl.h>
-#include <core/include/EventInfo.h>
-#include <core/include/Exception.h>
 #include <util/include/Runnable.h>
 #include <util/include/defines.h>
 #include <async/include/TaskInfo.h>

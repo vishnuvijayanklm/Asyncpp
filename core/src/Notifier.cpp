@@ -40,9 +40,6 @@ namespace Core
 				}
 			}
 		}
-		catch(Exception &e)
-		{
-		}
 		catch(exception &e)
 		{
 		}

@@ -72,7 +72,7 @@ namespace Util
         {
             if(unlikely(this->m_isRequired))
             {
-                throw MANDATORY_OPTION_MISSING(this->m_fullName +"/" + this->m_shortName);
+                //throw MANDATORY_OPTION_MISSING(this->m_fullName +"/" + this->m_shortName);
             }
         }
         return true;

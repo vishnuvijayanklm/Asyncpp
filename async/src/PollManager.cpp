@@ -30,7 +30,7 @@ namespace Async
 		if(pListener != nullptr)
 		{
 			struct epoll_event event;
-			event.events = EPOLLIN | EPOLLPRI | EPOLLERR;
+			event.events = EPOLLIN | EPOLLRDHUP | EPOLLERR; 
 			event.data.ptr = pListener;
 
 			if(epoll_ctl(this->mEpollFd,EPOLL_CTL_ADD,fd,&event) == -1)
@@ -61,7 +61,11 @@ namespace Async
 
         		for (int i = 0; i < eventCount; i++)
         		{
-				((IEventListener*)events[i].data.ptr)->onEventReceived();
+				IEventListener *pListener = static_cast<IEventListener*>(events[i].data.ptr);
+				if(pListener != nullptr)
+				{
+					pListener->onEventReceived();
+				}
 			}
 		}
 	}

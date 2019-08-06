@@ -20,6 +20,13 @@ namespace Async
                         {
                         	Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoResponse<Fn,Resp>>(Task,Response),Key);
 			}
+
+
+			template<typename Fn>
+                        void dispatchTask(Fn Task,std::shared_ptr<Async::CancellationToken> token,Core::SyncKey Key)
+                        {
+                                Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoCancellable<Fn>>(Task,token),Key);
+                        }
 	
 		public:
 			ITask()
@@ -57,6 +64,13 @@ namespace Async
 				this->dispatchTask(Task,Response,this->getKey());	
 				return *this;
 			}
+
+			template<typename Fn>
+                        ITask& add(Fn Task,std::shared_ptr<CancellationToken> token)
+                        {
+                                this->dispatchTask(Task,token,this->getKey());
+                                return *this;
+                        }
 
 			virtual Core::SyncKey getKey() = 0;
 	};

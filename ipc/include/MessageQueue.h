@@ -1,7 +1,6 @@
 #ifndef MESSAGE_QUEUE_H
 #define MESSAGE_QUEUE_H
 
-#include <core/include/Exception.h>
 #include <util/include/defines.h>
 #include <async/include/EventListener.h>
 #include <mqueue.h>
@@ -22,14 +21,13 @@ namespace IPC
 			
 			typedef std::function<void(shared_ptr<char>,size_t)> CallBack;
 			CallBack mCallBackFn;
-			//Async::SyncTask mTask;			
 
 			string mName;
 	
 			void unlink();
 				
 		public:
-			MessageQueue(string name,size_t maxSize,size_t msgSize,bool isCreate = false);
+			explicit MessageQueue(string name,size_t maxSize,size_t msgSize,bool isCreate = false);
 			~MessageQueue();
 
 			bool open();	

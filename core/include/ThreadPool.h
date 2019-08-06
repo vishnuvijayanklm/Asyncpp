@@ -1,7 +1,6 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 #include <core/include/Subsystem.h>
-#include <core/include/Exception.h>
 #include <core/include/Thread.h>
 #include <containers/include/Stl.h>
 #include <thread>
@@ -24,8 +23,8 @@ namespace Core
         		virtual ~ThreadPool();
         		virtual void init();
         		virtual void shutdown();
-			void initializeThreads() throw(INVALID_THREAD_SIZE_CONFIGURED);
-			Thread* getThreadFromPool() throw(THREAD_POOL_OUTAGE,INVALID_THREAD_PTR);
+			bool initializeThreads();
+			Thread* getThreadFromPool();
 	};
 }
 #endif

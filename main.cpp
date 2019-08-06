@@ -4,6 +4,7 @@
 #include <future>
 #include <async/include/Task.h>
 #include <timer/include/TimerTask.h>
+#include <ipc/include/MessageQueue.h>
 
 using namespace std;
 //unique_ptr<Core::Application> pApplication(new Core::Application());
@@ -37,7 +38,7 @@ class Example : public Async::ITimer
 
 		void onTimerExpired(Async::TimerTicks *pTicks)
 		{
-			LOG_INFO((LOGGER),("Timer Expired"));
+			LOG_INFO((LOGGER),("Timer Expired [%p]",pTicks));
 			//Async::TimerTask::getTimer()->removeTimer(this->mTicks.get());
 		}
 
@@ -82,22 +83,24 @@ int main()
 	pEvent->async_notify("event6",-100,"AAA");
 	//pEvent->async_notify("event1");
 
-		Example e[2000];
+
+	IPC::MessageQueue myQueue("/myQ",10,sizeof(int),true);
+	cout<<myQueue.open()<<endl;
+	myQueue.recv([](shared_ptr<char>,size_t size)
+			{
+				LOG_INFONP((LOGGER),("Received [%d]",size));
+			});
+
+	/*
 	while(1)
 	{
-		while(1)
-		{
-		//	Example e[20];
-			sleep(2);
-			//break;
-		}
-	}
-	while(1)
-	{
-		sleep(10);
+		char ptr[10];
+		LOG_INFONP((LOGGER),("Send [%d]",myQueue.send(ptr,sizeof(int))));
+		sleep(1);
 	}
 	return 0;
-	//Async::SyncTask(test).add(test);//.add(test);
+	Example e[2000];*/
+	
 	while(1)
 	{
 			Async::SyncTask(bind([]()
@@ -117,6 +120,8 @@ int main()
                         {
                                 cout<<"Got "<<x<<endl;
                         }).add([]() {cout<<"Fn with no return"<<endl; }).add(test);
+			
+			Example e[20000];
 			sleep(1);
 	}
 	return 0;

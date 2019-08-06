@@ -1,13 +1,14 @@
 #ifndef SHAREDMEMORY_H
 #define SHAREDMEMORY_H
 
-#include <core/include/Exception.h>
 #include <sys/mman.h>
 #include <sys/stat.h> 
 #include <fcntl.h>   
 #include <string>
 #include <unistd.h>
 #include <iostream>
+#include <util/include/defines.h>
+
 using namespace std;
 
 namespace IPC
@@ -18,12 +19,14 @@ namespace IPC
 			int mFd;
 			size_t mSize;
 			string mName;
+			bool mIsServer;
 
-			void init(bool)	throw(INVALID_SHARED_MEMORY_SIZE_CONFIGURED,SHARED_MEMORY_CREATE_FAILED,SHARED_MEMORY_RESIZE_FAILED);
-			void map()	throw(SHARED_MEMORY_MAPPING_FAILED);
+			bool map();
 			void unmap();
 			void close();
 		public:
+			bool init();
+			
 			SharedMemory();
 			SharedMemory(string name,size_t size,bool = false);
 			~SharedMemory();

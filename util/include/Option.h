@@ -4,7 +4,6 @@
 #include <iostream>
 #include <functional>
 #include <containers/include/Stl.h>
-#include <core/include/Exception.h>
 using namespace std;
 namespace Util
 {

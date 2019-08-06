@@ -41,9 +41,12 @@ namespace IPC
 
 		this->mMqdt = mq_open (this->mName.c_str(),oflag,0664,&attr);
 
-		Async::PollManager::getInstance()->addEventListener(this->mMqdt,this);
-
-		return this->mMqdt != -1;	
+		if(this->mMqdt == -1)
+		{	
+			LOG_ERROR((LOGGER),("Failed to open Message Queue [%d]",errno));
+			return false;
+		}
+		return true;
 	}	
 
 		
@@ -66,6 +69,10 @@ namespace IPC
 
 	void MessageQueue::recv(CallBack callBackFn)
 	{
+		if(this->mMqdt != -1)
+		{
+			Async::PollManager::getInstance()->addEventListener(this->mMqdt,this);
+		}
 		this->mCallBackFn =  callBackFn;	
 	}	
 	
@@ -91,7 +98,7 @@ namespace IPC
 				size_t len = this->read(ptr.get(),this->mMsgSize);
 				if(len != -1)
 				{
-					//this->mTask.add(bind(&MessageQueue::onRecv,this,ptr,len));
+					Async::SyncTask(this->getSyncKey()).add(bind(&MessageQueue::onRecv,this,ptr,len));
 				}	
 			}
 		}

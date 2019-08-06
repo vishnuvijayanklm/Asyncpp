@@ -60,7 +60,7 @@ namespace Core
         {
             return pSubsystem.get();
         }
-        throw SUBSYSTEM_NOT_CONFIGURED(to_string(id));
+	return nullptr;
     }
     void Application::shutdown()
     {
@@ -89,10 +89,7 @@ namespace Core
                 this->m_SubsystemInfo.insert(pSubsystem->id(),unique_ptr<ISubsystem>(pSubsystem));
                 return true;
             }
-            throw DUPLICATE_SUBSYSTEM(to_string(pSubsystem->id()));
         }
-        throw INVALID_SUBSYSTEM();
-        return false;
     }
 
     void Application::run()
