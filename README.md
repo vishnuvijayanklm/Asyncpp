@@ -13,8 +13,7 @@ Features supported
 
 Examples
 ========
-
-	```
+```cpp
 Async::AsyncTask([]()
 		{
 			/* Funtion with return type
