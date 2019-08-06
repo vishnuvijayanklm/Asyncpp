@@ -17,13 +17,14 @@ Examples
 Async::AsyncTask([]()
 {
 	/* Funtion with return type
-	   Return type will be caputed in the next block */
+	   Return value will be captured n the next block */
 
 	   return -100;
 },
 [](int x)
 {	
 	/*Return type captured here */
+	// X will be -100
 })
 .add([]()
 {
