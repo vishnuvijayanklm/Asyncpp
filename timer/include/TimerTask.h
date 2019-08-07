@@ -56,7 +56,7 @@ namespace Async
 			Async::ITimer *pmTimer;
 			std::mutex mMutex;
 	
-			shared_ptr<Async::CancellationToken> mCancellationToken;
+			Async::CancellationToken mCancellationToken;
 		public:
 			TimerTicks(ITimer *pTimer)
 			{
@@ -64,7 +64,6 @@ namespace Async
 				this->mIsRepetitive = 0;
 				this->mIsRunning = false;
 				this->pmTimer = pTimer;
-				this->mCancellationToken = std::make_shared<CancellationToken>();
 			}
 
 			
@@ -103,9 +102,9 @@ namespace Async
 				}
 			}
 
-			std::shared_ptr<CancellationToken>& getCancellationToken()
+			std::shared_ptr<Token>& getCancellationToken()
 			{
-				return this->mCancellationToken;
+				return this->mCancellationToken.getToken();
 			}
 			void stop()
 			{

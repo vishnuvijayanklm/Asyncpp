@@ -23,16 +23,11 @@ namespace Async
 
 
 			template<typename Fn>
-                        void dispatchTask(Fn Task,std::shared_ptr<Async::CancellationToken> token,Core::SyncKey Key)
+                        void dispatchTask(Fn Task,std::shared_ptr<Async::Token> token,Core::SyncKey Key)
                         {
                                 Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoCancellable<Fn>>(Task,token),Key);
                         }
 
-			template<typename Fn>
-                        void dispatchTask(Fn Task,std::function<void()> ack,Core::SyncKey Key)
-			{
-				Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoAck<Fn>>(Task,ack),Key);
-			}
 		public:
 			ITask()
 			{
@@ -76,7 +71,7 @@ namespace Async
 			}
 
 			template<typename Fn>
-                        ITask& add(Fn Task,std::shared_ptr<CancellationToken> token)
+                        ITask& add(Fn Task,std::shared_ptr<Token> token)
                         {
                                 this->dispatchTask(Task,token,this->getKey());
                                 return *this;
@@ -88,6 +83,7 @@ namespace Async
 				this->dispatchTask(Task,ack,this->getKey());
 				return *this;
 			}
+			
 			virtual Core::SyncKey getKey() = 0;
 	};
 
@@ -116,11 +112,6 @@ namespace Async
                         {
 
                         }
-
-			template<typename Task>
-			SyncTask(Task task,std::function<void()> ack) : mKey(Core::Synchronizer::getSyncKey()),ITask(task,ack)
-			{
-			}
 
 			Core::SyncKey getKey() override
 			{

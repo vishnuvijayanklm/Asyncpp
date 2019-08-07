@@ -5,21 +5,44 @@
 
 namespace Async
 {
-
-	class CancellationToken
+	class Token
 	{
 		public:
-			CancellationToken()
+			Token()
+			{
+			}
+			~Token()
+			{
+			}
+	};
+	
+	class CancellationToken
+	{
+			std::shared_ptr<Token> mToken;		
+		public:
+
+			CancellationToken() : mToken(make_shared<Token>())
 			{
 			}
 			~CancellationToken()
 			{
 			}
 
+			
 			bool isCancellable()
 			{
-				return true;
+				return this->mToken.get() != nullptr;
 			}
+
+			std::shared_ptr<Token>& getToken()
+			{
+				return this->mToken;
+			}
+
+			void cancel()
+			{
+				this->mToken = nullptr;
+			}	
 	};
 
 
@@ -53,7 +76,7 @@ namespace Async
 	};
 
 
-	template<typename Task,typename Response>
+	template<typename Task,typename Response >
 	class TaskInfoResponse : public ITaskInfo
 	{
 		Task mTask;
@@ -104,9 +127,9 @@ namespace Async
 	class TaskInfoCancellable : public ITaskInfo
 	{
                         Fn mTask;
-			std::weak_ptr<CancellationToken> mToken;
+			std::weak_ptr<Async::Token> mToken;
                 public:
-                        TaskInfoCancellable(Fn task,std::shared_ptr<CancellationToken> token):mTask(task),mToken(token)
+                        TaskInfoCancellable(Fn task,std::shared_ptr<Async::Token> token):mTask(task),mToken(token)
                         {
                         }
 

@@ -43,6 +43,7 @@ class Example : public Async::ITimer
 		}
 
 };
+
 int main()
 {
 	LOGGER.setLogFile("Logs","log.txt");
@@ -75,12 +76,12 @@ int main()
           		});
 	//add_event(EVENT_1,[](){cout<<"Hai"<<endl;});
 	//notify_event(EVENT_1);
-	pEvent->async_notify("event1",-100,-110);
-	pEvent->async_notify("event2",-100,-110);
-	pEvent->async_notify("event3",-100,-110);
-	pEvent->async_notify("event4",-100,-110);
-	pEvent->async_notify("event5",-100,-110);
-	pEvent->async_notify("event6",-100,"AAA");
+	pEvent->notify("event1",-100,-110);
+	pEvent->notify("event2",-100,-110);
+	pEvent->notify("event3",-100,-110);
+	pEvent->notify("event4",-100,-110);
+	pEvent->notify("event5",-100,-110);
+	pEvent->notify("event6",-100,"AAA");
 	//pEvent->async_notify("event1");
 
 
@@ -103,6 +104,15 @@ int main()
 	
 	while(1)
 	{
+		pEvent->notify("event1",-100,-110);
+		pEvent->notify("event2",-100,-110);
+		pEvent->notify("event3",-100,-110);
+		pEvent->notify("event4",-100,-110);
+		pEvent->notify("event5",-100,-110);
+		pEvent->notify("event6",-100,"AAA");
+
+		sleep(1);
+		continue;
 			Async::SyncTask([]()
 			{
 				return 99;
@@ -131,7 +141,7 @@ int main()
 			})
 			.add(test);
 			
-			//Example e[20000];
+			Example e[20000];
 			sleep(1);
 	}
 	return 0;

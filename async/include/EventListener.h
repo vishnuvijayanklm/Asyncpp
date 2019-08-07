@@ -4,8 +4,8 @@
 #include <util/include/Runnable.h>
 #include <sys/epoll.h>
 #include <containers/include/Stl.h>
-#include <async/include/TaskInfo.h>
 #include <core/include/Synchronizer.h>
+#include <async/include/Task.h>
 
 #include<stdarg.h>
 
@@ -50,19 +50,17 @@ namespace Async
 
 	class Event
 	{
-		void *mEvent;
+			void *mEvent;
 		public:
 			template<typename Fn>
 			Event(Fn fn)
 			{
-				auto f = this->toEvent(fn);
-				auto ev = new decltype(f)(this->toEvent(fn));
-				this->mEvent = static_cast<void*>(ev);
-
+				auto f = this->getType(fn);
+				this->mEvent = new decltype(f)(this->getType(fn));
 			}
 
 			template <typename Fn>
-			typename Traits<Fn>::Fn toEvent(Fn fn)
+			typename Traits<Fn>::Fn getType(Fn fn)
 			{
 				return static_cast<typename Traits<Fn>::Fn>(fn);
 			}
@@ -78,7 +76,7 @@ namespace Async
 			}
 	};
 
-	class EventListener
+	class EventListener : public IEventListener
 	{
 			StlMap<std::string,std::shared_ptr<Event>> mEvents;
 		public:
@@ -95,17 +93,24 @@ namespace Async
 			{
 				this->mEvents.insert(eventName,make_shared<Event>(fn));
 			}	
+			
 			template<typename... Args>
-			void async_notify(std::string eventName,Args&&... args)
+			void notify(std::string eventName,Args&&... args)
 			{
 				shared_ptr<Event> ptr;
 				if(this->mEvents.find(eventName,ptr))
 				{
 					if(ptr)
 					{
+						//Async::AsyncTask(std::bind(&Event::triggerEvent,ptr,std::forward<Args>(args)...));
 						ptr->triggerEvent(args...);
 					}
 				}
+			}
+			
+			void onEventReceived() override
+			{
+				
 			}
 	};
 }
