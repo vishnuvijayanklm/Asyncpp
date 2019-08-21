@@ -32,7 +32,8 @@ Async::AsyncTask([]() // Task 1
 .add([]() //Task 2
 {
 	/*Function without a return type */
-});
+})
+.execute();
 
 ```
 ## SyncTask
@@ -53,7 +54,8 @@ Async::SyncTask([]() // Task 1
 .add([]() //Task 2
 {
 	/*Function without a return type */
-});
+})
+.execute();
 
 ```
 
