@@ -71,7 +71,7 @@ namespace Async
 			{
 				this->addTimer(pTimer,pTicks);
 			}
-			Async::SyncTask(pTimer->getSyncKey()).add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks),pTicks->getCancellationToken());
+			Async::SyncTask(pTimer->getSyncKey()).add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks)).setCancellationToken(pTicks->getCancellationToken()).execute();
 		}
 	}
 	

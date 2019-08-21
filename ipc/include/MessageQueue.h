@@ -25,7 +25,7 @@ namespace IPC
 			string mName;
 	
 			void unlink();
-				
+			void initialize();				
 		public:
 			explicit MessageQueue(string name,size_t maxSize,size_t msgSize,bool isCreate = false);
 			~MessageQueue();

@@ -7,26 +7,24 @@
 
 namespace Async
 {
+
 	class ITask
 	{
-			template<typename Fn>
-                        void dispatchTask(Fn Task,Core::SyncKey Key)
-                        {
-                                Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfo<Fn>>(Task),Key);
-                        }
 
-			template<typename Fn,typename Resp>
-                        void dispatchTask(Fn Task,Resp Response,Core::SyncKey Key)
+			StlQueue<shared_ptr<ITaskInfo>> mTasks;
+			std::shared_ptr<Async::CancellationToken> mCancellationToken;		
+	
+			template<typename Task>
+                        void dispatchTask(Task task)
                         {
-                        	Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoResponse<Fn,Resp>>(Task,Response),Key);
+                        	this->mTasks.push(make_shared<TaskInfo<Task>>(task));
 			}
 
-
-			template<typename Fn>
-                        void dispatchTask(Fn Task,std::shared_ptr<Async::Token> token,Core::SyncKey Key)
+			template<typename Task,typename Response>
+                        void dispatchTask(Task task,Response response)
                         {
-                                Core::NotifyManager::getInstance()->dispatch(make_shared<TaskInfoCancellable<Fn>>(Task,token),Key);
-                        }
+				this->mTasks.push(make_shared<TaskInfoResponse<Task,Response>>(task,response));
+			}
 
 		public:
 			ITask()
@@ -38,53 +36,53 @@ namespace Async
 				
 			}
 
-			template<typename Fn>
-			ITask(Fn Task,Core::SyncKey Key)
+			template<typename Task>
+			ITask(Task task)
 			{
-				this->dispatchTask(Task,Key);
+				this->dispatchTask(task);
 			}
 
-			template<typename Fn,typename Resp>
-			ITask(Fn Task,Resp Response,Core::SyncKey Key)
+			template<typename Task,typename Response>
+			ITask(Task task,Response response)
 			{
-				this->dispatchTask(Task,Response,Key);
+				this->dispatchTask(task,response);
 			}
 			
-			template<typename Task>
-			ITask(Task task,std::function<void()> ack,Core::SyncKey Key)
-			{
-				this->dispatchTask(task,ack,Key);
-			}
-	
 			template<typename Fn>
 			ITask& add(Fn Task)
 			{
-				this->dispatchTask(Task,this->getKey());
+				this->dispatchTask(Task);
 				return *this;
 			}
 
 			template<typename Fn,typename Resp>
 			ITask& add(Fn Task,Resp Response)
 			{
-				this->dispatchTask(Task,Response,this->getKey());	
+				this->dispatchTask(Task,Response);	
 				return *this;
 			}
 
-			template<typename Fn>
-                        ITask& add(Fn Task,std::shared_ptr<Token> token)
-                        {
-                                this->dispatchTask(Task,token,this->getKey());
-                                return *this;
-                        }
-
-			 template<typename Fn>
-                        ITask& add(Fn Task,std::function<void()> ack)
+			ITask& setCancellationToken(const std::shared_ptr<Async::CancellationToken> &cancellationToken)
 			{
-				this->dispatchTask(Task,ack,this->getKey());
+				this->mCancellationToken = cancellationToken;
 				return *this;
 			}
-			
+	
 			virtual Core::SyncKey getKey() = 0;
+
+
+			void execute()
+			{
+				shared_ptr<ITaskInfo> pTask;
+				while(this->mTasks.pop(pTask))
+				{
+					if(pTask)
+					{
+						pTask->setCancellationToken(this->mCancellationToken);
+						Core::NotifyManager::getInstance()->dispatch(pTask,getKey());		
+					}		
+				}
+			}
 	};
 
 	class SyncTask	: public ITask
@@ -101,14 +99,14 @@ namespace Async
                                 
                         } 
 			
-			template<typename Fn>
-                        SyncTask(Fn Task) : mKey(Core::Synchronizer::getSyncKey()),ITask(Task,mKey)
+			template<typename Task>
+                        SyncTask(Task task) : mKey(Core::Synchronizer::getSyncKey()),ITask(task)
 			{
 			
 			}
 
-			template<typename Fn,typename Resp>
-                        SyncTask(Fn Task,Resp Response) : mKey(Core::Synchronizer::getSyncKey()),ITask(Task,Response,mKey)
+			template<typename Task,typename Response>
+                        SyncTask(Task task,Response response) : mKey(Core::Synchronizer::getSyncKey()),ITask(task,response)
                         {
 
                         }
@@ -129,13 +127,13 @@ namespace Async
                         }
 
                         template<typename Fn>
-                       	AsyncTask(Fn Task) : ITask(Task,Core::Synchronizer::getSyncKey())
+                       	AsyncTask(Fn Task) : ITask(Task)
                         {
 
                         }
 
                         template<typename Fn,typename Resp>
-                        AsyncTask(Fn Task,Resp Response): ITask(Task,Response,Core::Synchronizer::getSyncKey())
+                        AsyncTask(Fn Task,Resp Response): ITask(Task,Response)
                         {
 
                         }
@@ -145,6 +143,5 @@ namespace Async
                                 return Core::Synchronizer::getSyncKey();;
                         }
         };
-
 }
 #endif //ASYNCTASK_H

@@ -50,7 +50,6 @@ namespace IPC
 		{
 			char pp[pShm->size() +1];
 			pShm->read(pp);
-			//cout<<string(pp,1024).c_str()<<endl;
 
 			delete pShm;
 			printf("PTR %p BEGIN %p END %p CAPACITY  %d USED %d FREE %d ISFREE %d\n",pShm,pShm->begin(),pShm->end(),pShm->capacity(),pShm->size(),pShm->free(),pShm->isFree());

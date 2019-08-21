@@ -46,22 +46,44 @@ class Example : public Async::ITimer
 
 int main()
 {
+	/*func([]()
+	{
+		cout<<"Called...."<<endl;
+		return 100;
+	},
+	[](int x)
+        {
+                cout<<"Received "<<x<<endl;
+        });
+
+	return 0;
+*/
+	/*,
+	[](int x)
+	{
+		cout<<"Received "<<x<<endl;
+	});*/
 	LOGGER.setLogFile("Logs","log.txt");
 	LOGGER.setLoglevel(63);
 	Async::EventListener *pEvent = new Async::EventListener();
-	
+
 	pEvent->addEvent("event1",[]()
-			{
-				cout<<"onEvent1"<<endl;
-			});		
-	pEvent->addEvent("event2",[]()
-			{
-                                cout<<"onEvent2"<<endl;
+                        {
+                                cout<<"onEvent1_1"<<endl;
                         });
-	pEvent->addEvent("event3",[]()
-			{
-                                cout<<"onEvent3"<<endl;
+        pEvent->addEvent("event1",[]()
+                        {
+                                cout<<"onEvent1_2"<<endl;
                         });
+        pEvent->addEvent("event1",[]()
+                        {
+                                cout<<"onEvent1_3"<<endl;
+                        });
+        pEvent->addEvent("event1",[]()
+                        {
+                                cout<<"onEvent1_4"<<endl;
+                        });
+	
 	pEvent->addEvent("event4",[](int x,int y)
 			{
                                 cout<<"onEvent4"<<endl;
@@ -81,17 +103,24 @@ int main()
 	pEvent->notify("event3",-100,-110);
 	pEvent->notify("event4",-100,-110);
 	pEvent->notify("event5",-100,-110);
-	pEvent->notify("event6",-100,"AAA");
+	pEvent->notify("event6",-123,-111);
 	//pEvent->async_notify("event1");
 
 
-	IPC::MessageQueue myQueue("/myQ",10,sizeof(int),true);
+	IPC::MessageQueue myQueue("/myQ",200,100,true);
 	cout<<myQueue.open()<<endl;
-	myQueue.recv([](shared_ptr<char>,size_t size)
-			{
-				LOG_INFONP((LOGGER),("Received [%d]",size));
-			});
+	myQueue.recv([](shared_ptr<char> ptr,size_t size)
+	{
+		LOG_INFONP((LOGGER),("Received [%s][%d]",ptr.get(),size));
+	});
 
+
+	while(1)
+	{
+		string hai = "Hai Vishnu";
+		LOG_INFONP((LOGGER),("Send %d ",myQueue.send((char*)hai.c_str(),hai.length())));
+		usleep(100000);
+	}
 	/*
 	while(1)
 	{
@@ -104,15 +133,7 @@ int main()
 	
 	while(1)
 	{
-		pEvent->notify("event1",-100,-110);
-		pEvent->notify("event2",-100,-110);
-		pEvent->notify("event3",-100,-110);
-		pEvent->notify("event4",-100,-110);
-		pEvent->notify("event5",-100,-110);
-		pEvent->notify("event6",-100,"AAA");
-
-		sleep(1);
-		continue;
+			std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
 			Async::SyncTask([]()
 			{
 				return 99;
@@ -124,8 +145,10 @@ int main()
 			.add([]()
 			{
 				cout<<"Fn with no return"<<endl;
-			}).
-			add(&test);
+			})
+			.add(&test)
+			.setCancellationToken(Token)
+			.execute();
 			
 			Async::AsyncTask([]()
                         {
@@ -139,8 +162,11 @@ int main()
 			{
 				cout<<"Fn with no return"<<endl;
 			})
-			.add(test);
-			
+			.add(test)
+			.setCancellationToken(Token)
+			.execute();
+
+			Token->cancel();
 			Example e[20000];
 			sleep(1);
 	}

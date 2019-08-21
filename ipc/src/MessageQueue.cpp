@@ -22,17 +22,21 @@ namespace IPC
 		this->unlink();
 	}
 
-	bool MessageQueue::open()
+	void MessageQueue::initialize()
 	{
 		this->close();
+		this->unlink();
+	}
 
+	bool MessageQueue::open()
+	{
+		this->initialize();
 		struct mq_attr attr;
 		attr.mq_maxmsg = this->mMaxSize;
   		attr.mq_msgsize = this->mMsgSize;
   		attr.mq_flags = 0;
 	
 		int oflag = O_RDWR | O_NONBLOCK;
-
 		if(this->mIsCreate)
 		{
 			this->unlink();
@@ -98,7 +102,7 @@ namespace IPC
 				size_t len = this->read(ptr.get(),this->mMsgSize);
 				if(len != -1)
 				{
-					Async::SyncTask(this->getSyncKey()).add(bind(&MessageQueue::onRecv,this,ptr,len));
+					Async::SyncTask(this->getSyncKey()).add(bind(&MessageQueue::onRecv,this,ptr,len)).execute();
 				}	
 			}
 		}

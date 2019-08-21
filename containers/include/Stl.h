@@ -180,11 +180,16 @@ class StlMap:private map<Key,Value>
 			}
 			return false;
 		}
-		
-		void erase(Key key)
+		bool erase(Key key)
 		{
 			lock_guard<mtx> lock(this->m_mtx);
-			map<Key,Value>::erase(key);
+			it = map<Key,Value>::find(key);
+			if(it != map<Key,Value>::end())
+			{
+				map<Key,Value>::erase(it);
+				return true;
+			}
+			return false;
 		}
 
 		bool find(Key key,Value &val)
@@ -338,11 +343,16 @@ class StlTimedMap:private map<Key,Value,Compare,Alloc>
 			}
 			return false;
 		}
-
-		void erase(Key key)
+		bool erase(Key key)
 		{
 			lock_guard<mutex> lock(this->m_mtx);
-			map<Key,Value,Compare,Alloc>::erase(key);
+			it = map<Key,Value,Compare,Alloc>::find(key);
+			if(it != map<Key,Value,Compare,Alloc>::end())
+			{
+				map<Key,Value,Compare,Alloc>::erase(it);
+				return true;
+			}
+			return false;
 		}
 
 		bool find(Key key,Value &val)
@@ -462,10 +472,8 @@ class StlTimedMap:private map<Key,Value,Compare,Alloc>
 						Value val;
 						while(pQueue->pop(mapKey))
 						{
-							if(this->erase(mapKey,val))
-							{
-								this->mCallBack(mapKey,val);
-							}
+							this->erase(mapKey,val);
+							this->mCallBack(mapKey,val);
 						}
 						pQueue->clear();
 					}

@@ -18,11 +18,12 @@ namespace Async
 	
 	class CancellationToken
 	{
-			std::shared_ptr<Token> mToken;		
+			std::shared_ptr<Async::Token> mToken;		
 		public:
 
-			CancellationToken() : mToken(make_shared<Token>())
+			CancellationToken() : mToken(make_shared<Async::Token>())
 			{
+			
 			}
 			~CancellationToken()
 			{
@@ -34,25 +35,49 @@ namespace Async
 				return this->mToken.get() != nullptr;
 			}
 
-			std::shared_ptr<Token>& getToken()
+			bool isValid()
+			{
+				return this->mToken.get() != nullptr;
+			}
+
+			std::shared_ptr<Async::Token>& getToken()
 			{
 				return this->mToken;
 			}
 
 			void cancel()
 			{
-				this->mToken = nullptr;
+				this->mToken.reset();
 			}	
 	};
 
 
 	class ITaskInfo
 	{
+			std::weak_ptr<Async::Token> mToken;
+			std::shared_ptr<Async::CancellationToken> mCancellationToken;
 		public:
-			ITaskInfo(){}
+			ITaskInfo()
+			{
+				this->mCancellationToken = make_shared<Async::CancellationToken>();
+				this->mToken = this->mCancellationToken->getToken();
+			}
 
 			virtual ~ITaskInfo(){}
 			virtual void executeTask() = 0;
+
+			bool isExpired()
+			{
+				return this->mToken.expired();
+			}
+
+			void setCancellationToken(std::shared_ptr<Async::CancellationToken> &cancellationToken)
+			{
+				if(cancellationToken.get())
+				{
+					this->mToken = cancellationToken->getToken();
+				}
+			}
 	};
 
 
@@ -60,6 +85,7 @@ namespace Async
 	class TaskInfo : public ITaskInfo
 	{
 			Task mTask;
+						
 		public:
 			TaskInfo(Task task):mTask(task)
 			{
@@ -71,7 +97,10 @@ namespace Async
 
 			void executeTask() override
 			{
-				this->mTask();
+				if(!this->isExpired())
+				{
+					this->mTask();
+				}
 			}
 	};
 
@@ -95,7 +124,10 @@ namespace Async
 
 		void executeTask() override
 		{
-			this->mResponse(this->mTask());
+			if(!this->isExpired())
+                        {
+				this->mResponse(this->mTask());
+			}
 		}
 	};
 
@@ -120,30 +152,6 @@ namespace Async
                         this->mTask();
 			this->mResponse();
                 }
-        };
-
-
-	template<typename Fn>
-	class TaskInfoCancellable : public ITaskInfo
-	{
-                        Fn mTask;
-			std::weak_ptr<Async::Token> mToken;
-                public:
-                        TaskInfoCancellable(Fn task,std::shared_ptr<Async::Token> token):mTask(task),mToken(token)
-                        {
-                        }
-
-                        ~TaskInfoCancellable()
-                        {
-                        }
-
-                        void executeTask() override
-                        {
-				if(!this->mToken.expired())
-				{
-                                	this->mTask();
-				}
-                        }
         };
 }
 #endif

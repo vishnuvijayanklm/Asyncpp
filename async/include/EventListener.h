@@ -76,42 +76,53 @@ namespace Async
 			}
 	};
 
-	class EventListener : public IEventListener
-	{
-			StlMap<std::string,std::shared_ptr<Event>> mEvents;
-		public:
-			EventListener()
-			{
-			}
-		
-			~EventListener()
-			{
-			}
+	class EventListener
+        {
+                        StlMap<std::string,std::shared_ptr<StlQueue<std::shared_ptr<Event>>>> mEvents;
+                public:
+                        EventListener()
+                        {
+                        }
+
+                        ~EventListener()
+                        {
+                        }
 
 			template<typename Fn>
-			void addEvent(std::string eventName,Fn fn)
-			{
-				this->mEvents.insert(eventName,make_shared<Event>(fn));
-			}	
-			
-			template<typename... Args>
-			void notify(std::string eventName,Args&&... args)
-			{
-				shared_ptr<Event> ptr;
-				if(this->mEvents.find(eventName,ptr))
-				{
-					if(ptr)
-					{
-						//Async::AsyncTask(std::bind(&Event::triggerEvent,ptr,std::forward<Args>(args)...));
-						ptr->triggerEvent(args...);
-					}
-				}
-			}
-			
-			void onEventReceived() override
-			{
-				
-			}
+                        void addEvent(std::string eventName,Fn fn)
+                        {
+                                std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
+                                this->mEvents.find(eventName,pEventQ);
+                                if(!pEventQ)
+                                {
+                                        pEventQ = make_shared<StlQueue<std::shared_ptr<Event>>>();
+                                        this->mEvents.insert(eventName,pEventQ);
+                                }
+                                pEventQ->push(make_shared<Event>(fn));
+                        }
+
+                        void removeEvent(std::string eventName)
+                        {
+                                this->mEvents.erase(eventName);
+                        }
+
+                        template<typename... Args>
+                        void notify(std::string eventName,Args&&... args)
+                        {
+                                std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
+                                shared_ptr<Event> ptr;
+                                if(this->mEvents.find(eventName,pEventQ))
+                                {
+                                        StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
+                                        while(temp.pop(ptr))
+                                        {
+                                                if(ptr)
+                                                {
+                                                        ptr->triggerEvent(args...);
+                                                }
+                                        }
+                                }
+                        }
 	};
 }
 #endif // EVENETLISTENER_H
