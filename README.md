@@ -59,4 +59,30 @@ Async::SyncTask([]() // Task 1
 
 ```
 
+## Cancellable Task
+*Executing tasks cannot be cancelled.
+
+```cpp 
+std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
+Async::SyncTask([]() // Task 1
+{
+	/* Funtion with return type
+	   Return value will be captured in the next block */
+
+	   return -100;
+},
+[](int x)
+{	
+	/*Return type captured here */
+	// X will be -100
+})
+.add([]() //Task 2
+{
+	/*Function without a return type */
+})
+.setCancellationToken(Token)
+.execute();
+...
+Token->cancel();
+```
 
