@@ -14,8 +14,7 @@ Features supported
 
 Examples
 ========
-## AsyncTask
-Set of n tasks will be executed asynchronosly/parallel
+##Task
 ```cpp 
 Async::Task([]() // Task 1
 {
@@ -33,12 +32,8 @@ Async::Task([]() // Task 1
 {
 	/*Function without a return type */
 })
-.execute_async();
+.execute_async(); /* Tasks will be executed asynchronously/parallel */
 
-```
-## SyncTask
-Set of n tasks will be executed synchronosly
-```cpp 
 Async::Task([]() // Task 1
 {
 	/* Funtion with return type
@@ -55,12 +50,11 @@ Async::Task([]() // Task 1
 {
 	/*Function without a return type */
 })
-.execute_sync();
+.execute_sync(); /* Tasks will be executed syncronously */
 
 ```
 
 ## Cancellable Task
-*Executing tasks cannot be cancelled.
 
 ```cpp 
 std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
@@ -83,6 +77,6 @@ Async::Task([]() // Task 1
 .setCancellationToken(Token)
 .execute_async();
 ...
-Token->cancel();
+Token->cancel(); /* All the pending tasks will be cancelled, executing tasks cannot be cancelled */
 ```
 
