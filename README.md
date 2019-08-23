@@ -17,7 +17,7 @@ Examples
 ## AsyncTask
 Set of n tasks will be executed asynchronosly/parallel
 ```cpp 
-Async::AsyncTask([]() // Task 1
+Async::Task([]() // Task 1
 {
 	/* Funtion with return type
 	   Return value will be captured in the next block */
@@ -33,13 +33,13 @@ Async::AsyncTask([]() // Task 1
 {
 	/*Function without a return type */
 })
-.execute();
+.execute_async();
 
 ```
 ## SyncTask
 Set of n tasks will be executed synchronosly
 ```cpp 
-Async::SyncTask([]() // Task 1
+Async::Task([]() // Task 1
 {
 	/* Funtion with return type
 	   Return value will be captured in the next block */
@@ -55,7 +55,7 @@ Async::SyncTask([]() // Task 1
 {
 	/*Function without a return type */
 })
-.execute();
+.execute_sync();
 
 ```
 
@@ -64,7 +64,7 @@ Async::SyncTask([]() // Task 1
 
 ```cpp 
 std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
-Async::SyncTask([]() // Task 1
+Async::Task([]() // Task 1
 {
 	/* Funtion with return type
 	   Return value will be captured in the next block */
@@ -81,7 +81,7 @@ Async::SyncTask([]() // Task 1
 	/*Function without a return type */
 })
 .setCancellationToken(Token)
-.execute();
+.execute_async();
 ...
 Token->cancel();
 ```
