@@ -64,7 +64,6 @@ namespace Async
 
 	void TimerTask::onTimerExpired(TimerTicks *pTicks,ITimer *pTimer)
 	{
-		//LOG_INFO((LOGGER),("TimerTask::onTimerExpired [%p][%p]",pTicks,pTimer));
 		if(pTimer && pTicks && pTicks->isActive())
 		{
 			pTicks->onExpired();
@@ -72,14 +71,12 @@ namespace Async
 			{
 				this->mTimerMap.insert(pTicks,pTimer,pTicks->getInterval());
 			}
-			//LOG_INFO((LOGGER),("Calling Expired %p %p",pTicks,pTicks));
 			Async::Task().add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks)).setCancellationToken(pTicks->getCancellationToken()).execute_sync(pTimer->getSyncKey());
 		}
 	}
 	
 	void TimerTask::removeTimer(TimerTicks *pTicks)
 	{
-		//LOG_INFO((LOGGER),("Removing [%p]",pTicks));
 		lock_guard<mutex> lock(this->mMutex);
 		if(pTicks)
 		{

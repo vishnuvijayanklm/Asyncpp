@@ -472,8 +472,10 @@ class StlTimedMap:private map<Key,Value,Compare,Alloc>
 						Value val;
 						while(pQueue->pop(mapKey))
 						{
-							this->erase(mapKey,val);
-							this->mCallBack(mapKey,val);
+							if(this->erase(mapKey,val))
+							{
+								this->mCallBack(mapKey,val);
+							}
 						}
 						pQueue->clear();
 					}
