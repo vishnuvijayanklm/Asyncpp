@@ -13,7 +13,7 @@ Features supported
 
 
 ## Examples
-========
+
 ### Task
 ```cpp 
 Async::Task([]() // Task 1
@@ -132,6 +132,13 @@ class TimerExample : public Async::ITimer
 ```
 ### IPC Message Queue
 ```cpp
-IPC::MessageQueue myQueue("/myQ",200,100,true);
+IPC::MessageQueue myQ(/* Q name */,/* Q size */, /* message size */,/* is to create or not */);
 
+myQ.recv([](shared_ptr<char> ptr,size_t size) //Asynchronous receive
+{
+});
+
+myQ.read(/* buffer ptr */,/* size */); //Synchronous receive
+
+myQ.send(/* buffer ptr */,/* size */); //Synchronous send
 ```
