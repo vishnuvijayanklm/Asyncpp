@@ -63,7 +63,7 @@ namespace Async
 
 	void TimerTask::onTimerExpired(TimerTicks *pTicks,ITimer *pTimer)
 	{
-		LOG_INFO((LOGGER),("TimerTask::onTimerExpired [%p][%p]",pTicks,pTimer));
+		//LOG_INFO((LOGGER),("TimerTask::onTimerExpired [%p][%p]",pTicks,pTimer));
 		if(pTimer && pTicks && pTicks->isActive())
 		{
 			pTicks->onExpired();
@@ -71,7 +71,7 @@ namespace Async
 			{
 				this->addTimer(pTimer,pTicks);
 			}
-			Async::SyncTask(pTimer->getSyncKey()).add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks)).setCancellationToken(pTicks->getCancellationToken()).execute();
+			Async::Task().add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks)).setCancellationToken(pTicks->getCancellationToken()).execute_sync(pTimer->getSyncKey());
 		}
 	}
 	
@@ -80,7 +80,7 @@ namespace Async
 		lock_guard<mutex> lock(this->mMutex);
 		if(pTicks)
 		{
-			LOG_INFO((LOGGER),("Removing [%p]",pTicks));
+			//LOG_INFO((LOGGER),("Removing [%p]",pTicks));
 			this->mTimerMap.erase(pTicks);
 		}	
 	}

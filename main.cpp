@@ -109,17 +109,31 @@ int main()
 
 	IPC::MessageQueue myQueue("/myQ",200,100,true);
 	cout<<myQueue.open()<<endl;
-	myQueue.recv([](shared_ptr<char> ptr,size_t size)
+	thread([&myQueue]
+	{
+		char *ptr = new char[100];
+		while(1)
+		{		
+			if(myQueue.read(ptr,100) != -1)
+			{
+				LOG_INFONP((LOGGER),("Received [%s]",ptr));
+			}
+			usleep(20000);
+		}		
+	}).detach();
+	/*myQueue.recv([](shared_ptr<char> ptr,size_t size)
 	{
 		LOG_INFONP((LOGGER),("Received [%s][%d]",ptr.get(),size));
-	});
+	});*/
 
 
+	Example e[200];
+	int i = 0;
 	while(1)
 	{
-		string hai = "Hai Vishnu";
+		string hai = "Hai Vishnu_"+to_string(++i);
 		LOG_INFONP((LOGGER),("Send %d ",myQueue.send((char*)hai.c_str(),hai.length())));
-		usleep(100000);
+		usleep(1000000);
 	}
 	/*
 	while(1)
@@ -134,7 +148,7 @@ int main()
 	while(1)
 	{
 			std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
-			Async::SyncTask([]()
+			Async::Task([]()
 			{
 				return 99;
 			},
@@ -148,9 +162,9 @@ int main()
 			})
 			.add(&test)
 			.setCancellationToken(Token)
-			.execute();
+			.execute_sync();
 			
-			Async::AsyncTask([]()
+			Async::Task([]()
                         {
                                 return -100;
                         },
@@ -164,7 +178,7 @@ int main()
 			})
 			.add(test)
 			.setCancellationToken(Token)
-			.execute();
+			.execute_async();
 
 			Token->cancel();
 			Example e[20000];

@@ -68,10 +68,7 @@ namespace Async
 				return *this;
 			}
 	
-			virtual Core::SyncKey getKey() = 0;
-
-
-			void execute()
+			void execute_async()
 			{
 				shared_ptr<ITaskInfo> pTask;
 				while(this->mTasks.pop(pTask))
@@ -79,68 +76,44 @@ namespace Async
 					if(pTask)
 					{
 						pTask->setCancellationToken(this->mCancellationToken);
-						Core::NotifyManager::getInstance()->dispatch(pTask,getKey());		
+						Core::NotifyManager::getInstance()->dispatch(pTask,Core::Synchronizer::getSyncKey());		
 					}		
 				}
 			}
-	};
 
-	class SyncTask	: public ITask
-	{
-			Core::SyncKey mKey;
-		public:
-
-			SyncTask(const Core::SyncKey key):mKey(key)
+			void execute_sync(Core::SyncKey syncKey = Core::Synchronizer::getSyncKey())
 			{
-
-			}
-			SyncTask():mKey(Core::Synchronizer::getSyncKey())
-                        {
-                                
-                        } 
-			
-			template<typename Task>
-                        SyncTask(Task task) : mKey(Core::Synchronizer::getSyncKey()),ITask(task)
-			{
-			
-			}
-
-			template<typename Task,typename Response>
-                        SyncTask(Task task,Response response) : mKey(Core::Synchronizer::getSyncKey()),ITask(task,response)
-                        {
-
-                        }
-
-			Core::SyncKey getKey() override
-			{
-				return this->mKey;
+				shared_ptr<ITaskInfo> pTask;
+                                while(this->mTasks.pop(pTask))
+                                {
+                                        if(pTask)
+                                        {
+                                                pTask->setCancellationToken(this->mCancellationToken);
+                                                Core::NotifyManager::getInstance()->dispatch(pTask,syncKey);
+                                        }
+                                }
 			}
 	};
 
-	class AsyncTask  : public ITask
+	class Task  : public ITask
         {
                 public:
 
-                        AsyncTask()
+                        Task()
                         {
 
                         }
 
                         template<typename Fn>
-                       	AsyncTask(Fn Task) : ITask(Task)
+                       	Task(Fn Task) : ITask(Task)
                         {
 
                         }
 
                         template<typename Fn,typename Resp>
-                        AsyncTask(Fn Task,Resp Response): ITask(Task,Response)
+                        Task(Fn Task,Resp Response): ITask(Task,Response)
                         {
 
-                        }
-
-                        Core::SyncKey getKey() override
-                        {
-                                return Core::Synchronizer::getSyncKey();;
                         }
         };
 }
