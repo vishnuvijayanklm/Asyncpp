@@ -71,7 +71,7 @@ namespace Async
 				return this->mToken.expired();
 			}
 
-			void setCancellationToken(std::shared_ptr<Async::CancellationToken> &cancellationToken)
+			void setCancellationToken(const std::shared_ptr<Async::CancellationToken> &cancellationToken)
 			{
 				if(cancellationToken.get())
 				{

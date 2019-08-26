@@ -98,8 +98,8 @@ int main()
           		});
 	//add_event(EVENT_1,[](){cout<<"Hai"<<endl;});
 	//notify_event(EVENT_1);
-	pEvent->notify("event1",-100,-110);
-	pEvent->notify("event2",-100,-110);
+	pEvent->notify("event1");
+	pEvent->notify("event2");
 	pEvent->notify("event3",-100,-110);
 	pEvent->notify("event4",-100,-110);
 	pEvent->notify("event5",-100,-110);
@@ -127,13 +127,14 @@ int main()
 	});*/
 
 
-	Example e[200];
+	//Example e[200];
 	int i = 0;
 	while(1)
 	{
 		string hai = "Hai Vishnu_"+to_string(++i);
 		LOG_INFONP((LOGGER),("Send %d ",myQueue.send((char*)hai.c_str(),hai.length())));
 		usleep(1000000);
+		break;
 	}
 	/*
 	while(1)

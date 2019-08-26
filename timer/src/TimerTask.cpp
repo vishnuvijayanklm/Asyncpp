@@ -55,6 +55,7 @@ namespace Async
 	
 	void TimerTask::addTimer(ITimer *pTimer,TimerTicks *pTicks)
 	{
+		lock_guard<mutex> lock(this->mMutex);
 		if(pTimer && pTicks && pTicks->isActive())
 		{
 			this->mTimerMap.insert(pTicks,pTimer,pTicks->getInterval());
@@ -69,18 +70,19 @@ namespace Async
 			pTicks->onExpired();
 			if(pTicks->isRepetitive() && pTicks->isActive())
 			{
-				this->addTimer(pTimer,pTicks);
+				this->mTimerMap.insert(pTicks,pTimer,pTicks->getInterval());
 			}
+			//LOG_INFO((LOGGER),("Calling Expired %p %p",pTicks,pTicks));
 			Async::Task().add(std::bind(&ITimer::onTimerExpired,pTimer,pTicks)).setCancellationToken(pTicks->getCancellationToken()).execute_sync(pTimer->getSyncKey());
 		}
 	}
 	
 	void TimerTask::removeTimer(TimerTicks *pTicks)
 	{
+		//LOG_INFO((LOGGER),("Removing [%p]",pTicks));
 		lock_guard<mutex> lock(this->mMutex);
 		if(pTicks)
 		{
-			//LOG_INFO((LOGGER),("Removing [%p]",pTicks));
 			this->mTimerMap.erase(pTicks);
 		}	
 	}
