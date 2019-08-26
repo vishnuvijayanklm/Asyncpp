@@ -102,4 +102,31 @@ pEvent->addEvent("event3",[]()
 pEvent->notify("event1",10,100);
 pEvent->notify("event2");
 pEvent->notify("event3");
+
+```
+## Timer
+
+```cpp
+class TimerExample : public Async::ITimer
+{
+                shared_ptr<Async::TimerTicks> mTicks;
+        public:
+                TimerExample():mTicks(make_shared<Async::TimerTicks>(this))
+                {
+                        this->mTicks->setInterval(1);   //Timer set for 1 sec
+                        this->mTicks->start();  	//Starting timer
+                }
+
+                ~TimerExample()
+                {
+
+                }
+
+                void onTimerExpired(Async::TimerTicks *pTicks)
+                {
+			//Callback after the timer expiry...
+                }
+
+};
+
 ```

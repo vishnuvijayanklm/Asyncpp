@@ -21,17 +21,17 @@ void fn(int x)
 	cout<<"Expired Func"<<endl;
 }
 
-class Example : public Async::ITimer
+class TimerExample : public Async::ITimer
 {
 		shared_ptr<Async::TimerTicks> mTicks;
 	public:
-		Example():mTicks(make_shared<Async::TimerTicks>(this))
+		TimerExample():mTicks(make_shared<Async::TimerTicks>(this))
 		{
-			this->mTicks->setInterval(1,1);
+			this->mTicks->setInterval(1);
 			this->mTicks->start();
 		}
 
-		~Example()
+		~TimerExample()
 		{
 
 		}
@@ -182,7 +182,7 @@ int main()
 			.execute_async();
 
 			Token->cancel();
-			Example e[20000];
+			TimerExample e[20000];
 			sleep(1);
 	}
 	return 0;

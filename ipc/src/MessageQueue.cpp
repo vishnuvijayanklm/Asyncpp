@@ -1,8 +1,7 @@
 #include <ipc/include/MessageQueue.h>
 #include <async/include/PollManager.h>
-#include <core/include/Application.h>
 #include <mqueue.h>
-extern unique_ptr<Core::Application> pApplication;
+
 namespace IPC
 {
 	MessageQueue::MessageQueue(string name,size_t maxSize,size_t msgSize,bool isCreate)
