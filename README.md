@@ -80,3 +80,26 @@ Async::Task([]() // Task 1
 Token->cancel(); /* All the pending tasks will be cancelled, executing tasks cannot be cancelled */
 ```
 
+## EventListeners
+```cpp
+Async::EventListener *pEvent = new Async::EventListener();
+pEvent->addEvent("event1",[](int x,int y)
+                        {
+                                cout<<"onEvent1_1"<<endl;
+                        });
+pEvent->addEvent("event1",[](int x,int y)
+                        {
+                                cout<<"onEvent1_2"<<endl;
+                        });
+pEvent->addEvent("event2",[](int x,int y)
+			{
+                                cout<<"onEvent2"<<endl;
+                        });
+pEvent->addEvent("event3",[]()
+			{
+                                cout<<"onEvent3"<<endl;
+                        });
+pEvent->notify("event1",10,100);
+pEvent->notify("event2");
+pEvent->notify("event3");
+```
