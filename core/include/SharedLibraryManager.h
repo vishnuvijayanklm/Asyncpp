@@ -1,12 +1,13 @@
 #ifndef SHAREDLIBRARYMANAGER_H
 #define SHAREDLIBRARYMANAGER_H
-#include <core/include/Subsystem.h>
+
 #include <util/include/defines.h>
 #include <core/include/SharedLibraryLoader.h>
 #include <containers/include/Stl.h>
+
 namespace Core
 {
-    class SharedLibraryManager: public ISubsystem
+    class SharedLibraryManager
     {
         StlMap<string,shared_ptr<SharedLibraryLoader>> mLoaders;
     public:

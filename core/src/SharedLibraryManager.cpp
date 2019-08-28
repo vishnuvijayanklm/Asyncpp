@@ -2,7 +2,7 @@
 
 namespace Core
 {
-	SharedLibraryManager::SharedLibraryManager():ISubsystem(SHAREDLIBRARY_MANAGER)
+	SharedLibraryManager::SharedLibraryManager()
 	{
 	}
 	SharedLibraryManager::~SharedLibraryManager()

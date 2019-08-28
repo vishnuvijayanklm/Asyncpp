@@ -27,16 +27,19 @@ namespace Core
 		LOG_INFO((LOGGER),("Notifier started...."));	
 		try
 		{
-			shared_ptr<Async::ITaskInfo> pTask;
-			while(this->m_Queue.pop(pTask,true))
+			while(1)
 			{
-				if(likely(pTask.get() != nullptr))
+				shared_ptr<Async::ITaskInfo> pTask;
+				if(this->m_Queue.pop(pTask,true))
 				{
-					pTask.get()->executeTask();
-				}
-				else
-				{
-					break;
+					if(likely(pTask.get() != nullptr))
+					{
+						pTask->executeTask();
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 		}

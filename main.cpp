@@ -27,7 +27,7 @@ class TimerExample : public Async::ITimer
 	public:
 		TimerExample():mTicks(make_shared<Async::TimerTicks>(this))
 		{
-			this->mTicks->setInterval(1);
+			this->mTicks->setInterval(1,true);
 			this->mTicks->start();
 		}
 
@@ -46,6 +46,20 @@ class TimerExample : public Async::ITimer
 
 int main()
 {
+
+	LockFreeQueue<int> Q;
+	for(int i = 1; i <= 100;i++)
+	{
+		Q.push(i);
+	}
+
+
+	int ii = -1;
+	while(Q.pop(ii))
+	{
+		cout<<"I = "<<ii<<endl;
+	}
+	//return 0;
 	/*func([]()
 	{
 		cout<<"Called...."<<endl;
@@ -64,7 +78,7 @@ int main()
 		cout<<"Received "<<x<<endl;
 	});*/
 	LOGGER.setLogFile("Logs","log.txt");
-	LOGGER.setLoglevel(63);
+	LOGGER.setLoglevel(31);
 	Async::EventListener *pEvent = new Async::EventListener();
 
 	pEvent->addEvent("event1",[]()
@@ -127,7 +141,7 @@ int main()
 	});*/
 
 
-	//Example e[200];
+	TimerExample e[20000];
 	int i = 0;
 	while(1)
 	{
@@ -179,11 +193,11 @@ int main()
 			})
 			.add(test)
 			.setCancellationToken(Token)
-			.execute_async();
+			.execute_sync();
 
-			Token->cancel();
-			TimerExample e[20000];
-			sleep(1);
+			usleep(100000);
+			//Token->cancel();
+			//usleep(10000000);	
 	}
 	return 0;
 }

@@ -5,7 +5,7 @@ Logger::Logger()
 {
 	this->m_logLevel = 127;
 	this->m_logFile.clear();
-	this->setLogFileSize(10);
+	this->setLogFileSize(100);
 	this->setLogBackUpCount(2);
 }
 

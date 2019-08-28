@@ -1,13 +1,12 @@
 #ifndef NOTIFYMANAGER_H
 #define NOTIFYMANAGER_H
 
-#include <core/include/Subsystem.h>
 #include <util/include/defines.h>
 #include <core/include/Notifier.h>
 #include <core/include/Synchronizer.h>
 
 #ifndef NOTIFIER_COUNT
-#define NOTIFIER_COUNT 5
+#define NOTIFIER_COUNT 25
 #endif
 
 namespace Core

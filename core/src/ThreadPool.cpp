@@ -2,7 +2,7 @@
 #include <util/include/defines.h>
 namespace Core
 {
-	ThreadPool::ThreadPool(int minSize,int maxSize):ISubsystem(THREADPOOL)
+	ThreadPool::ThreadPool(int minSize,int maxSize)
 	{
 		LOG_VERBOSE((LOGGER),("ThreadPool::ThreadPool>>>"));
 		this->m_minSize = minSize;

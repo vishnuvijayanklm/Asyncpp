@@ -1,6 +1,5 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
-#include <core/include/Subsystem.h>
 #include <core/include/Thread.h>
 #include <containers/include/Stl.h>
 #include <thread>
@@ -11,7 +10,7 @@ using namespace std;
 namespace Core
 {
 
-	class ThreadPool:public ISubsystem
+	class ThreadPool
 	{	
 		private:
 			size_t m_minSize;

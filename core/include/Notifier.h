@@ -5,6 +5,7 @@
 #include <util/include/Runnable.h>
 #include <util/include/defines.h>
 #include <async/include/TaskInfo.h>
+#include <containers/include/LockFree.h>
 
 using namespace std;
 namespace Core
@@ -13,6 +14,7 @@ namespace Core
 	{
 		private:
 			StlQueue<shared_ptr<Async::ITaskInfo>> m_Queue;
+			//LockFreeQueue<shared_ptr<Async::ITaskInfo>> m_Queue;
 			void initialize();
 		protected:
 
