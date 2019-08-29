@@ -13,8 +13,8 @@ namespace Core
 	class Notifier : public Util::Runnable
 	{
 		private:
-			StlQueue<shared_ptr<Async::ITaskInfo>> m_Queue;
-			//LockFreeQueue<shared_ptr<Async::ITaskInfo>> m_Queue;
+			StlQueue<shared_ptr<Async::ITaskInfo>> mQueue;
+			//LockFreeQueue<shared_ptr<Async::ITaskInfo>> mQueue;
 			void initialize();
 		protected:
 
@@ -24,11 +24,15 @@ namespace Core
 			void run();
 			
 			inline bool addTask(shared_ptr<Async::ITaskInfo>);
+			size_t getPendingEventsCount()
+			{
+				return this->mQueue.size();
+			}
 	};
 
 	bool Notifier::addTask(shared_ptr<Async::ITaskInfo> task)
 	{
-		this->m_Queue.push(task);
+		this->mQueue.push(task);
 	}
 }
 #endif // NOTIFIER_H

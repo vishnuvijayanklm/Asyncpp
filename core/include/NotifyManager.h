@@ -27,11 +27,20 @@ namespace Core
 			virtual void init();
 
 			inline bool dispatch(shared_ptr<Async::ITaskInfo>,SyncKey); 
+			inline void printStatus();
 	};
 
 	bool NotifyManager::dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey key = Core::Synchronizer::getSyncKey())
 	{
 		return pNotifier[key.getKey() % NOTIFIER_COUNT ].addTask(task);
+	}
+
+	void NotifyManager::printStatus()
+	{	
+		for(int i = 0; i< NOTIFIER_COUNT ; i++)
+		{
+			LOG_INFO((LOGGER),("NOTIFIER %p Pending %d",&pNotifier[i],pNotifier[i].getPendingEventsCount()));
+		}
 	}
 }
 

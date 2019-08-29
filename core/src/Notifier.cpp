@@ -30,7 +30,7 @@ namespace Core
 			while(1)
 			{
 				shared_ptr<Async::ITaskInfo> pTask;
-				if(this->m_Queue.pop(pTask,true))
+				if(this->mQueue.pop(pTask,true))
 				{
 					if(likely(pTask.get() != nullptr))
 					{

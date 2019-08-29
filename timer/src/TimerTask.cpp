@@ -50,6 +50,7 @@ namespace Async
 		{
 			lock_guard<mutex> lock(this->mMutex);
 			this->mTimerMap.houseKeep();
+			Core::NotifyManager::getInstance()->printStatus();	
 		}
 	}
 	

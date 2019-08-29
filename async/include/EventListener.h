@@ -48,9 +48,35 @@ namespace Async
 		typedef std::function<Return(Args...)> Fn;
 	};
 
+
+	template<typename ...Args>	
+	class CallInfo
+	{
+			/*const auto mArgs;
+		public:
+			CallInfo(Args... args): mArgs(args)
+			{
+				this->mArgs = args;
+			}	
+			
+			~CallInfo()
+			{
+			}
+
+			void callFn(void *fn)
+			{
+				auto event = static_cast<std::function<void(Args)>*>(fn);
+				if(event)
+				{
+					(*event)(this->mArgs);
+				}
+			}*/
+	};
+
 	class Event
 	{
 			void *mEvent;
+
 		public:
 			template<typename Fn>
 			Event(Fn fn)
@@ -68,6 +94,7 @@ namespace Async
 			template<typename...Args>
 			void triggerEvent(Args... args)
 			{
+				//CallInfo<decltype(args...)> callInfo(args...);				
 				auto event = static_cast<std::function<void(Args...)>*>(this->mEvent);
 				if(event)
 				{
@@ -79,9 +106,12 @@ namespace Async
 	class EventListener
         {
                         StlMap<std::string,std::shared_ptr<StlQueue<std::shared_ptr<Event>>>> mEvents;
+
+			const Core::SyncKey mSyncKey;
                 public:
-                        EventListener()
+                        EventListener():mSyncKey(Core::Synchronizer::getSyncKey())
                         {
+				
                         }
 
                         ~EventListener()
@@ -106,8 +136,10 @@ namespace Async
                                 this->mEvents.erase(eventName);
                         }
 
-                        template<typename... Args>
-                        void notify(std::string eventName,Args&&... args)
+		
+				
+			template<typename... Args>
+                        void notify_sync(std::string eventName,Args&&... args)
                         {
                                 std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
                                 shared_ptr<Event> ptr;
@@ -118,7 +150,25 @@ namespace Async
                                         {
                                                 if(ptr)
                                                 {
-                                                        ptr->triggerEvent(args...);
+                                                        Async::Task(bind(&Event::triggerEvent<Args&...>,ptr,std::forward<Args>(args)...)).execute_sync(this->mSyncKey);
+                                                }
+                                        }
+                                }
+                        }
+
+                        template<typename... Args>
+                        void notify_async(std::string eventName,Args&&... args)
+                        {
+                                std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
+                                shared_ptr<Event> ptr;
+                                if(this->mEvents.find(eventName,pEventQ))
+                                {
+                                        StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
+                                        while(temp.pop(ptr))
+                                        {
+                                                if(ptr)
+                                                {
+							Async::Task(bind(&Event::triggerEvent<Args&...>,ptr,std::forward<Args>(args)...)).execute_async();
                                                 }
                                         }
                                 }

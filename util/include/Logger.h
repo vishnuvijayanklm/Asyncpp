@@ -35,30 +35,30 @@ using namespace std;
 #define _FILE_ string(__FILE__).substr(string(__FILE__).find_last_of("//") + 1 )
 #endif // _WIN32
 
-#define LOG_CRITICAL(Logger,logdata) { if(Logger.getLoglevel() & LOG_CR){Logger.writeLogHeader(_FILE_,__LINE__,"CR",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_ERROR(Logger,logdata) { if(Logger.getLoglevel() & LOG_ER){Logger.writeLogHeader(_FILE_,__LINE__,"ER",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_INFO(Logger,logdata) { if(Logger.getLoglevel() & LOG_IN){Logger.writeLogHeader(_FILE_,__LINE__,"IN",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_VERBOSE(Logger,logdata) { if(Logger.getLoglevel() & LOG_VB){Logger.writeLogHeader(_FILE_,__LINE__,"VB",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_DEBUG(Logger,logdata) { if(Logger.getLoglevel() & LOG_DB){Logger.writeLogHeader(_FILE_,__LINE__,"DB",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_CRITICAL(Logger,logdata) { if(Logger.getLoglevel() & LOG_CR){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"CR",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_ERROR(Logger,logdata) { if(Logger.getLoglevel() & LOG_ER){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"ER",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_INFO(Logger,logdata) { if(Logger.getLoglevel() & LOG_IN){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"IN",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_VERBOSE(Logger,logdata) { if(Logger.getLoglevel() & LOG_VB){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"VB",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_DEBUG(Logger,logdata) { if(Logger.getLoglevel() & LOG_DB){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"DB",this,gettid(),Logger.writeLogData logdata);}}
 
-#define LOG_CRITICALNP(Logger,logdata) { if(Logger.getLoglevel() & LOG_CR){Logger.writeLogHeader(_FILE_,__LINE__,"CR",nullptr,gettid(),Logger.writeLogData logdata);}}
-#define LOG_ERRORNP(Logger,logdata) { if(Logger.getLoglevel() & LOG_ER){Logger.writeLogHeader(_FILE_,__LINE__,"ER",nullptr,gettid(),Logger.writeLogData logdata);}}
-#define LOG_INFONP(Logger,logdata) { if(Logger.getLoglevel() & LOG_IN){Logger.writeLogHeader(_FILE_,__LINE__,"IN",nullptr,gettid(),Logger.writeLogData logdata);}}
-#define LOG_VERBOSENP(Logger,logdata) { if(Logger.getLoglevel() & LOG_VB){Logger.writeLogHeader(_FILE_,__LINE__,"VB",nullptr,gettid(),Logger.writeLogData logdata);}}
-#define LOG_DEBUGNP(Logger,logdata) { if(Logger.getLoglevel() & LOG_DB){Logger.writeLogHeader(_FILE_,__LINE__,"DB",nullptr,gettid(),Logger.writeLogData logdata);}}
+#define LOG_CRITICALNP(Logger,logdata) { if(Logger.getLoglevel() & LOG_CR){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"CR",nullptr,gettid(),Logger.writeLogData logdata);}}
+#define LOG_ERRORNP(Logger,logdata) { if(Logger.getLoglevel() & LOG_ER){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"ER",nullptr,gettid(),Logger.writeLogData logdata);}}
+#define LOG_INFONP(Logger,logdata) { if(Logger.getLoglevel() & LOG_IN){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"IN",nullptr,gettid(),Logger.writeLogData logdata);}}
+#define LOG_VERBOSENP(Logger,logdata) { if(Logger.getLoglevel() & LOG_VB){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"VB",nullptr,gettid(),Logger.writeLogData logdata);}}
+#define LOG_DEBUGNP(Logger,logdata) { if(Logger.getLoglevel() & LOG_DB){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"DB",nullptr,gettid(),Logger.writeLogData logdata);}}
 
-#define LOG_CRITICAL_IF(condition,Logger,logdata){ if((Logger.getLoglevel() & LOG_CR) && condition){Logger.writeLogHeader(_FILE_,__LINE__,"CR",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_ERROR_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_ER) && condition){Logger.writeLogHeader(_FILE_,__LINE__,"ER",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_INFO_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_IN) && condition){Logger.writeLogHeader(_FILE_,__LINE__,"IN",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_VERBOSE_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_VB) &&condition){Logger.writeLogHeader(_FILE_,__LINE__,"VB",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_DEBUG_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_DB)&&condition){Logger.writeLogHeader(_FILE_,__LINE__,"DB",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_CRITICAL_IF(condition,Logger,logdata){ if((Logger.getLoglevel() & LOG_CR) && condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"CR",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_ERROR_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_ER) && condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"ER",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_INFO_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_IN) && condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"IN",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_VERBOSE_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_VB) &&condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"VB",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_DEBUG_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_DB)&&condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"DB",this,gettid(),Logger.writeLogData logdata);}}
 
 
-#define LOG_CRITICALNP_IF(condition,Logger,logdata){ if((Logger.getLoglevel() & LOG_CR) && condition){Logger.writeLogHeader(_FILE_,__LINE__,"CR",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_ERRORNP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_ER) && condition){Logger.writeLogHeader(_FILE_,__LINE__,"ER",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_INFONP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_IN) && condition){Logger.writeLogHeader(_FILE_,__LINE__,"IN",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_VERBOSENP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_VB) &&condition){Logger.writeLogHeader(_FILE_,__LINE__,"VB",this,gettid(),Logger.writeLogData logdata);}}
-#define LOG_DEBUGNP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_DB)&&condition){Logger.writeLogHeader(_FILE_,__LINE__,"DB",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_CRITICALNP_IF(condition,Logger,logdata){ if((Logger.getLoglevel() & LOG_CR) && condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"CR",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_ERRORNP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_ER) && condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"ER",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_INFONP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_IN) && condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"IN",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_VERBOSENP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_VB) &&condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"VB",this,gettid(),Logger.writeLogData logdata);}}
+#define LOG_DEBUGNP_IF(condition,Logger,logdata) { if((Logger.getLoglevel() & LOG_DB)&&condition){lock_guard<mutex> lck(Logger.getMutex());Logger.writeLogHeader(_FILE_,__LINE__,"DB",this,gettid(),Logger.writeLogData logdata);}}
 
 
 #define MAX_LOG_SIZE 1024*1024
@@ -80,8 +80,8 @@ class Logger
         inline mutex& getMutex();
         inline bool setLogFile(string Path,string filename);
 
-        void writeLogHeader(string,unsigned int,string,void*,uint64_t,char*);
-        char* writeLogData(const char *p_log,...);
+        void writeLogHeader(string,unsigned int,string,void*,uint64_t,shared_ptr<char>);
+        shared_ptr<char> writeLogData(const char *p_log,...);
         bool createDirectory(const string);
 
     protected:
@@ -89,7 +89,6 @@ class Logger
     private:
 
         ofstream m_log;
-        char mbuffer[MAX_LOG_SIZE];
         mutex m_logmutex;
         unsigned int m_logLevel;
         unsigned int m_logFileSize;

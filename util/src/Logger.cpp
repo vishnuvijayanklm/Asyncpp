@@ -32,9 +32,8 @@ Logger::Logger(string Path,string fileName,unsigned int logLevel,unsigned int lo
 	this->setLogBackUpCount(logFilebackupCount);
 }
 
-void Logger::writeLogHeader(string fileName,unsigned int lineNo,string logType,void *p_Addr,uint64_t tid,char* msg)
+void Logger::writeLogHeader(string fileName,unsigned int lineNo,string logType,void *p_Addr,uint64_t tid,shared_ptr<char> msg)
 {
-	lock_guard<mutex> lock(this->m_logmutex);
 	if(unlikely(!this->m_log.is_open()))
 	{
 		this->backUpAndLoadNewFile();
@@ -82,12 +81,12 @@ bool Logger::createDirectory(const string directoryName)
 	return true;
 }
 
-char* Logger::writeLogData(const char *p_log, ...)
+std::shared_ptr<char> Logger::writeLogData(const char *p_log, ...)
 {
-	lock_guard<mutex> lock(this->m_logmutex);
+	std::shared_ptr<char> buffer(new char[MAX_LOG_SIZE],std::default_delete<char[]>());
 	va_list args;
 	va_start(args,p_log);
-	int size = vsnprintf(this->mbuffer,MAX_LOG_SIZE-1,p_log,args);
+	int size = vsnprintf(buffer.get(),MAX_LOG_SIZE-1,p_log,args);
 
 	if(size)
 	{
@@ -95,7 +94,7 @@ char* Logger::writeLogData(const char *p_log, ...)
 	}
 
 	va_end(args);
-	return this->mbuffer;
+	return buffer;
 }
 
 void Logger::spiltLogFile()

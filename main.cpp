@@ -10,17 +10,10 @@ using namespace std;
 //unique_ptr<Core::Application> pApplication(new Core::Application());
 Logger LOGGER;
 
-void test()
+int test()
 {
-	cout<<"IN TEST"<<endl;
-	sleep(1);	
+	return rand() % 1000;
 }
-
-void fn(int x)
-{
-	cout<<"Expired Func"<<endl;
-}
-
 class TimerExample : public Async::ITimer
 {
 		shared_ptr<Async::TimerTicks> mTicks;
@@ -47,154 +40,110 @@ class TimerExample : public Async::ITimer
 int main()
 {
 
-	LockFreeQueue<int> Q;
-	for(int i = 1; i <= 100;i++)
-	{
-		Q.push(i);
-	}
-
-
-	int ii = -1;
-	while(Q.pop(ii))
-	{
-		cout<<"I = "<<ii<<endl;
-	}
-	//return 0;
-	/*func([]()
-	{
-		cout<<"Called...."<<endl;
-		return 100;
-	},
-	[](int x)
-        {
-                cout<<"Received "<<x<<endl;
-        });
-
-	return 0;
-*/
-	/*,
-	[](int x)
-	{
-		cout<<"Received "<<x<<endl;
-	});*/
 	LOGGER.setLogFile("Logs","log.txt");
 	LOGGER.setLoglevel(31);
+	
 	Async::EventListener *pEvent = new Async::EventListener();
 
 	pEvent->addEvent("event1",[]()
                         {
-                                cout<<"onEvent1_1"<<endl;
+				LOG_INFONP((LOGGER),("Event1_1 Called"));
                         });
         pEvent->addEvent("event1",[]()
                         {
-                                cout<<"onEvent1_2"<<endl;
+				LOG_INFONP((LOGGER),("Event1_2 Called"));
                         });
         pEvent->addEvent("event1",[]()
                         {
-                                cout<<"onEvent1_3"<<endl;
+				LOG_INFONP((LOGGER),("Event1_2 Called"));
                         });
         pEvent->addEvent("event1",[]()
                         {
-                                cout<<"onEvent1_4"<<endl;
+				LOG_INFONP((LOGGER),("Event1_3 Called"));
                         });
 	
+	pEvent->addEvent("event2",[](int x,int y)
+			{
+				LOG_INFONP((LOGGER),("Event2 Called [%d,%d]",x,y));
+                        });
+	pEvent->addEvent("event3",[]()
+			{
+				LOG_INFONP((LOGGER),("Event3 Called"));
+                        });
 	pEvent->addEvent("event4",[](int x,int y)
-			{
-                                cout<<"onEvent4"<<endl;
-                        });
-	pEvent->addEvent("event5",[]()
-			{
-                                cout<<"onEvent5"<<endl;
-                        });
-	pEvent->addEvent("event6",[](int x,int y)
                         {
-                                cout<<"Event6 X = "<<x<<" Y = "<<y<<endl;
+				LOG_INFONP((LOGGER),("Event4 Called [%d,%d]",x,y));
           		});
-	//add_event(EVENT_1,[](){cout<<"Hai"<<endl;});
-	//notify_event(EVENT_1);
-	pEvent->notify("event1");
-	pEvent->notify("event2");
-	pEvent->notify("event3",-100,-110);
-	pEvent->notify("event4",-100,-110);
-	pEvent->notify("event5",-100,-110);
-	pEvent->notify("event6",-123,-111);
-	//pEvent->async_notify("event1");
-
-
+	
 	IPC::MessageQueue myQueue("/myQ",200,100,true);
-	cout<<myQueue.open()<<endl;
-	thread([&myQueue]
-	{
-		char *ptr = new char[100];
-		while(1)
-		{		
-			if(myQueue.read(ptr,100) != -1)
-			{
-				LOG_INFONP((LOGGER),("Received [%s]",ptr));
-			}
-			usleep(20000);
-		}		
-	}).detach();
-	/*myQueue.recv([](shared_ptr<char> ptr,size_t size)
-	{
-		LOG_INFONP((LOGGER),("Received [%s][%d]",ptr.get(),size));
-	});*/
+	myQueue.open();
 
+	TimerExample e[10000];
+	myQueue.recv([](shared_ptr<char> ptr,size_t size)
+        {
+                LOG_INFONP((LOGGER),("Received [%s][%d]",ptr.get(),size));
+        });
 
-	TimerExample e[20000];
 	int i = 0;
 	while(1)
 	{
+		pEvent->notify_async("event1");
+		pEvent->notify_async("event2",rand() % 100,rand() % 100);
+		pEvent->notify_async("event3",-100,-110);
+		pEvent->notify_async("event4",rand() % 100,rand() % 100);
+		pEvent->notify_async("event5",rand() % 100,rand() % 100);
+		pEvent->notify_async("event6",rand() % 100,rand() % 100);
+
 		string hai = "Hai Vishnu_"+to_string(++i);
-		LOG_INFONP((LOGGER),("Send %d ",myQueue.send((char*)hai.c_str(),hai.length())));
-		usleep(1000000);
-		break;
-	}
-	/*
-	while(1)
-	{
-		char ptr[10];
-		LOG_INFONP((LOGGER),("Send [%d]",myQueue.send(ptr,sizeof(int))));
-		sleep(1);
-	}
-	return 0;
-	Example e[2000];*/
-	
-	while(1)
-	{
-			std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
-			Async::Task([]()
+		hai.append("\0");
+		LOG_INFONP((LOGGER),("Send %s Len %d Success %d",hai.c_str(),hai.length(),myQueue.send((char*)hai.c_str(),hai.length())));
+		
+		std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
+		Async::Task([]()
 			{
-				return 99;
+				return rand() % 1000;
 			},
 			[](int x)
-			{ 
-				cout<<"Got "<<x<<endl;
+			{
+				LOG_INFONP((LOGGER),("Got %d",x)); 
 			})
 			.add([]()
 			{
-				cout<<"Fn with no return"<<endl;
+				LOG_INFONP((LOGGER),("Function with no return"));
 			})
-			.add(&test)
-			.setCancellationToken(Token)
-			.execute_sync();
-			
-			Async::Task([]()
-                        {
-                                return -100;
-                        },
-                        [](int x)
-                        {
-                                cout<<"Got "<<x<<endl;
-                        })
-			.add([]()
+			.add(test,
+			[](int x)
 			{
-				cout<<"Fn with no return"<<endl;
+				LOG_INFONP((LOGGER),("Return from test %d",x));
 			})
-			.add(test)
 			.setCancellationToken(Token)
 			.execute_sync();
 
+			Async::Task([]()
+                        {
+                                return (rand() % 1000) * -1;
+                        },
+                        [](int x)
+                        {
+				LOG_INFONP((LOGGER),("Got %d",x));
+                        })
+			.add([]()
+			{	
+				LOG_INFONP((LOGGER),("Function with no return"));
+			})
+			.add(test,
+			[](int x)
+                        {
+                                LOG_INFONP((LOGGER),("Return from test %d",x));
+                        })
+			.setCancellationToken(Token)
+			.execute_sync();
+
+			
+			if(i % 2)
+			{
+				Token->cancel();
+			}
 			usleep(100000);
 			//Token->cancel();
 			//usleep(10000000);	
