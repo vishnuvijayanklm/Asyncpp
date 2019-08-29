@@ -99,9 +99,9 @@ pEvent->addEvent("event3",[]()
 			{
                                 cout<<"onEvent3"<<endl;
                         });
-pEvent->notify("event1",10,100);
-pEvent->notify("event2");
-pEvent->notify("event3");
+pEvent->notify_sync("event1",10,100);
+pEvent->notify_async("event2");
+pEvent->notify_async("event3");
 
 ```
 ### Timer
