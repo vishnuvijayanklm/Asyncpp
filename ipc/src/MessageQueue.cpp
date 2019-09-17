@@ -101,7 +101,7 @@ namespace IPC
 				size_t len = this->read(ptr.get(),this->mMsgSize);
 				if(len != -1)
 				{
-					Async::Task().add(bind(&MessageQueue::onRecv,this,ptr,len)).execute_sync(this->getSyncKey());
+					Async::Task().add(bind(&MessageQueue::onRecv,this,ptr,len)).execute_async();//this->getSyncKey());
 				}	
 			}
 		}

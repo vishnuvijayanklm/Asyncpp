@@ -23,16 +23,20 @@ namespace Core
 			virtual ~Notifier();
 			void run();
 			
-			inline bool addTask(shared_ptr<Async::ITaskInfo>);
+			bool addTask(shared_ptr<Async::ITaskInfo> task)
+			{
+				this->mQueue.push(task);
+			}
+			
 			size_t getPendingEventsCount()
 			{
 				return this->mQueue.size();
 			}
-	};
 
-	bool Notifier::addTask(shared_ptr<Async::ITaskInfo> task)
-	{
-		this->mQueue.push(task);
-	}
+			void onExit()
+			{
+				this->mQueue.push(nullptr);
+			}
+	};
 }
 #endif // NOTIFIER_H

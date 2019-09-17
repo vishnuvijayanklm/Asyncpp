@@ -4,7 +4,6 @@ namespace Core
 {
 	NotifyManager::NotifyManager()
 	{
-		this->pNotifier = nullptr;
 		this->init();
 	}
 
@@ -26,7 +25,10 @@ namespace Core
 			#error No notifier avaliable to process
 		#endif
 		this->m_SyncKey = 0;
-		this->pNotifier = new Notifier[NOTIFIER_COUNT];
+		for(int i = 0 ;i< NOTIFIER_COUNT ; i++)
+		{
+			this->mpNotifier[i] = new Notifier;
+		}
 		LOG_VERBOSE((LOGGER),("NotifyManager::init<<<"));
 	}
 }

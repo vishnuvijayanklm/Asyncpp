@@ -48,31 +48,6 @@ namespace Async
 		typedef std::function<Return(Args...)> Fn;
 	};
 
-
-	template<typename ...Args>	
-	class CallInfo
-	{
-			/*const auto mArgs;
-		public:
-			CallInfo(Args... args): mArgs(args)
-			{
-				this->mArgs = args;
-			}	
-			
-			~CallInfo()
-			{
-			}
-
-			void callFn(void *fn)
-			{
-				auto event = static_cast<std::function<void(Args)>*>(fn);
-				if(event)
-				{
-					(*event)(this->mArgs);
-				}
-			}*/
-	};
-
 	class Event
 	{
 			void *mEvent;
@@ -173,6 +148,24 @@ namespace Async
                                         }
                                 }
                         }
+
+			template<typename... Args>
+			void notify_once(std::string eventName,Args&&... args)
+			{
+				std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
+				shared_ptr<Event> ptr;
+				if(this->mEvents.erase(eventName,pEventQ))
+				{
+					StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
+					while(temp.pop(ptr))
+					{
+						if(ptr)
+						{
+							Async::Task(bind(&Event::triggerEvent<Args&...>,ptr,std::forward<Args>(args)...)).execute_async();
+						}
+					}
+				}
+			}
 	};
 }
 #endif // EVENETLISTENER_H

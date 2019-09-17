@@ -43,6 +43,13 @@ namespace Util
 				this->onStop();
 				this->join();
 			}
+
+			void runFn()
+			{
+				this->misAlive = true;
+				this->run();
+				this->misAlive = false;
+			}
 	};
 }
 #endif // RUNNABLE_H

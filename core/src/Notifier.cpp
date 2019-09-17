@@ -3,8 +3,6 @@ namespace Core
 {
 	Notifier::Notifier()
 	{
-		//this->start();
-		//this->initialize();
 		this->start();
 	}
 
@@ -12,15 +10,6 @@ namespace Core
 	{
 		//dtor
 	}
-
-	/*void Notifier::initialize()
-	{
-		ThreadPool *pThreadPool = (ThreadPool*)(pApplication->getSubsystem(THREADPOOL));
-		if(likely(pThreadPool != nullptr))
-		{
-			pThreadPool->getThreadFromPool()->execute(bind(&Notifier::run,this));	
-		}
-	}*/
 
 	void Notifier::run()
 	{

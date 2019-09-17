@@ -16,11 +16,9 @@ using namespace chrono;
 template<class T>
 class StlQueue:private queue<T>
 {
-	int m_size;
 	public:
 	StlQueue()
 	{
-		this->m_size = 0;
 	}
 
 	StlQueue(StlQueue& rhs)
@@ -641,4 +639,17 @@ class StlList:private list<T>
 		mutex m_mtx;
 };
 
+
+
+template<typename Key,typename Value,typename HashFn>
+class HashTable
+{
+	class HashItem
+	{
+		private:
+			
+	};
+
+	public:
+};
 #endif

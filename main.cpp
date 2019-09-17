@@ -10,6 +10,12 @@ using namespace std;
 //unique_ptr<Core::Application> pApplication(new Core::Application());
 Logger LOGGER;
 
+void onExit(void)
+{
+	cout<<"On Exit"<<endl;
+	Core::NotifyManager::getInstance()->onExit();
+}
+
 int test()
 {
 	return rand() % 1000;
@@ -39,6 +45,8 @@ class TimerExample : public Async::ITimer
 
 int main()
 {
+
+	atexit(onExit);
 
 	LOGGER.setLogFile("Logs","log.txt");
 	LOGGER.setLoglevel(31);
@@ -75,12 +83,13 @@ int main()
 				LOG_INFONP((LOGGER),("Event4 Called [%d,%d]",x,y));
           		});
 	
-	IPC::MessageQueue myQueue("/myQ",200,100,true);
+	IPC::MessageQueue myQueue("/22",200,100,true);
 	myQueue.open();
 
 	TimerExample e[10000];
 	myQueue.recv([](shared_ptr<char> ptr,size_t size)
         {
+		ptr.get()[size] = '\0';
                 LOG_INFONP((LOGGER),("Received [%s][%d]",ptr.get(),size));
         });
 
@@ -95,7 +104,6 @@ int main()
 		pEvent->notify_async("event6",rand() % 100,rand() % 100);
 
 		string hai = "Hai Vishnu_"+to_string(++i);
-		hai.append("\0");
 		LOG_INFONP((LOGGER),("Send %s Len %d Success %d",hai.c_str(),hai.length(),myQueue.send((char*)hai.c_str(),hai.length())));
 		
 		std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
@@ -144,7 +152,8 @@ int main()
 			{
 				Token->cancel();
 			}
-			usleep(100000);
+			
+			usleep(1000);
 			//Token->cancel();
 			//usleep(10000000);	
 	}

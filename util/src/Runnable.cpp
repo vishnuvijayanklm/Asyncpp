@@ -17,7 +17,7 @@ namespace Util
 
     void Runnable::start()
     {
-        this->m_thread = thread(&Runnable::run,this);
+        this->m_thread = thread(&Runnable::runFn,this);
         this->misAlive = true;
     }
 }

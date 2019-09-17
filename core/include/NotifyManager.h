@@ -4,6 +4,7 @@
 #include <util/include/defines.h>
 #include <core/include/Notifier.h>
 #include <core/include/Synchronizer.h>
+#include <array>
 
 #ifndef NOTIFIER_COUNT
 #define NOTIFIER_COUNT 25
@@ -16,7 +17,7 @@ namespace Core
 		private:
 			volatile unsigned int m_SyncKey;
 		
-			Notifier *pNotifier;
+			std::array<Notifier*,NOTIFIER_COUNT> mpNotifier;
 		
 			NotifyManager();
 
@@ -28,19 +29,33 @@ namespace Core
 
 			inline bool dispatch(shared_ptr<Async::ITaskInfo>,SyncKey); 
 			inline void printStatus();
+			inline void onExit();
 	};
 
 	bool NotifyManager::dispatch(shared_ptr<Async::ITaskInfo> task,SyncKey key = Core::Synchronizer::getSyncKey())
 	{
-		return pNotifier[key.getKey() % NOTIFIER_COUNT ].addTask(task);
+		return mpNotifier[key.getKey() % NOTIFIER_COUNT ]->addTask(task);
 	}
 
 	void NotifyManager::printStatus()
 	{	
-		for(int i = 0; i< NOTIFIER_COUNT ; i++)
+		for(Notifier *pNotifier : this->mpNotifier)
 		{
-			LOG_INFO((LOGGER),("NOTIFIER %p Pending %d",&pNotifier[i],pNotifier[i].getPendingEventsCount()));
+			LOG_INFO((LOGGER),("NOTIFIER %p Pending %d",&pNotifier,pNotifier->getPendingEventsCount()));
+		}	
+	}
+
+	void NotifyManager::onExit()
+	{
+		for(Notifier *pNotifier : this->mpNotifier)
+                {
+			pNotifier->onExit();
 		}
+		for(Notifier *pNotifier : this->mpNotifier)
+                {
+                        pNotifier->join();
+                }
+
 	}
 }
 

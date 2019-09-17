@@ -37,7 +37,8 @@ namespace Async
 			{
 				return false;
 			}
-			this->mListenerMap.insert(fd,pListener);
+			
+			//this->mListenerMap.insert(fd,pListener);
 			return true;
 		}
 		return false;
@@ -68,5 +69,8 @@ namespace Async
 				}
 			}
 		}
+
+		delete[] events;
+		events = nullptr;
 	}
 }
