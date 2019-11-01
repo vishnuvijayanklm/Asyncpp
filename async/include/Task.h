@@ -13,7 +13,8 @@ namespace Async
 
 			StlQueue<shared_ptr<ITaskInfo>> mTasks;
 			std::shared_ptr<Async::CancellationToken> mCancellationToken;		
-	
+			CompletionTokenPtr mCompletionToken;
+
 			template<typename Task>
                         void dispatchTask(Task task)
                         {
@@ -29,6 +30,7 @@ namespace Async
 		public:
 			ITask()
 			{
+				this->mCompletionToken = make_shared<CompletionToken>();
 			}
 
 			virtual ~ITask()

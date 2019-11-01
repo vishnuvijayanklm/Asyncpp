@@ -43,10 +43,27 @@ class TimerExample : public Async::ITimer
 
 };
 
+void fn()
+{
+	cout<<"Fn>>>"<<endl;
+	std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
+	Async::Task([]()
+		{
+			return rand() % 1000;
+		},
+		[](int x)
+		{
+			cout<<"Got "<<x<<endl;
+		})
+		.setCancellationToken(Token)
+		.execute_sync();
+	
+	cout<<"Fn<<<"<<endl;
+}
 int main()
 {
-
-	atexit(onExit);
+	fn();
+/*	atexit(onExit);
 
 	LOGGER.setLogFile("Logs","log.txt");
 	LOGGER.setLoglevel(31);
@@ -157,5 +174,7 @@ int main()
 			//Token->cancel();
 			//usleep(10000000);	
 	}
+*/
+
 	return 0;
 }

@@ -41,7 +41,7 @@ namespace IPC
 			pShm->write(p,1024);
 			this->mShmQueue.push(pShm);
 
-			printf("PTR %p BEGIN %p END %p CAPACITY  %d USED %d FREE %d ISFREE %d\n",pShm,pShm->begin(),pShm->end(),pShm->capacity(),pShm->size(),pShm->free(),pShm->isFree());
+			printf("PTR %p BEGIN %p END %p CAPACITY  %lu USED %lu FREE %lu ISFREE %d\n",pShm,pShm->begin(),pShm->end(),pShm->capacity(),pShm->size(),pShm->free(),pShm->isFree());
 		}
 
 		ShmHeader *pShm = nullptr;
@@ -52,7 +52,7 @@ namespace IPC
 			pShm->read(pp);
 
 			delete pShm;
-			printf("PTR %p BEGIN %p END %p CAPACITY  %d USED %d FREE %d ISFREE %d\n",pShm,pShm->begin(),pShm->end(),pShm->capacity(),pShm->size(),pShm->free(),pShm->isFree());
+			printf("PTR %p BEGIN %p END %p CAPACITY  %lu USED %lu FREE %lu ISFREE %d\n",pShm,pShm->begin(),pShm->end(),pShm->capacity(),pShm->size(),pShm->free(),pShm->isFree());
 			pShm = nullptr;
 			delete pShm;
 		}		

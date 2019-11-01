@@ -70,7 +70,7 @@ bool Logger::createDirectory(const string directoryName)
 #ifdef _WIN32
 		if(mkdir(directoryName.c_str()) == -1)
 #elif defined __unix__
-			if(mkdir(directoryName.c_str(),07) == -1)
+			if(mkdir(directoryName.c_str(),0777) == -1)
 #endif // defined
 			{
 				closedir(dr);

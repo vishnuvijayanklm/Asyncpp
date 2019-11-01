@@ -2,6 +2,7 @@
 #define TASKINFO_H
 
 #include <functional>
+#include <containers/include/Stl.h>
 
 namespace Async
 {
@@ -56,6 +57,7 @@ namespace Async
 	{
 			std::weak_ptr<Async::Token> mToken;
 			std::shared_ptr<Async::CancellationToken> mCancellationToken;
+		
 		public:
 			ITaskInfo()
 			{
@@ -153,5 +155,26 @@ namespace Async
 			this->mResponse();
                 }
         };
+	
+	typedef shared_ptr<ITaskInfo> ITaskInfoPtr;
+	
+	class CompletionToken
+	{
+			StlMap<ITaskInfoPtr,ITaskInfoPtr> mTaskInfo;
+		public:	
+			CompletionToken()
+			{
+			}
+
+			~CompletionToken()
+			{
+			}
+
+			bool isCompleted()
+			{
+			}
+	};
+
+	typedef shared_ptr<CompletionToken> CompletionTokenPtr;
 }
 #endif
