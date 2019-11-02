@@ -78,11 +78,44 @@ namespace Async
 			}
 	};
 
+	make_ptr(Event);
+
 	class EventListener
         {
                         StlMap<std::string,std::shared_ptr<StlQueue<std::shared_ptr<Event>>>> mEvents;
 
 			const Core::SyncKey mSyncKey;
+
+			template<typename... Args>
+                        void notify(std::string eventName,bool isAsync,bool isOnce,Args&&... args)
+                        {
+				std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
+                                EventPtr Ptr;
+                                if(this->mEvents.find(eventName,pEventQ))
+                                {
+                                        StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
+                                        while(temp.pop(Ptr))
+                                        {
+                                                if(Ptr)
+                                                {
+							if(isAsync)
+							{
+                                                        	Async::Task(bind(&Event::triggerEvent<Args&...>,Ptr,std::forward<Args>(args)...)).execute_async();
+                                                
+							}
+							else
+							{
+								Async::Task(bind(&Event::triggerEvent<Args&...>,Ptr,std::forward<Args>(args)...)).execute_sync(this->mSyncKey);
+							}
+						}
+                                        }
+                                }
+
+				if(isOnce)
+				{
+					this->mEvents.erase(eventName);
+				}
+			}
                 public:
                         EventListener():mSyncKey(Core::Synchronizer::getSyncKey())
                         {
@@ -116,55 +149,19 @@ namespace Async
 			template<typename... Args>
                         void notify_sync(std::string eventName,Args&&... args)
                         {
-                                std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
-                                shared_ptr<Event> ptr;
-                                if(this->mEvents.find(eventName,pEventQ))
-                                {
-                                        StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
-                                        while(temp.pop(ptr))
-                                        {
-                                                if(ptr)
-                                                {
-                                                        Async::Task(bind(&Event::triggerEvent<Args&...>,ptr,std::forward<Args>(args)...)).execute_sync(this->mSyncKey);
-                                                }
-                                        }
-                                }
+				this->notify(eventName,false,false,args...);
                         }
 
                         template<typename... Args>
                         void notify_async(std::string eventName,Args&&... args)
                         {
-                                std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
-                                shared_ptr<Event> ptr;
-                                if(this->mEvents.find(eventName,pEventQ))
-                                {
-                                        StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
-                                        while(temp.pop(ptr))
-                                        {
-                                                if(ptr)
-                                                {
-							Async::Task(bind(&Event::triggerEvent<Args&...>,ptr,std::forward<Args>(args)...)).execute_async();
-                                                }
-                                        }
-                                }
+				this->notify(eventName,true,false,args...);
                         }
 
 			template<typename... Args>
 			void notify_once(std::string eventName,Args&&... args)
 			{
-				std::shared_ptr<StlQueue<std::shared_ptr<Event>>> pEventQ;
-				shared_ptr<Event> ptr;
-				if(this->mEvents.erase(eventName,pEventQ))
-				{
-					StlQueue<std::shared_ptr<Event>> temp = *pEventQ;
-					while(temp.pop(ptr))
-					{
-						if(ptr)
-						{
-							Async::Task(bind(&Event::triggerEvent<Args&...>,ptr,std::forward<Args>(args)...)).execute_async();
-						}
-					}
-				}
+				this->notify(eventName,true,true,args...);
 			}
 	};
 }

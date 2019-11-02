@@ -12,23 +12,24 @@ namespace Async
 	{
 
 			StlQueue<shared_ptr<ITaskInfo>> mTasks;
-			std::shared_ptr<Async::CancellationToken> mCancellationToken;		
-	
+			CompletionTokenPtr mCompletionToken;
+
 			template<typename Task>
-                        void dispatchTask(Task task)
+                        void addTaskToQ(Task task)
                         {
-                        	this->mTasks.push(make_shared<TaskInfo<Task>>(task));
+                        	this->mTasks.push(make_shared<TaskInfo<Task>>(task,this->mCompletionToken));
 			}
 
 			template<typename Task,typename Response>
-                        void dispatchTask(Task task,Response response)
+                        void addTaskToQ(Task task,Response response)
                         {
-				this->mTasks.push(make_shared<TaskInfoResponse<Task,Response>>(task,response));
+				this->mTasks.push(make_shared<TaskInfoResponse<Task,Response>>(task,response,this->mCompletionToken));
 			}
 
 		public:
 			ITask()
 			{
+				this->mCompletionToken = make_shared<CompletionToken>();
 			}
 
 			virtual ~ITask()
@@ -37,61 +38,65 @@ namespace Async
 			}
 
 			template<typename Task>
-			ITask(Task task)
+			ITask(Task task):ITask()
 			{
-				this->dispatchTask(task);
+				this->addTaskToQ(task);
 			}
 
 			template<typename Task,typename Response>
-			ITask(Task task,Response response)
+			ITask(Task task,Response response):ITask()
 			{
-				this->dispatchTask(task,response);
+				this->addTaskToQ(task,response);
 			}
 			
 			template<typename Fn>
 			ITask& add(Fn Task)
 			{
-				this->dispatchTask(Task);
+				this->addTaskToQ(Task);
 				return *this;
 			}
 
 			template<typename Fn,typename Resp>
 			ITask& add(Fn Task,Resp Response)
 			{
-				this->dispatchTask(Task,Response);	
+				this->addTaskToQ(Task,Response);	
 				return *this;
 			}
 
-			ITask& setCancellationToken(const std::shared_ptr<Async::CancellationToken> &cancellationToken)
+			ITask& setCancellationToken(std::shared_ptr<Async::CancellationToken> &cancellationToken)
 			{
-				this->mCancellationToken = cancellationToken;
+				this->mCompletionToken->setCancellationToken(cancellationToken);
 				return *this;
 			}
 	
-			void execute_async()
+			CompletionTokenPtr& execute_async()
 			{
 				shared_ptr<ITaskInfo> pTask;
 				while(this->mTasks.pop(pTask))
 				{
 					if(pTask)
 					{
-						pTask->setCancellationToken(this->mCancellationToken);
+						pTask->setCancellationToken();
 						Core::NotifyManager::getInstance()->dispatch(pTask,Core::Synchronizer::getSyncKey());		
 					}		
 				}
+
+				return this->mCompletionToken;
 			}
 
-			void execute_sync(Core::SyncKey syncKey = Core::Synchronizer::getSyncKey())
+			CompletionTokenPtr& execute_sync(Core::SyncKey syncKey = Core::Synchronizer::getSyncKey())
 			{
 				shared_ptr<ITaskInfo> pTask;
                                 while(this->mTasks.pop(pTask))
                                 {
                                         if(pTask)
                                         {
-                                                pTask->setCancellationToken(this->mCancellationToken);
+                                                pTask->setCancellationToken();
                                                 Core::NotifyManager::getInstance()->dispatch(pTask,syncKey);
                                         }
                                 }
+
+				return this->mCompletionToken;
 			}
 	};
 

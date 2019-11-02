@@ -43,13 +43,46 @@ class TimerExample : public Async::ITimer
 
 };
 
+void fn()
+{
+	int x = rand() % 1000;
+	Async::CancellationTokenPtr Token = make_shared<Async::CancellationToken>();
+	Async::CompletionTokenPtr completionToken = Async::Task([]()
+		{
+			srand(time(0));
+			return rand() % 100;
+		},
+		[](int x)
+		{
+			LOG_INFONP((LOGGER),("Return Value %d",x));
+		})
+		.setCancellationToken(Token)
+		.execute_sync();
+
+	completionToken->onCompletion([&x]
+			{
+				LOG_INFONP((LOGGER),("Processing Completed Value %d",x));
+			});
+	if(x % 2)
+	{
+		Token->cancel();
+	}
+
+}
 int main()
 {
-
 	atexit(onExit);
 
 	LOGGER.setLogFile("Logs","log.txt");
-	LOGGER.setLoglevel(31);
+	LOGGER.setLoglevel(63);
+
+	while(1)
+        {
+                fn();
+                usleep(100000);
+        	break;
+	}
+
 	
 	Async::EventListener *pEvent = new Async::EventListener();
 
@@ -83,7 +116,15 @@ int main()
 				LOG_INFONP((LOGGER),("Event4 Called [%d,%d]",x,y));
           		});
 	
-	IPC::MessageQueue myQueue("/22",200,100,true);
+	
+		pEvent->notify_async("event1");
+		pEvent->notify_async("event2",rand() % 100,rand() % 100);
+		pEvent->notify_async("event3",-100,-110);
+		pEvent->notify_sync("event4",rand() % 100,rand() % 100);
+		pEvent->notify_sync("event4",-978,-679,-111);
+		pEvent->notify_async("event5",rand() % 100,rand() % 100);
+		pEvent->notify_async("event6",rand() % 100,rand() % 100);
+	/*IPC::MessageQueue myQueue("/22",200,100,true);
 	myQueue.open();
 
 	TimerExample e[10000];
@@ -104,7 +145,7 @@ int main()
 		pEvent->notify_async("event6",rand() % 100,rand() % 100);
 
 		string hai = "Hai Vishnu_"+to_string(++i);
-		LOG_INFONP((LOGGER),("Send %s Len %d Success %d",hai.c_str(),hai.length(),myQueue.send((char*)hai.c_str(),hai.length())));
+		LOG_INFONP((LOGGER),("Send %s Len %d Success %d Errno %d",hai.c_str(),hai.length(),myQueue.send((char*)hai.c_str(),hai.length()),errno));
 		
 		std::shared_ptr<Async::CancellationToken> Token = make_shared<Async::CancellationToken>();
 		Async::Task([]()
@@ -153,9 +194,11 @@ int main()
 				Token->cancel();
 			}
 			
-			usleep(1000);
+			usleep(1000000);
 			//Token->cancel();
 			//usleep(10000000);	
 	}
+*/
+
 	return 0;
 }

@@ -218,6 +218,12 @@ class StlMap:private map<Key,Value>
 			map<Key,Value>::clear();
 		}
 
+		bool empty()
+		{
+			lock_guard<mtx> lock(this->m_mtx);
+			return map<Key,Value>::empty();
+		}
+
 		void startGet()
 		{
 			this->m_mtx.lock();
@@ -237,6 +243,7 @@ class StlMap:private map<Key,Value>
 				return false;
 			}
 		}
+
 		bool getNextElement(Key &key,Value &val)
 		{
 			if(it != map<Key,Value>::end())
@@ -251,10 +258,12 @@ class StlMap:private map<Key,Value>
 				return false;
 			}
 		}
+
 		void stopGet()
 		{
 			this->m_mtx.unlock();
 		}
+
 		bool removeFirstElement(Value &val)
 		{
 			lock_guard<mtx> lock(this->m_mtx);
@@ -281,6 +290,7 @@ class StlMap:private map<Key,Value>
 			}
 			return false;
 		}
+
 		size_t size()
 		{
 			lock_guard<mtx> lock(this->m_mtx);
