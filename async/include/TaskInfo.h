@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <containers/include/Stl.h>
+#include <util/include/defines.h>
 
 namespace Async
 {
@@ -16,10 +17,12 @@ namespace Async
 			{
 			}
 	};
+
+	make_ptr(Token);
 	
 	class CancellationToken
 	{
-			std::shared_ptr<Async::Token> mToken;		
+			TokenPtr mToken;		
 		public:
 
 			CancellationToken() : mToken(make_shared<Async::Token>())
@@ -41,7 +44,7 @@ namespace Async
 				return this->mToken.get() != nullptr;
 			}
 
-			std::shared_ptr<Async::Token>& getToken()
+			TokenPtr& getToken()
 			{
 				return this->mToken;
 			}
@@ -52,17 +55,75 @@ namespace Async
 			}	
 	};
 
+	make_ptr(CancellationToken);
+
+	class CompletionToken
+        {
+                        StlMap<void*,void*> mListeners;
+			typedef function<void()> CompletionCallBack;
+
+			CompletionCallBack mCompletionCallBack;
+			CancellationTokenPtr mCancellationToken;
+                
+		public:
+                        CompletionToken(CompletionCallBack callback = nullptr)
+                        {
+				this->mCompletionCallBack = callback;
+				this->mCancellationToken = make_shared<CancellationToken>();
+                        }
+
+                        ~CompletionToken()
+                        {
+                        }
+
+			void setCancellationToken(CancellationTokenPtr& CancellationToken)
+			{
+				this->mCancellationToken = CancellationToken;
+			}
+
+			TokenPtr& getCancellationToken()
+			{
+				return this->mCancellationToken->getToken();
+			}
+
+                        bool isCompleted()
+                        {
+                                return this->mListeners.empty();
+                        }
+
+                        void addListener(void *pTaskInfo)
+                        {
+                                this->mListeners.insert(pTaskInfo,pTaskInfo);
+                        }
+
+			void removeListener(void *pTaskInfo)
+			{
+				this->mListeners.erase(pTaskInfo);
+
+				if(this->mCompletionCallBack && this->mListeners.empty())
+				{
+					this->mCompletionCallBack();
+				}
+			}
+
+			void onCompletion(CompletionCallBack callback)
+			{
+				this->mCompletionCallBack = callback;
+			}
+        };
+
+	make_ptr(CompletionToken);
 
 	class ITaskInfo
 	{
-			std::weak_ptr<Async::Token> mToken;
-			std::shared_ptr<Async::CancellationToken> mCancellationToken;
-		
+			std::weak_ptr<Async::Token> mCancellationToken;
+			CompletionTokenPtr mCompletionTokenPtr;
+
 		public:
-			ITaskInfo()
+			ITaskInfo(CompletionTokenPtr &CompletionToken):mCompletionTokenPtr(CompletionToken)
 			{
-				this->mCancellationToken = make_shared<Async::CancellationToken>();
-				this->mToken = this->mCancellationToken->getToken();
+				this->mCompletionTokenPtr->addListener(this);
+				this->mCancellationToken = this->mCompletionTokenPtr->getCancellationToken(); 
 			}
 
 			virtual ~ITaskInfo(){}
@@ -70,15 +131,17 @@ namespace Async
 
 			bool isExpired()
 			{
-				return this->mToken.expired();
+				return this->mCancellationToken.expired();
 			}
 
-			void setCancellationToken(const std::shared_ptr<Async::CancellationToken> &cancellationToken)
+			void setCancellationToken()
 			{
-				if(cancellationToken.get())
-				{
-					this->mToken = cancellationToken->getToken();
-				}
+				this->mCancellationToken = this->mCompletionTokenPtr->getCancellationToken();
+			}
+
+			void onTaskCompleted()
+			{
+				this->mCompletionTokenPtr->removeListener(this);
 			}
 	};
 
@@ -89,7 +152,7 @@ namespace Async
 			Task mTask;
 						
 		public:
-			TaskInfo(Task task):mTask(task)
+			TaskInfo(Task task,CompletionTokenPtr& CompletionToken):ITaskInfo(CompletionToken),mTask(task)
 			{
 			}	
 
@@ -103,6 +166,7 @@ namespace Async
 				{
 					this->mTask();
 				}
+				this->onTaskCompleted();
 			}
 	};
 
@@ -114,11 +178,9 @@ namespace Async
 		Response mResponse;
 
 	public:
-
-		TaskInfoResponse(Task task,Response response): mTask(std::forward<Task>(task)),mResponse(std::forward<Response>(response))
-		{
-
-		}
+		TaskInfoResponse(Task task,Response response,CompletionTokenPtr& CompletionToken): ITaskInfo(CompletionToken),mTask(std::forward<Task>(task)),mResponse(std::forward<Response>(response))
+                {
+                }
 
 		~TaskInfoResponse()
 		{
@@ -130,10 +192,11 @@ namespace Async
                         {
 				this->mResponse(this->mTask());
 			}
+			this->onTaskCompleted();
 		}
 	};
 
-
+	/*
 	template<typename Task>
         class TaskInfoAck : public ITaskInfo
         {
@@ -154,27 +217,8 @@ namespace Async
                         this->mTask();
 			this->mResponse();
                 }
-        };
-	
-	typedef shared_ptr<ITaskInfo> ITaskInfoPtr;
-	
-	class CompletionToken
-	{
-			StlMap<ITaskInfoPtr,ITaskInfoPtr> mTaskInfo;
-		public:	
-			CompletionToken()
-			{
-			}
+        };*/
 
-			~CompletionToken()
-			{
-			}
-
-			bool isCompleted()
-			{
-			}
-	};
-
-	typedef shared_ptr<CompletionToken> CompletionTokenPtr;
+	make_ptr(ITaskInfo);	
 }
 #endif

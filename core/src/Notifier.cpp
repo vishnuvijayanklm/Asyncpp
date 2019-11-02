@@ -13,12 +13,12 @@ namespace Core
 
 	void Notifier::run()
 	{
-		LOG_INFO((LOGGER),("Notifier started...."));	
+		//LOG_INFO((LOGGER),("Notifier started...."));	
 		try
 		{
 			while(1)
 			{
-				shared_ptr<Async::ITaskInfo> pTask;
+				Async::ITaskInfoPtr pTask;
 				if(this->mQueue.pop(pTask,true))
 				{
 					if(likely(pTask.get() != nullptr))
@@ -38,6 +38,6 @@ namespace Core
 		catch(...)
 		{
 		}
-		LOG_INFO((LOGGER),("Notifier stopped...."));	
+		//LOG_INFO((LOGGER),("Notifier stopped...."));	
 	}
 }

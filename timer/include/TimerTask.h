@@ -103,7 +103,7 @@ namespace Async
 				}
 			}
 
-			const std::shared_ptr<Async::CancellationToken>& getCancellationToken()
+			std::shared_ptr<Async::CancellationToken>& getCancellationToken()
 			{
 				return this->mCancellationToken;
 			}
