@@ -57,9 +57,14 @@ namespace Async
 			Event(Fn fn)
 			{
 				auto f = this->getType(fn);
+				cout<<"Creating new "<<typeid(decltype(f)(this->getType(fn))).name()<<endl;
 				this->mEvent = new decltype(f)(this->getType(fn));
 			}
 
+			~Event()
+			{
+				//delete this->mEvent;
+			}
 			template <typename Fn>
 			typename Traits<Fn>::Fn getType(Fn fn)
 			{
@@ -69,7 +74,6 @@ namespace Async
 			template<typename...Args>
 			void triggerEvent(Args... args)
 			{
-				//CallInfo<decltype(args...)> callInfo(args...);				
 				auto event = static_cast<std::function<void(Args...)>*>(this->mEvent);
 				if(event)
 				{
@@ -164,5 +168,7 @@ namespace Async
 				this->notify(eventName,true,true,args...);
 			}
 	};
+
+	make_ptr(EventListener);
 }
 #endif // EVENETLISTENER_H

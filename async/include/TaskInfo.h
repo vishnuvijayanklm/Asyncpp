@@ -62,13 +62,15 @@ namespace Async
                         StlMap<void*,void*> mListeners;
 			typedef function<void()> CompletionCallBack;
 
-			CompletionCallBack mCompletionCallBack;
+			StlList<CompletionCallBack> mCallBackList;
+
+			//CompletionCallBack mCompletionCallBack;
 			CancellationTokenPtr mCancellationToken;
                 
 		public:
                         CompletionToken(CompletionCallBack callback = nullptr)
                         {
-				this->mCompletionCallBack = callback;
+				this->onCompletion(callback);	
 				this->mCancellationToken = make_shared<CancellationToken>();
                         }
 
@@ -100,16 +102,40 @@ namespace Async
 			{
 				this->mListeners.erase(pTaskInfo);
 
-				if(this->mCompletionCallBack && this->mListeners.empty())
+				if(this->mListeners.empty())
 				{
-					this->mCompletionCallBack();
+					CompletionCallBack callback;
+					this->mCallBackList.startGet();
+					while(this->mCallBackList.getNextElement(callback) && callback) callback();
+					this->mCallBackList.stopGet();
 				}
 			}
 
 			void onCompletion(CompletionCallBack callback)
 			{
-				this->mCompletionCallBack = callback;
+				if(callback != nullptr)
+				{
+					this->mCallBackList.push_back(callback);
+				}
 			}
+
+			template<typename ...Args>
+			void onCompletion(Args... args,CompletionCallBack callback)
+			{
+				callback();
+			}
+
+			template<typename ...Args>
+			CompletionToken& all(Args&&... args)
+			{
+				//this->push(args...);
+				return *this;
+			}
+
+			/*void push(std::initializer_list<T> list)
+			{
+
+			}*/
         };
 
 	make_ptr(CompletionToken);
