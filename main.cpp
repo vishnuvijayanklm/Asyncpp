@@ -47,26 +47,46 @@ void fn()
 {
 	int x = rand() % 1000;
 	Async::CancellationTokenPtr Token = make_shared<Async::CancellationToken>();
-	Async::CompletionTokenPtr completionToken = Async::Task([]()
+	Async::CompletionTokenPtr completionToken1 = Async::Task([]()
 		{
 			srand(time(0));
 			return rand() % 100;
 		},
 		[](int x)
 		{
-			LOG_INFONP((LOGGER),("Return Value %d",x));
+			LOG_INFONP((LOGGER),("Return Value1 %d",x));
 		})
 		.setCancellationToken(Token)
 		.execute_sync();
 
-	completionToken->onCompletion([&x]
-			{
-				LOG_INFONP((LOGGER),("Processing Completed Value %d",x));
-			});
-	if(x % 2)
+	completionToken1->onCompletion([&x]
 	{
-		Token->cancel();
-	}
+			LOG_INFONP((LOGGER),("Processing Completed Value1 %d",x));
+	});
+
+
+	Async::CompletionTokenPtr completionToken2 = Async::Task([]()
+			{
+			srand(time(0));
+			return rand() % 100;
+			},
+			[](int x)
+			{
+			LOG_INFONP((LOGGER),("Return Value2 %d",x));
+			})
+	.setCancellationToken(Token)
+		.execute_sync();
+
+	completionToken2->onCompletion([&x]
+        {
+                        LOG_INFONP((LOGGER),("Processing Completed Value2 %d",x));
+        });
+
+	Async::CompletionToken().all(completionToken1,completionToken2);
+	/*Async::CompletionToken().onCompletion(completionToken1,completionToken2,[&x]
+        {
+        	LOG_INFONP((LOGGER),("All processing completed"));
+        });*/
 
 }
 int main()
@@ -77,46 +97,42 @@ int main()
 	LOGGER.setLoglevel(63);
 
 	while(1)
-        {
-                fn();
-                usleep(100000);
-        	break;
-	}
+	{
+		fn();
+		
+		Async::EventListenerPtr pEvent = make_shared<Async::EventListener>();
 
-	
-	Async::EventListener *pEvent = new Async::EventListener();
-
-	pEvent->addEvent("event1",[]()
-                        {
+		pEvent->addEvent("event1",[]()
+				{
 				LOG_INFONP((LOGGER),("Event1_1 Called"));
-                        });
-        pEvent->addEvent("event1",[]()
-                        {
+				});
+		pEvent->addEvent("event1",[]()
+				{
 				LOG_INFONP((LOGGER),("Event1_2 Called"));
-                        });
-        pEvent->addEvent("event1",[]()
-                        {
+				});
+		pEvent->addEvent("event1",[]()
+				{
 				LOG_INFONP((LOGGER),("Event1_2 Called"));
-                        });
-        pEvent->addEvent("event1",[]()
-                        {
+				});
+		pEvent->addEvent("event1",[]()
+				{
 				LOG_INFONP((LOGGER),("Event1_3 Called"));
-                        });
-	
-	pEvent->addEvent("event2",[](int x,int y)
-			{
+				});
+
+		pEvent->addEvent("event2",[](int x,int y)
+				{
 				LOG_INFONP((LOGGER),("Event2 Called [%d,%d]",x,y));
-                        });
-	pEvent->addEvent("event3",[]()
-			{
+				});
+		pEvent->addEvent("event3",[]()
+				{
 				LOG_INFONP((LOGGER),("Event3 Called"));
-                        });
-	pEvent->addEvent("event4",[](int x,int y)
-                        {
+				});
+		pEvent->addEvent("event4",[](int x,int y)
+				{
 				LOG_INFONP((LOGGER),("Event4 Called [%d,%d]",x,y));
-          		});
-	
-	
+				});
+
+
 		pEvent->notify_async("event1");
 		pEvent->notify_async("event2",rand() % 100,rand() % 100);
 		pEvent->notify_async("event3",-100,-110);
@@ -124,7 +140,10 @@ int main()
 		pEvent->notify_sync("event4",-978,-679,-111);
 		pEvent->notify_async("event5",rand() % 100,rand() % 100);
 		pEvent->notify_async("event6",rand() % 100,rand() % 100);
-	/*IPC::MessageQueue myQueue("/22",200,100,true);
+		usleep(1000000);
+		Core::NotifyManager::getInstance()->printStatus();
+	}
+		/*IPC::MessageQueue myQueue("/22",200,100,true);
 	myQueue.open();
 
 	TimerExample e[10000];
