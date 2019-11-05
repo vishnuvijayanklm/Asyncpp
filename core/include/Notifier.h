@@ -26,6 +26,7 @@ namespace Core
 			bool addTask(shared_ptr<Async::ITaskInfo> task)
 			{
 				this->mQueue.push(task);
+				return true;
 			}
 			
 			size_t getPendingEventsCount()
