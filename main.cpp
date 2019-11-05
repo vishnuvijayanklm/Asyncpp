@@ -45,7 +45,8 @@ class TimerExample : public Async::ITimer
 
 void fn()
 {
-	int x = rand() % 1000;
+	int x = 1111;
+	cout<<"X "<<x<<endl;
 	Async::CancellationTokenPtr Token = make_shared<Async::CancellationToken>();
 	Async::CompletionTokenPtr completionToken1 = Async::Task([]()
 		{
@@ -83,6 +84,7 @@ void fn()
         });
 
 	Async::CompletionToken().all(completionToken1,completionToken2);
+	Async::CompletionToken().all(completionToken1);
 	/*Async::CompletionToken().onCompletion(completionToken1,completionToken2,[&x]
         {
         	LOG_INFONP((LOGGER),("All processing completed"));
@@ -99,7 +101,8 @@ int main()
 	while(1)
 	{
 		fn();
-		
+	
+		return 0;	
 		Async::EventListenerPtr pEvent = make_shared<Async::EventListener>();
 
 		pEvent->addEvent("event1",[]()

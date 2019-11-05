@@ -126,16 +126,17 @@ namespace Async
 			}
 
 			template<typename ...Args>
-			CompletionToken& all(Args&&... args)
+			CompletionToken& all(shared_ptr<CompletionToken>& completionToken,Args&&... args)
 			{
-				//this->push(args...);
-				return *this;
+				cout<<"Two arg"<<endl;
+				return this->all(args...);
 			}
 
-			/*void push(std::initializer_list<T> list)
-			{
-
-			}*/
+			CompletionToken& all(shared_ptr<CompletionToken>& completionToken)
+                 	{
+				cout<<"One arg"<<endl;
+				return *this;
+			}
         };
 
 	make_ptr(CompletionToken);
