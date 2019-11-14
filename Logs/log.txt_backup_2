@@ -1,0 +1,6 @@
+NotifyManager.cpp|23|2019-11-05T11:59:59.5831049|[VB][0x55bb9d1dc6e0][27009]|NotifyManager::init>>>
+NotifyManager.cpp|32|2019-11-05T11:59:59.5846726|[VB][0x55bb9d1dc6e0][27009]|NotifyManager::init<<<
+main.cpp|58|2019-11-05T11:59:59.5848720|[IN][0][27014]|Return Value1 78
+main.cpp|65|2019-11-05T11:59:59.5849547|[IN][0][27014]|Processing Completed Value1 -111
+main.cpp|76|2019-11-05T11:59:59.5850655|[IN][0][27015]|Return Value2 78
+main.cpp|83|2019-11-05T11:59:59.5851438|[IN][0][27015]|Processing Completed Value2 -111
