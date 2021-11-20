@@ -11,19 +11,20 @@ namespace Core
 {
 
 	class ThreadPool
-	{	
-		private:
-			size_t m_minSize;
-			size_t m_maxSize;	
-			StlQueue<Thread*> m_FreePool;
-			StlQueue<Thread*> m_UsedPool;
-		public:
-        		ThreadPool(int minSize = 2,int maxSize = 5);
-        		virtual ~ThreadPool();
-        		virtual void init();
-        		virtual void shutdown();
-			bool initializeThreads();
-			Thread* getThreadFromPool();
+	{
+	private:
+		size_t m_minSize;
+		size_t m_maxSize;
+		StlQueue<Thread *> m_FreePool;
+		StlQueue<Thread *> m_UsedPool;
+
+	public:
+		ThreadPool(int minSize = 2, int maxSize = 5);
+		virtual ~ThreadPool();
+		virtual void init();
+		virtual void shutdown();
+		bool initializeThreads();
+		Thread *getThreadFromPool();
 	};
 }
 #endif

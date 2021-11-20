@@ -1,0 +1,11 @@
+.vscode/
+
+Asyncpp
+
+CMakeCache.txt
+CMakeFiles/
+Logs/
+Makefile
+cmake_install.cmake
+
+core.*

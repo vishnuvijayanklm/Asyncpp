@@ -9,205 +9,202 @@ namespace Async
 {
 	class Token
 	{
-		public:
-			Token()
-			{
-			}
-			~Token()
-			{
-			}
+	public:
+		Token()
+		{
+		}
+		~Token()
+		{
+		}
 	};
 
 	make_ptr(Token);
-	
+
 	class CancellationToken
 	{
-			TokenPtr mToken;		
-		public:
+		TokenPtr mToken;
 
-			CancellationToken() : mToken(make_shared<Async::Token>())
-			{
-			
-			}
-			~CancellationToken()
-			{
-			}
+	public:
+		CancellationToken() : mToken(make_shared<Async::Token>())
+		{
+		}
+		~CancellationToken()
+		{
+		}
 
-			
-			bool isCancellable()
-			{
-				return this->mToken.get() != nullptr;
-			}
+		bool isCancellable()
+		{
+			return this->mToken.get() != nullptr;
+		}
 
-			bool isValid()
-			{
-				return this->mToken.get() != nullptr;
-			}
+		bool isValid()
+		{
+			return this->mToken.get() != nullptr;
+		}
 
-			TokenPtr& getToken()
-			{
-				return this->mToken;
-			}
+		TokenPtr &getToken()
+		{
+			return this->mToken;
+		}
 
-			void cancel()
-			{
-				this->mToken.reset();
-			}	
+		void cancel()
+		{
+			this->mToken.reset();
+		}
 	};
 
 	make_ptr(CancellationToken);
 
 	class CompletionToken
-        {
-                        StlMap<void*,void*> mListeners;
-			typedef function<void()> CompletionCallBack;
+	{
+		StlMap<void *, void *> mListeners;
+		typedef function<void()> CompletionCallBack;
 
-			StlList<CompletionCallBack> mCallBackList;
+		StlList<CompletionCallBack> mCallBackList;
 
-			//CompletionCallBack mCompletionCallBack;
-			CancellationTokenPtr mCancellationToken;
-                
-		public:
-                        CompletionToken(CompletionCallBack callback = nullptr)
-                        {
-				this->onCompletion(callback);	
-				this->mCancellationToken = make_shared<CancellationToken>();
-                        }
+		//CompletionCallBack mCompletionCallBack;
+		CancellationTokenPtr mCancellationToken;
 
-                        ~CompletionToken()
-                        {
-                        }
+	public:
+		CompletionToken(CompletionCallBack callback = nullptr)
+		{
+			this->onCompletion(callback);
+			this->mCancellationToken = make_shared<CancellationToken>();
+		}
 
-			void setCancellationToken(CancellationTokenPtr& CancellationToken)
+		~CompletionToken()
+		{
+		}
+
+		void setCancellationToken(CancellationTokenPtr &CancellationToken)
+		{
+			this->mCancellationToken = CancellationToken;
+		}
+
+		TokenPtr &getCancellationToken()
+		{
+			return this->mCancellationToken->getToken();
+		}
+
+		bool isCompleted()
+		{
+			return this->mListeners.empty();
+		}
+
+		void addListener(void *pTaskInfo)
+		{
+			this->mListeners.insert(pTaskInfo, pTaskInfo);
+		}
+
+		void removeListener(void *pTaskInfo)
+		{
+			this->mListeners.erase(pTaskInfo);
+
+			if (this->mListeners.empty())
 			{
-				this->mCancellationToken = CancellationToken;
+				CompletionCallBack callback;
+				this->mCallBackList.startGet();
+				while (this->mCallBackList.getNextElement(callback) && callback)
+					callback();
+				this->mCallBackList.stopGet();
 			}
+		}
 
-			TokenPtr& getCancellationToken()
+		void onCompletion(CompletionCallBack callback)
+		{
+			if (callback != nullptr)
 			{
-				return this->mCancellationToken->getToken();
+				this->mCallBackList.push_back(callback);
 			}
+		}
 
-                        bool isCompleted()
-                        {
-                                return this->mListeners.empty();
-                        }
+		template <typename... Args>
+		void onCompletion(Args... args, CompletionCallBack callback)
+		{
+			callback();
+		}
 
-                        void addListener(void *pTaskInfo)
-                        {
-                                this->mListeners.insert(pTaskInfo,pTaskInfo);
-                        }
+		template <typename... Args>
+		CompletionToken &all(shared_ptr<CompletionToken> &completionToken, Args &&...args)
+		{
+			cout << "Two arg" << endl;
+			return this->all(args...);
+		}
 
-			void removeListener(void *pTaskInfo)
-			{
-				this->mListeners.erase(pTaskInfo);
-
-				if(this->mListeners.empty())
-				{
-					CompletionCallBack callback;
-					this->mCallBackList.startGet();
-					while(this->mCallBackList.getNextElement(callback) && callback) callback();
-					this->mCallBackList.stopGet();
-				}
-			}
-
-			void onCompletion(CompletionCallBack callback)
-			{
-				if(callback != nullptr)
-				{
-					this->mCallBackList.push_back(callback);
-				}
-			}
-
-			template<typename ...Args>
-			void onCompletion(Args... args,CompletionCallBack callback)
-			{
-				callback();
-			}
-
-			template<typename ...Args>
-			CompletionToken& all(shared_ptr<CompletionToken>& completionToken,Args&&... args)
-			{
-				cout<<"Two arg"<<endl;
-				return this->all(args...);
-			}
-
-			CompletionToken& all(shared_ptr<CompletionToken>& completionToken)
-                 	{
-				cout<<"One arg"<<endl;
-				return *this;
-			}
-        };
+		CompletionToken &all(shared_ptr<CompletionToken> &completionToken)
+		{
+			cout << "One arg" << endl;
+			return *this;
+		}
+	};
 
 	make_ptr(CompletionToken);
 
 	class ITaskInfo
 	{
-			std::weak_ptr<Async::Token> mCancellationToken;
-			CompletionTokenPtr mCompletionTokenPtr;
+		std::weak_ptr<Async::Token> mCancellationToken;
+		CompletionTokenPtr mCompletionTokenPtr;
 
-		public:
-			ITaskInfo(CompletionTokenPtr &CompletionToken):mCompletionTokenPtr(CompletionToken)
-			{
-				this->mCompletionTokenPtr->addListener(this);
-				this->mCancellationToken = this->mCompletionTokenPtr->getCancellationToken(); 
-			}
+	public:
+		ITaskInfo(CompletionTokenPtr &CompletionToken) : mCompletionTokenPtr(CompletionToken)
+		{
+			this->mCompletionTokenPtr->addListener(this);
+			this->mCancellationToken = this->mCompletionTokenPtr->getCancellationToken();
+		}
 
-			virtual ~ITaskInfo(){}
-			virtual void executeTask() = 0;
+		virtual ~ITaskInfo() {}
+		virtual void executeTask() = 0;
 
-			bool isExpired()
-			{
-				return this->mCancellationToken.expired();
-			}
+		bool isExpired()
+		{
+			return this->mCancellationToken.expired();
+		}
 
-			void setCancellationToken()
-			{
-				this->mCancellationToken = this->mCompletionTokenPtr->getCancellationToken();
-			}
+		void setCancellationToken()
+		{
+			this->mCancellationToken = this->mCompletionTokenPtr->getCancellationToken();
+		}
 
-			void onTaskCompleted()
-			{
-				this->mCompletionTokenPtr->removeListener(this);
-			}
+		void onTaskCompleted()
+		{
+			this->mCompletionTokenPtr->removeListener(this);
+		}
 	};
 
-
-	template<typename Task>
+	template <typename Task>
 	class TaskInfo : public ITaskInfo
 	{
-			Task mTask;
-						
-		public:
-			TaskInfo(Task task,CompletionTokenPtr& CompletionToken):ITaskInfo(CompletionToken),mTask(task)
-			{
-			}	
+		Task mTask;
 
-			~TaskInfo()
-			{
-			}
+	public:
+		TaskInfo(Task task, CompletionTokenPtr &CompletionToken) : ITaskInfo(CompletionToken), mTask(task)
+		{
+		}
 
-			void executeTask() override
+		~TaskInfo()
+		{
+		}
+
+		void executeTask() override
+		{
+			if (!this->isExpired())
 			{
-				if(!this->isExpired())
-				{
-					this->mTask();
-				}
-				this->onTaskCompleted();
+				this->mTask();
 			}
+			this->onTaskCompleted();
+		}
 	};
 
-
-	template<typename Task,typename Response >
+	template <typename Task, typename Response>
 	class TaskInfoResponse : public ITaskInfo
 	{
 		Task mTask;
 		Response mResponse;
 
 	public:
-		TaskInfoResponse(Task task,Response response,CompletionTokenPtr& CompletionToken): ITaskInfo(CompletionToken),mTask(std::forward<Task>(task)),mResponse(std::forward<Response>(response))
-                {
-                }
+		TaskInfoResponse(Task task, Response response, CompletionTokenPtr &CompletionToken) : ITaskInfo(CompletionToken), mTask(std::forward<Task>(task)), mResponse(std::forward<Response>(response))
+		{
+		}
 
 		~TaskInfoResponse()
 		{
@@ -215,8 +212,8 @@ namespace Async
 
 		void executeTask() override
 		{
-			if(!this->isExpired())
-                        {
+			if (!this->isExpired())
+			{
 				this->mResponse(this->mTask());
 			}
 			this->onTaskCompleted();
@@ -246,6 +243,6 @@ namespace Async
                 }
         };*/
 
-	make_ptr(ITaskInfo);	
+	make_ptr(ITaskInfo);
 }
 #endif

@@ -5,14 +5,17 @@
 #include <async/include/Task.h>
 #include <timer/include/TimerTask.h>
 #include <ipc/include/MessageQueue.h>
+#include <core/include/Channel.h>
 
 using namespace std;
 //unique_ptr<Core::Application> pApplication(new Core::Application());
 Logger LOGGER;
 
+Core::Channel<int> c;
+
 void onExit(void)
 {
-	cout<<"On Exit"<<endl;
+	cout << "On Exit" << endl;
 	Core::NotifyManager::getInstance()->onExit();
 }
 
@@ -22,87 +25,111 @@ int test()
 }
 class TimerExample : public Async::ITimer
 {
-		shared_ptr<Async::TimerTicks> mTicks;
-	public:
-		TimerExample():mTicks(make_shared<Async::TimerTicks>(this))
-		{
-			this->mTicks->setInterval(1,true);
-			this->mTicks->start();
-		}
+	shared_ptr<Async::TimerTicks> mTicks;
 
-		~TimerExample()
-		{
+public:
+	TimerExample() : mTicks(make_shared<Async::TimerTicks>(this))
+	{
+		this->mTicks->setInterval(1, true);
+		this->mTicks->start();
+	}
 
-		}
+	~TimerExample()
+	{
+	}
 
-		void onTimerExpired(Async::TimerTicks *pTicks)
-		{
-			LOG_INFO((LOGGER),("Timer Expired [%p]",pTicks));
-			//Async::TimerTask::getTimer()->removeTimer(this->mTicks.get());
-		}
-
+	void onTimerExpired(Async::TimerTicks *pTicks)
+	{
+		LOG_INFO((LOGGER), ("Timer Expired [%p]", pTicks));
+		//Async::TimerTask::getTimer()->removeTimer(this->mTicks.get());
+	}
 };
 
 void fn()
 {
 	int x = 1111;
-	cout<<"X "<<x<<endl;
+	cout << "X " << x << endl;
 	Async::CancellationTokenPtr Token = make_shared<Async::CancellationToken>();
 	Async::CompletionTokenPtr completionToken1 = Async::Task([]()
-		{
-			srand(time(0));
-			return rand() % 100;
-		},
-		[](int x)
-		{
-			LOG_INFONP((LOGGER),("Return Value1 %d",x));
-		})
-		.setCancellationToken(Token)
-		.execute_sync();
+															 {
+																 srand(time(0));
+																 return rand() % 100;
+															 },
+															 [](int x)
+															 {
+																 LOG_INFONP((LOGGER), ("Return Value1 %d", x));
+															 })
+													 .setCancellationToken(Token)
+													 .execute_async();
 
 	completionToken1->onCompletion([&x]
-	{
-			LOG_INFONP((LOGGER),("Processing Completed Value1 %d",x));
-	});
-
+								   { LOG_INFONP((LOGGER), ("Processing Completed Value1 %d", x)); });
 
 	Async::CompletionTokenPtr completionToken2 = Async::Task([]()
-			{
-			srand(time(0));
-			return rand() % 100;
-			},
-			[](int x)
-			{
-			LOG_INFONP((LOGGER),("Return Value2 %d",x));
-			})
-	.setCancellationToken(Token)
-		.execute_sync();
+															 {
+																 srand(time(0));
+																 return rand() % 100;
+															 },
+															 [](int x)
+															 {
+																 LOG_INFONP((LOGGER), ("Return Value2 %d", x));
+															 })
+													 .setCancellationToken(Token)
+													 .execute_async();
 
 	completionToken2->onCompletion([&x]
-        {
-                        LOG_INFONP((LOGGER),("Processing Completed Value2 %d",x));
-        });
+								   { LOG_INFONP((LOGGER), ("Processing Completed Value2 %d", x)); });
 
-	Async::CompletionToken().all(completionToken1,completionToken2);
+	Async::CompletionToken().all(completionToken1, completionToken2);
 	Async::CompletionToken().all(completionToken1);
 	/*Async::CompletionToken().onCompletion(completionToken1,completionToken2,[&x]
         {
         	LOG_INFONP((LOGGER),("All processing completed"));
         });*/
-
 }
+
+class Test : public Util::Runnable
+{
+	int x;
+
+public:
+	void run()
+	{
+		while (1)
+		{
+			this->x << c;
+			cout << "Value got from channel " << this->x << endl;
+		}
+	}
+};
+
 int main()
 {
+	Test *t = new Test();
+	t->start();
+	for (int i = 0; i < 1000000; i++)
+	{
+		cout << "Pushing " << i << endl;
+		c << i;
+
+		usleep(10000);
+	}
+	/*
 	atexit(onExit);
 
 	LOGGER.setLogFile("Logs","log.txt");
 	LOGGER.setLoglevel(63);
+	
+	while (1)
+	{
+		fn();
+		usleep(100000);
+	}
+	
 
 	while(1)
 	{
 		fn();
-	
-		return 0;	
 		Async::EventListenerPtr pEvent = make_shared<Async::EventListener>();
 
 		pEvent->addEvent("event1",[]()
@@ -143,10 +170,11 @@ int main()
 		pEvent->notify_sync("event4",-978,-679,-111);
 		pEvent->notify_async("event5",rand() % 100,rand() % 100);
 		pEvent->notify_async("event6",rand() % 100,rand() % 100);
-		usleep(1000000);
+		usleep(100000);
 		Core::NotifyManager::getInstance()->printStatus();
 	}
-		/*IPC::MessageQueue myQueue("/22",200,100,true);
+
+	IPC::MessageQueue myQueue("/22",200,100,true);
 	myQueue.open();
 
 	TimerExample e[10000];

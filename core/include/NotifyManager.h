@@ -7,7 +7,7 @@
 #include <array>
 
 #ifndef NOTIFIER_COUNT
-#define NOTIFIER_COUNT 25
+#define NOTIFIER_COUNT 5
 #endif
 
 namespace Core

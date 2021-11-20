@@ -9,13 +9,14 @@ namespace Core
 {
     class SharedLibraryManager
     {
-        StlMap<string,shared_ptr<SharedLibraryLoader>> mLoaders;
+        StlMap<string, shared_ptr<SharedLibraryLoader>> mLoaders;
+
     public:
         SharedLibraryManager();
         ~SharedLibraryManager();
         void init();
         void shutdown();
-        SharedLibraryLoader* loadLibrary(string);
+        SharedLibraryLoader *loadLibrary(string);
     };
 }
 #endif // SHAREDLIBRARYMANAGER_H

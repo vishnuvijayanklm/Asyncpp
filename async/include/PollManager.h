@@ -10,22 +10,22 @@
 
 namespace Async
 {
-	class PollManager:public Util::Runnable
+	class PollManager : public Util::Runnable
 	{
-			int mEpollFd;
+		int mEpollFd;
 
-			StlMap<int,IEventListener*> mListenerMap;
+		StlMap<int, IEventListener *> mListenerMap;
 
-			PollManager();
-			void open();
-			void close();
+		PollManager();
+		void open();
+		void close();
 
-		public:
-			~PollManager();
-			static PollManager* getInstance();
-			void run() override;
+	public:
+		~PollManager();
+		static PollManager *getInstance();
+		void run() override;
 
-			bool addEventListener(int fd,IEventListener *pListener);
+		bool addEventListener(int fd, IEventListener *pListener);
 	};
 }
 #endif // POLLMANAGER_H
