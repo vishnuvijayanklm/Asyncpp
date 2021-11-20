@@ -5,6 +5,7 @@ Asyncpp
 CMakeCache.txt
 CMakeFiles/
 Logs/
+build/
 Makefile
 cmake_install.cmake
 

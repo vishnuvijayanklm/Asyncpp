@@ -88,31 +88,19 @@ void fn()
         });*/
 }
 
-class Test : public Util::Runnable
-{
-	int x;
-
-public:
-	void run()
-	{
-		while (1)
-		{
-			this->x << c;
-			cout << "Value got from channel " << this->x << endl;
-		}
-	}
-};
-
 int main()
 {
-	Test *t = new Test();
-	t->start();
+
 	for (int i = 0; i < 1000000; i++)
 	{
-		cout << "Pushing " << i << endl;
 		c << i;
-
-		usleep(10000);
+		async([&]()
+			  {
+				  int x;
+				  x << c;
+				  cout <<"Got from channel "<< x << endl;
+			  });
+		sleep(1);
 	}
 	/*
 	atexit(onExit);

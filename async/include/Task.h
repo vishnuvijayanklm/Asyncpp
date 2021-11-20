@@ -7,7 +7,6 @@
 
 namespace Async
 {
-
 	class ITask
 	{
 

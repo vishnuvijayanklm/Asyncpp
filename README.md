@@ -142,3 +142,14 @@ myQ.read(/* buffer ptr */,/* size */); //Synchronous receive
 
 myQ.send(/* buffer ptr */,/* size */); //Synchronous send
 ```
+
+### Channels
+```cpp
+Core::Channel<int> c; // Creating a channel
+c << 10; // Send to channel
+
+int x;
+x << c; //Receving from channel
+
+c.close(); //Closing the channel
+```
