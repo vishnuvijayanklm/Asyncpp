@@ -38,6 +38,11 @@ namespace Core
 		{
 			this->mChannelStatus = CHANNEL_STATUS::CLOSED;
 		}
+
+		size_t size()
+		{
+			return this->mChannelData.size();
+		}
 		template <typename T1>
 		friend void operator<<(T1 &x, Channel<T1> &);
 	};
@@ -45,8 +50,15 @@ namespace Core
 	template <typename T>
 	void operator<<(T &x, Channel<T> &c)
 	{
-		c.mChannelData.pop(x, true);
+		if (c.mChannelStatus == CHANNEL_STATUS::OPEN)
+		{
+			if(!c.mChannelData.pop(x, true)) 
+			{
+				// throw exception here
+			}
+		}
 	}
+
 }
 
 #endif

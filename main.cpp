@@ -93,14 +93,14 @@ int main()
 
 	for (int i = 0; i < 1000000; i++)
 	{
-		c << i;
+		c << rand() % 100;
 		async([&]()
 			  {
-				  int x;
+				  int x ;
 				  x << c;
-				  cout <<"Got from channel "<< x << endl;
+				  cout <<"Got from channel "<< x << " Channel size "<< c.size()<<endl;
 			  });
-		sleep(1);
+		usleep(1000);
 	}
 	/*
 	atexit(onExit);
