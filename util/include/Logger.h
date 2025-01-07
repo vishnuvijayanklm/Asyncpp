@@ -9,6 +9,7 @@
 #include <inttypes.h>
 #include <dirent.h>
 #include <fstream>
+#include <memory>
 
 #define LOG_CR      1
 #define LOG_ER      2
