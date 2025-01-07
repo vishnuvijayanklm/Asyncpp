@@ -153,3 +153,13 @@ x << c; //Receving from channel
 
 c.close(); //Closing the channel
 ```
+
+### WaitGroup
+```cpp
+Core::WaitGroup wg; // Creating a wait group
+wg.add() // adding to waitgroup adding 1 to counter
+wg.add(10) // adding to waitgroup adding 10 to counter
+
+wg.done() // wait group is done and decrease counter by 1
+wg.wait() // wait for wait group to complete , ie counter becomes 0
+```

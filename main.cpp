@@ -6,6 +6,7 @@
 #include <timer/include/TimerTask.h>
 #include <ipc/include/MessageQueue.h>
 #include <core/include/Channel.h>
+#include <core/include/WaitGroup.h>
 
 using namespace std;
 //unique_ptr<Core::Application> pApplication(new Core::Application());
@@ -90,18 +91,22 @@ void fn()
 
 int main()
 {
-
-	for (int i = 0; i < 1000000; i++)
+	Core::WaitGroup wg;
+	for (int i = 0; i < 1000; i++)
 	{
+		wg.add();
 		c << rand() % 100;
 		async([&]()
 			  {
 				  int x ;
 				  x << c;
 				  cout <<"Got from channel "<< x << " Channel size "<< c.size()<<endl;
+				  wg.done();
 			  });
-		usleep(1000);
+		//usleep(1000);
 	}
+	cout<<"Wait counter "<<wg.count()<<endl;
+	wg.wait();
 	/*
 	atexit(onExit);
 
